@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Base ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: auto; /* Lenis handles smooth scroll */
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background-color: #FBF7EF;
+  color: #1A1A1A;
+  overflow-x: hidden;
+  min-height: 100dvh;
+}
+
+/* Keep media from causing horizontal overflow. Scoped to media only — a global
+   `* { max-width: 100% }` would clamp intentional off-screen tracks like the
+   Bilona horizontal-scroll panels, the farm marquee and Embla carousels.
+   body { overflow-x: hidden } above catches any other stray overflow. */
+img, svg, video, canvas { max-width: 100%; }
+
+/* ── Custom Scrollbar ─────────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #FBF7EF; }
+::-webkit-scrollbar-thumb { background: #C9A84C; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #a8882e; }
+
+/* ── Utility Classes ──────────────────────────────── */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+
+/* GPU-accelerated elements */
+.gpu { will-change: transform; transform: translateZ(0); }
+
+/* Gold shimmer on buttons */
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.btn-shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%);
+  transition: none;
+}
+.btn-shimmer:hover::after {
+  left: 100%;
+  transition: left 0.6s ease;
+}
+
+/* Grain texture overlay on cream sections */
+.grain::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Lenis scroll lock during preloader */
+html.lenis-loading { overflow: hidden; }
+
+/* ── Animations ───────────────────────────────────── */
+.animate-in {
+  opacity: 0;
+  transform: translateY(32px);
+}
+.animate-in.is-visible {
+  animation: fadeUp 0.7s ease-out forwards;
+}
+
+/* Stagger delays for children */
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
+
+/* Three.js canvas */
+.hero-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Product image tilt on hover (CSS perspective) */
+.card-3d {
+  perspective: 1000px;
+}
+.card-3d-inner {
+  transition: transform 0.4s ease;
+  transform-style: preserve-3d;
+}
+
+/* Page transition curtain */
+.page-curtain {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: #142A1D;
+  z-index: 9998;
+  pointer-events: none;
+}
+
+/* Marquee fade mask */
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+
+/* ── Mobile-specific ──────────────────────────────── */
+@media (max-width: 768px) {
+  /* Prevent bottom nav overlap */
+  .page-content { padding-bottom: 5rem; }
+
+  /* Touch feedback */
+  button:active, a:active { opacity: 0.8; }
+}

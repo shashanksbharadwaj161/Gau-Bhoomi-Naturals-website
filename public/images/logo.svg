@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none" role="img" aria-label="Gau Bhoomi Naturals">
+  <defs>
+    <linearGradient id="gbnGold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E8C97A"/>
+      <stop offset="0.5" stop-color="#C9A84C"/>
+      <stop offset="1" stop-color="#a8882e"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Badge -->
+  <circle cx="100" cy="100" r="96" fill="#142A1D"/>
+  <circle cx="100" cy="100" r="96" fill="none" stroke="url(#gbnGold)" stroke-width="4"/>
+  <circle cx="100" cy="100" r="86" fill="none" stroke="#C9A84C" stroke-width="1.5" opacity="0.45"/>
+
+  <!-- Horns -->
+  <path d="M78 70 C66 56 58 50 50 47 C56 58 62 67 76 76 Z" fill="url(#gbnGold)"/>
+  <path d="M122 70 C134 56 142 50 150 47 C144 58 138 67 124 76 Z" fill="url(#gbnGold)"/>
+
+  <!-- Ears -->
+  <ellipse cx="62" cy="97" rx="13" ry="8" transform="rotate(-22 62 97)" fill="#C9A84C"/>
+  <ellipse cx="138" cy="97" rx="13" ry="8" transform="rotate(22 138 97)" fill="#C9A84C"/>
+
+  <!-- Head -->
+  <path d="M100 60 C82 60 70 70 67 86 C65 97 66 108 71 120 C76 133 87 142 100 142 C113 142 124 133 129 120 C134 108 135 97 133 86 C130 70 118 60 100 60 Z" fill="url(#gbnGold)"/>
+
+  <!-- Muzzle -->
+  <ellipse cx="100" cy="122" rx="19" ry="13" fill="#FBF7EF"/>
+  <ellipse cx="92" cy="123" rx="2.6" ry="3.4" fill="#142A1D"/>
+  <ellipse cx="108" cy="123" rx="2.6" ry="3.4" fill="#142A1D"/>
+
+  <!-- Eyes -->
+  <circle cx="86" cy="99" r="4.2" fill="#142A1D"/>
+  <circle cx="114" cy="99" r="4.2" fill="#142A1D"/>
+
+  <!-- Leaf tuft on forehead -->
+  <path d="M100 52 C95 59 95 67 100 74 C105 67 105 59 100 52 Z" fill="#4a8f68"/>
+  <path d="M100 74 L100 63" stroke="#0c1a10" stroke-width="1.6" stroke-linecap="round"/>
+</svg>
