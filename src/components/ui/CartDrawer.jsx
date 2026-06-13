@@ -6,7 +6,6 @@ import { useUI } from '../../contexts/UIContext'
 import { useCart } from '../../contexts/CartContext'
 import { siteConfig } from '../../config/siteConfig'
 import { getLenis } from '../../hooks/useLenis'
-import { PRODUCT_IMAGE_FALLBACK } from '../../services/woocommerce'
 
 const unitPrice = (it) => {
   const sale = parseFloat(it.salePrice)
@@ -104,10 +103,11 @@ export default function CartDrawer() {
                         exit={{ opacity: 0, x: 40 }}
                         className="flex gap-3"
                       >
-                        <div className="w-14 h-14 rounded-lg overflow-hidden bg-primary-500 flex-shrink-0 flex items-center justify-center">
-                          {it.image
-                            ? <img src={it.image} alt={it.name} crossOrigin="anonymous" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = PRODUCT_IMAGE_FALLBACK }} className="w-full h-full object-cover" />
-                            : <span className="text-gold-400 text-[10px] font-display">GBN</span>}
+                        <div className="relative w-14 h-14 rounded-lg overflow-hidden bg-primary-500 flex-shrink-0">
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <span className="text-gold-400 text-[10px] font-display">GBN</span>
+                          </div>
+                          {it.image && <img src={it.image} alt={it.name} onError={(e) => { e.currentTarget.style.display = 'none' }} className="absolute inset-0 w-full h-full object-cover" />}
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="font-body text-sm text-primary-500 font-medium line-clamp-2 leading-snug">{it.name}</p>

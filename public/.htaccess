@@ -1,57 +1,45 @@
-# ════════════════════════════════════════════════
-# Gau Bhoomi Naturals — Combined React + WordPress
-# ════════════════════════════════════════════════
-
-# Serve the React app's index.html for the document root (not WordPress index.php)
 DirectoryIndex index.html index.php
 
-# Security
+Options -MultiViews
+RewriteEngine On
+RewriteBase /
+
 <Files wp-config.php>
   order allow,deny
   deny from all
 </Files>
 
-Options -MultiViews
-RewriteEngine On
+# WordPress admin — serve directly
+RewriteRule ^wp-admin(/.*)?$ - [L]
+RewriteRule ^wp-login\.php$ - [L]
 
-# ── Pass through WordPress routes ────────────────
-RewriteRule ^wp-admin(/.*)?$   - [L]
-RewriteRule ^wp-login\.php     - [L]
-RewriteRule ^wp-cron\.php      - [L]
-RewriteRule ^wp-json(/.*)?$    - [L]
+# WordPress REST API — MUST route through WordPress index.php
+# (not served as static file — that causes 404)
+RewriteRule ^wp-json(/.*)?$ /index.php [QSA,L]
+
+# WordPress static files — serve directly
 RewriteRule ^wp-content(/.*)?$ - [L]
 RewriteRule ^wp-includes(/.*)?$ - [L]
-RewriteRule ^xmlrpc\.php       - [L]
+RewriteRule ^wp-cron\.php$ - [L]
+RewriteRule ^xmlrpc\.php$ - [L]
 
-# ── Pass through actual files/directories ────────
+# React build assets — serve directly
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# ── All other requests → React SPA ───────────────
-RewriteRule ^ index.html [QSA,L]
+# Everything else → React SPA
+RewriteRule ^ /index.html [QSA,L]
 
-# ── Performance ──────────────────────────────────
 <IfModule mod_expires.c>
   ExpiresActive On
-  ExpiresByType image/jpg        "access plus 1 year"
-  ExpiresByType image/jpeg       "access plus 1 year"
-  ExpiresByType image/png        "access plus 1 year"
-  ExpiresByType image/webp       "access plus 1 year"
-  ExpiresByType image/svg+xml    "access plus 1 year"
-  ExpiresByType text/css         "access plus 1 month"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType text/css "access plus 1 month"
   ExpiresByType application/javascript "access plus 1 month"
-  ExpiresByType application/json "access plus 0 seconds"
 </IfModule>
 
-# ── Compression ──────────────────────────────────
 <IfModule mod_deflate.c>
-  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml
-</IfModule>
-
-# ── Security headers ─────────────────────────────
-<IfModule mod_headers.c>
-  Header always set X-Content-Type-Options nosniff
-  Header always set X-Frame-Options SAMEORIGIN
-  Header always set Referrer-Policy strict-origin-when-cross-origin
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript
 </IfModule>

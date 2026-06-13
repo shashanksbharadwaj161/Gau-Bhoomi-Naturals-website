@@ -12,7 +12,6 @@ export default function ProductCard({ product }) {
   const { addItem } = useCart()
   const { toggleWishlist, isWishlisted } = useWishlist()
   const [quickOpen, setQuickOpen] = useState(false)
-  const [imgError, setImgError] = useState(false)
 
   const price = formatPrice(product.price, product.sale_price)
   const image = product.images?.[0]?.src
@@ -39,21 +38,20 @@ export default function ProductCard({ product }) {
         className="group relative rounded-2xl overflow-hidden bg-white shadow-card hover:shadow-card-hover transition-shadow duration-300 flex flex-col h-full"
       >
         {/* Image area */}
-        <div className="relative h-[220px] overflow-hidden">
+        <div className="relative h-[220px] overflow-hidden bg-primary-500">
           <Link to={productUrl} className="block w-full h-full">
-            {image && !imgError ? (
+            {/* GBN fallback — always rendered behind the image */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="font-display text-3xl text-gold-400 tracking-widest">GBN</span>
+            </div>
+            {image && (
               <img
                 src={image}
                 alt={product.name}
                 loading="lazy"
-                crossOrigin="anonymous"
-                onError={() => setImgError(true)}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                onError={(e) => { e.currentTarget.style.display = 'none' }}
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
-            ) : (
-              <div className="w-full h-full bg-primary-500 flex items-center justify-center">
-                <span className="font-display text-3xl text-gold-400 tracking-widest">GBN</span>
-              </div>
             )}
           </Link>
 

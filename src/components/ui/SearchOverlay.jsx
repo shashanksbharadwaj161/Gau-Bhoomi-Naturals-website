@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { Search, X } from 'lucide-react'
 import { useUI } from '../../contexts/UIContext'
-import { searchProducts, formatPrice, PRODUCT_IMAGE_FALLBACK } from '../../services/woocommerce'
+import { searchProducts, formatPrice } from '../../services/woocommerce'
 import { getLenis } from '../../hooks/useLenis'
 
 const POPULAR = ['A2 Ghee', 'Mustard Oil', 'Forest Honey', 'Basmati Rice', 'Cashews']
@@ -130,10 +130,11 @@ export default function SearchOverlay() {
                           onClick={() => goTo(product.slug)}
                           className="w-full flex items-center gap-3 p-3 hover:bg-gold-50 text-left transition-colors"
                         >
-                          <div className="w-12 h-12 rounded-lg overflow-hidden bg-primary-500 flex-shrink-0 flex items-center justify-center">
-                            {image
-                              ? <img src={image} alt={product.name} loading="lazy" crossOrigin="anonymous" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = PRODUCT_IMAGE_FALLBACK }} className="w-full h-full object-cover" />
-                              : <span className="text-gold-400 text-[10px] font-display">GBN</span>}
+                          <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-primary-500 flex-shrink-0">
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <span className="text-gold-400 text-[10px] font-display">GBN</span>
+                            </div>
+                            {image && <img src={image} alt={product.name} loading="lazy" onError={(e) => { e.currentTarget.style.display = 'none' }} className="absolute inset-0 w-full h-full object-cover" />}
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className="font-body text-sm text-primary-500 font-medium truncate">{product.name}</p>

@@ -6,11 +6,20 @@ const WC_SECRET = import.meta.env.VITE_WC_SECRET || ''
 
 const api = axios.create({
   baseURL: `${WC_URL}/wp-json/wc/v3`,
-  auth: (WC_KEY && WC_SECRET) ? { username: WC_KEY, password: WC_SECRET } : undefined,
   timeout: 15000,
-  headers: {
-    'Content-Type': 'application/json',
-  },
+})
+
+// Query string auth bypasses CORS preflight issues
+// with Basic Auth Authorization headers on Hostinger
+api.interceptors.request.use((config) => {
+  if (WC_KEY && WC_SECRET) {
+    config.params = {
+      consumer_key: WC_KEY,
+      consumer_secret: WC_SECRET,
+      ...config.params,
+    }
+  }
+  return config
 })
 
 // Inline GBN monogram (dark green + gold) used as the image error fallback so a
@@ -80,8 +89,10 @@ export const getProducts = async (params = {}) => {
     const res = await api.get('/products', {
       params: { per_page: 20, status: 'publish', ...params }
     })
-    return res.data.length > 0 ? res.data : MOCK_PRODUCTS
-  } catch {
+    if (res.data && res.data.length > 0) return res.data
+    return MOCK_PRODUCTS
+  } catch (err) {
+    console.warn('[WC] getProducts failed:', err.message)
     return MOCK_PRODUCTS
   }
 }
@@ -89,8 +100,10 @@ export const getProducts = async (params = {}) => {
 export const getProduct = async (slug) => {
   try {
     const res = await api.get('/products', { params: { slug } })
-    return res.data[0] || MOCK_PRODUCTS.find(p => p.slug === slug) || MOCK_PRODUCTS[0]
-  } catch {
+    if (res.data && res.data.length > 0) return res.data[0]
+    return MOCK_PRODUCTS[0]
+  } catch (err) {
+    console.warn('[WC] getProduct failed:', err.message)
     return MOCK_PRODUCTS.find(p => p.slug === slug) || MOCK_PRODUCTS[0]
   }
 }
@@ -107,10 +120,12 @@ export const getProductById = async (id) => {
 export const getCategories = async () => {
   try {
     const res = await api.get('/products/categories', {
-      params: { per_page: 100, hide_empty: true, orderby: 'count', order: 'desc' }
+      params: { per_page: 100, hide_empty: false }
     })
-    return res.data.length > 0 ? res.data : MOCK_CATEGORIES
-  } catch {
+    if (res.data && res.data.length > 0) return res.data
+    return MOCK_CATEGORIES
+  } catch (err) {
+    console.warn('[WC] getCategories failed:', err.message)
     return MOCK_CATEGORIES
   }
 }
@@ -119,27 +134,31 @@ export const getProductsByCategory = async (slug, perPage = 12) => {
   if (slug === 'all' || !slug) return getProducts({ per_page: perPage })
   try {
     const cats = await getCategories()
-    const cat  = cats.find(c => c.slug === slug)
-    if (!cat) return MOCK_PRODUCTS.filter(p => p.categories.some(c => c.slug === slug))
+    const cat = cats.find(c => c.slug === slug)
+    if (!cat) {
+      console.warn('[WC] Category not found:', slug)
+      return MOCK_PRODUCTS
+    }
     const res = await api.get('/products', {
       params: { category: cat.id, per_page: perPage, status: 'publish' }
     })
-    if (res.data.length > 0) return res.data
-    return MOCK_PRODUCTS.filter(p => p.categories.some(c => c.slug === slug))
-  } catch {
-    const filtered = MOCK_PRODUCTS.filter(p => p.categories.some(c => c.slug === slug))
-    return filtered.length > 0 ? filtered : MOCK_PRODUCTS
+    if (res.data && res.data.length > 0) return res.data
+    return MOCK_PRODUCTS
+  } catch (err) {
+    console.warn('[WC] getProductsByCategory failed:', err.message)
+    return MOCK_PRODUCTS
   }
 }
 
 export const searchProducts = async (query) => {
   if (!query || query.length < 2) return []
   try {
-    const res = await api.get('/products', { params: { search: query, per_page: 8 } })
-    return res.data.length > 0
-      ? res.data
-      : MOCK_PRODUCTS.filter(p => p.name.toLowerCase().includes(query.toLowerCase())).slice(0, 8)
-  } catch {
+    const res = await api.get('/products', {
+      params: { search: query, per_page: 10, status: 'publish' }
+    })
+    return res.data || []
+  } catch (err) {
+    console.warn('[WC] searchProducts failed:', err.message)
     return MOCK_PRODUCTS
       .filter(p => p.name.toLowerCase().includes(query.toLowerCase()))
       .slice(0, 8)
