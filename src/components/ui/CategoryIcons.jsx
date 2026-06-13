@@ -1,7 +1,7 @@
-// Uniform line-art category icons (stroke-based, 24x24 viewBox, strokeWidth 1.5).
+// Clean, consistent stroke-based category icons (24x24 viewBox, strokeWidth 1.6).
 
-export const AllIcon = ({ size = 28, color = 'currentColor' }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+export const AllIcon = ({ size = 26, color = 'currentColor' }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
     <rect x="3" y="3" width="7" height="7" rx="1.5"/>
     <rect x="14" y="3" width="7" height="7" rx="1.5"/>
     <rect x="3" y="14" width="7" height="7" rx="1.5"/>
@@ -9,72 +9,73 @@ export const AllIcon = ({ size = 28, color = 'currentColor' }) => (
   </svg>
 )
 
-export const GheeIcon = ({ size = 28, color = 'currentColor' }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M8 21h8a1 1 0 001-1V10H7v10a1 1 0 001 1z"/>
-    <path d="M7 10V8a1 1 0 011-1h8a1 1 0 011 1v2"/>
-    <path d="M10 7V5a1 1 0 011-1h2a1 1 0 011 1v2"/>
-    <line x1="7" y1="14" x2="17" y2="14"/>
+export const GheeIcon = ({ size = 26, color = 'currentColor' }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M9 21h6a1 1 0 001-1V9H8v11a1 1 0 001 1z"/>
+    <path d="M8 9V7.5A1.5 1.5 0 019.5 6h5A1.5 1.5 0 0116 7.5V9"/>
+    <path d="M10.5 6V4.5A.5.5 0 0111 4h2a.5.5 0 01.5.5V6"/>
+    <line x1="8" y1="13" x2="16" y2="13"/>
   </svg>
 )
 
-export const OilsIcon = ({ size = 28, color = 'currentColor' }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M9 3c0 0-4 4-4 8a4 4 0 008 0c0-4-4-8-4-8z"/>
-    <path d="M17 7c0 0-2.5 2.5-2.5 5a2.5 2.5 0 005 0c0-2.5-2.5-5-2.5-5z"/>
+export const OilsIcon = ({ size = 26, color = 'currentColor' }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 3c0 0-5 5.5-5 10a5 5 0 0010 0C17 8.5 12 3 12 3z"/>
+    <path d="M9.5 13.5c.5-1.5 2-2.5 2.5-2.5"/>
   </svg>
 )
 
-export const RiceIcon = ({ size = 28, color = 'currentColor' }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12 3v18"/>
-    <path d="M12 6l4-2"/>
-    <path d="M12 10l4-2"/>
-    <path d="M12 14l4-2"/>
-    <path d="M12 6l-4-2"/>
-    <path d="M12 10l-4-2"/>
-    <path d="M12 14l-4-2"/>
+export const RiceIcon = ({ size = 26, color = 'currentColor' }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="12" y1="2" x2="12" y2="22"/>
+    <path d="M12 5l4.5-2.5"/>
+    <path d="M12 9l4.5-2.5"/>
+    <path d="M12 13l4.5-2.5"/>
+    <path d="M12 5l-4.5-2.5"/>
+    <path d="M12 9l-4.5-2.5"/>
+    <path d="M12 13l-4.5-2.5"/>
   </svg>
 )
 
-export const MasalaIcon = ({ size = 28, color = 'currentColor' }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12 2c0 0 2 3 2 6s-2 4-2 4-2-1-2-4 2-6 2-6z"/>
-    <ellipse cx="12" cy="18" rx="7" ry="3"/>
-    <path d="M5 18v1a1 1 0 001 1h12a1 1 0 001-1v-1"/>
-    <line x1="12" y1="12" x2="12" y2="15"/>
+export const MasalaIcon = ({ size = 26, color = 'currentColor' }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 2c1 2 3 5 3 8s-1.5 4-3 4-3-1-3-4 2-6 3-8z"/>
+    <line x1="12" y1="14" x2="12" y2="17"/>
+    <ellipse cx="12" cy="19.5" rx="6" ry="2.5"/>
   </svg>
 )
 
-export const HoneyIcon = ({ size = 28, color = 'currentColor' }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12 3L19 7v8l-7 4-7-4V7z"/>
-    <path d="M12 3v6m0 0l7 4m-7-4l-7 4"/>
-    <path d="M12 9v6"/>
+export const HoneyIcon = ({ size = 26, color = 'currentColor' }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 2l8 4.5v9L12 20l-8-4.5v-9z"/>
+    <line x1="12" y1="2" x2="12" y2="20"/>
+    <line x1="4" y1="6.5" x2="20" y2="6.5"/>
+    <line x1="4" y1="15.5" x2="20" y2="15.5"/>
   </svg>
 )
 
-export const DryFruitsIcon = ({ size = 28, color = 'currentColor' }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <ellipse cx="12" cy="15" rx="6" ry="7"/>
-    <path d="M12 8c0 0 3-3 4-6"/>
-    <path d="M12 12c2-1 4-1 5 0"/>
-    <path d="M12 12c-2-1-4-1-5 0"/>
+export const DryFruitsIcon = ({ size = 26, color = 'currentColor' }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 21c-3.5 0-6-3-6-7s2-7 6-7 6 3 6 7-2.5 7-6 7z"/>
+    <path d="M12 7c0-2 1-4 3-5"/>
+    <path d="M9 11c-1.5 0-3-.5-3.5-2"/>
+    <path d="M15 11c1.5 0 3-.5 3.5-2"/>
   </svg>
 )
 
-export const SeedsIcon = ({ size = 28, color = 'currentColor' }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12 22V12"/>
-    <path d="M12 12C12 12 7 9 6 4c4 0 6 3 6 8z"/>
-    <path d="M12 16C12 16 17 13 18 8c-4 0-6 3-6 8z"/>
+export const SeedsIcon = ({ size = 26, color = 'currentColor' }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 22V11"/>
+    <path d="M12 11C12 11 6.5 8 6 3c4.5 0 6 4 6 8z"/>
+    <path d="M12 15C12 15 17.5 12 18 7c-4.5 0-6 4-6 8z"/>
   </svg>
 )
 
-export const OtherIcon = ({ size = 28, color = 'currentColor' }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+export const OtherIcon = ({ size = 26, color = 'currentColor' }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="3"/>
-    <path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
-    <path d="M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12"/>
+    <path d="M12 1v4M12 19v4M1 12h4M19 12h4"/>
+    <path d="M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83"/>
+    <path d="M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
   </svg>
 )

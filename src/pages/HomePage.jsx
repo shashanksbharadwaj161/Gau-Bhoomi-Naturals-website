@@ -87,13 +87,22 @@ export default function HomePage() {
       <GoldDivider />
       <TrustBadges />
 
-      {/* Category explorer */}
-      <div className="py-8 md:py-12 px-4 md:px-8 bg-cream">
-        <h2 className="font-display text-display-md text-primary-500 font-bold text-center mb-6">Explore Our Range</h2>
-        <div className="max-w-5xl mx-auto">
-          <CategoryPills activeSlug={activeSlug} onCategoryChange={handleCategoryChange} />
+      {/* Shop by Category */}
+      <section className="py-10 md:py-14 bg-cream overflow-hidden">
+        <div className="text-center mb-8 px-4">
+          <h2 className="font-display text-3xl md:text-4xl text-primary-500 font-bold">
+            Shop by Category
+          </h2>
+          <div className="w-16 h-0.5 bg-gold-500 mx-auto mt-3 mb-4" />
+          <p className="font-body text-gray-500 text-sm md:text-base">
+            Tap a category to explore pure, traceable organic goodness.
+          </p>
         </div>
-      </div>
+        <CategoryPills
+          activeSlug={activeSlug}
+          onCategoryChange={handleCategoryChange}
+        />
+      </section>
 
       <div ref={exploreRef}>
         <ProductCarousel
