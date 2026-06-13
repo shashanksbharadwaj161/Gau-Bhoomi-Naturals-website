@@ -38,6 +38,29 @@ jobs:
         run: cp public/.htaccess dist/.htaccess
 
       - name: Deploy to Hostinger via FTP
+        id: deploy
+        continue-on-error: true
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server:      ${{ secrets.FTP_HOST }}
+          username:    ${{ secrets.FTP_USERNAME }}
+          password:    ${{ secrets.FTP_PASSWORD }}
+          local-dir:   ./dist/
+          server-dir:  ${{ secrets.FTP_SERVER_DIR }}
+          protocol:    ftp
+          port:        21
+          security:    loose
+          dangerous-clean-slate: false
+          exclude:     |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+
+      # Hostinger FTP intermittently times out on the first connection
+      # ("Timeout (control socket)"). Retry once within the same run so a
+      # transient failure doesn't require a manual re-run.
+      - name: Deploy to Hostinger via FTP (retry)
+        if: steps.deploy.outcome == 'failure'
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server:      ${{ secrets.FTP_HOST }}
