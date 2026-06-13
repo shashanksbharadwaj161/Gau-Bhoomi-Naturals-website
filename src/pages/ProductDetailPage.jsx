@@ -4,7 +4,7 @@ import { Disclosure } from '@headlessui/react'
 import { motion } from 'framer-motion'
 import { Star, Minus, Plus, Truck, ShoppingBag, ChevronDown, MessageCircle, Check } from 'lucide-react'
 import ProductCarousel from '../components/ui/ProductCarousel'
-import { getProduct, getRelatedProducts, formatPrice, buildAddToCartUrl } from '../services/woocommerce'
+import { getProduct, getRelatedProducts, formatPrice, buildAddToCartUrl, PRODUCT_IMAGE_FALLBACK } from '../services/woocommerce'
 import { useCart } from '../contexts/CartContext'
 import { useWishlist } from '../contexts/WishlistContext'
 import { useUI } from '../contexts/UIContext'
@@ -131,6 +131,8 @@ export default function ProductDetailPage() {
               <img
                 src={images[activeImage].src}
                 alt={product.name}
+                crossOrigin="anonymous"
+                onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = PRODUCT_IMAGE_FALLBACK }}
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               />
             ) : (
@@ -148,7 +150,7 @@ export default function ProductDetailPage() {
                   onClick={() => setActiveImage(i)}
                   className={`w-16 h-16 rounded-lg overflow-hidden border-2 ${i === activeImage ? 'border-gold-500' : 'border-transparent'}`}
                 >
-                  <img src={img.src} alt={`${product.name} ${i + 1}`} className="w-full h-full object-cover" />
+                  <img src={img.src} alt={`${product.name} ${i + 1}`} crossOrigin="anonymous" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = PRODUCT_IMAGE_FALLBACK }} className="w-full h-full object-cover" />
                 </button>
               ))}
             </div>

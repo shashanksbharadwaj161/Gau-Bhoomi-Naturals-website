@@ -5,7 +5,7 @@ import { Minus, Plus, Trash2, ShoppingBag, ArrowRight } from 'lucide-react'
 import toast from 'react-hot-toast'
 import ProductCarousel from '../components/ui/ProductCarousel'
 import { useCart } from '../contexts/CartContext'
-import { getProducts } from '../services/woocommerce'
+import { getProducts, PRODUCT_IMAGE_FALLBACK } from '../services/woocommerce'
 import { siteConfig } from '../config/siteConfig'
 
 const unitPrice = (it) => {
@@ -72,7 +72,7 @@ export default function CartPage() {
                   className="bg-white rounded-2xl p-4 flex gap-4 shadow-card"
                 >
                   <Link to={`/product/${it.slug}`} className="w-20 h-20 rounded-lg overflow-hidden bg-primary-500 flex-shrink-0 flex items-center justify-center">
-                    {it.image ? <img src={it.image} alt={it.name} className="w-full h-full object-cover" /> : <span className="text-gold-400 text-xs font-display">GBN</span>}
+                    {it.image ? <img src={it.image} alt={it.name} crossOrigin="anonymous" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = PRODUCT_IMAGE_FALLBACK }} className="w-full h-full object-cover" /> : <span className="text-gold-400 text-xs font-display">GBN</span>}
                   </Link>
                   <div className="flex-1 min-w-0">
                     <Link to={`/product/${it.slug}`} className="font-body text-sm md:text-base text-primary-500 font-medium line-clamp-2 hover:text-gold-600">{it.name}</Link>

@@ -29,7 +29,7 @@ function LogoMark({ logoError, onError, className }) {
     return <span className="font-display text-gold-400 text-lg font-bold whitespace-nowrap">Gau Bhoomi Naturals</span>
   }
   return (
-    <img src={siteConfig.logoUrl} alt={siteConfig.brandName} className={className} onError={onError} />
+    <img src={siteConfig.logoUrl} alt={siteConfig.brandName} className={className} crossOrigin="anonymous" onError={onError} />
   )
 }
 

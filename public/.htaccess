@@ -2,6 +2,9 @@
 # Gau Bhoomi Naturals — Combined React + WordPress
 # ════════════════════════════════════════════════
 
+# Serve the React app's index.html for the document root (not WordPress index.php)
+DirectoryIndex index.html index.php
+
 # Security
 <Files wp-config.php>
   order allow,deny
@@ -19,7 +22,6 @@ RewriteRule ^wp-json(/.*)?$    - [L]
 RewriteRule ^wp-content(/.*)?$ - [L]
 RewriteRule ^wp-includes(/.*)?$ - [L]
 RewriteRule ^xmlrpc\.php       - [L]
-RewriteRule ^index\.php        - [L]
 
 # ── Pass through actual files/directories ────────
 RewriteCond %{REQUEST_FILENAME} -f [OR]

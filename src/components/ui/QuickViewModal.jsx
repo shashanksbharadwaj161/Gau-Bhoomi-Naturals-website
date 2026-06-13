@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { X, ShoppingBag, ArrowRight } from 'lucide-react'
 import { useCart } from '../../contexts/CartContext'
-import { formatPrice } from '../../services/woocommerce'
+import { formatPrice, PRODUCT_IMAGE_FALLBACK } from '../../services/woocommerce'
 import { siteConfig } from '../../config/siteConfig'
 
 export default function QuickViewModal({ product, onClose }) {
@@ -56,7 +56,7 @@ export default function QuickViewModal({ product, onClose }) {
         {/* Image */}
         <div className="relative md:w-1/2 h-56 md:h-auto bg-primary-500 flex-shrink-0">
           {image ? (
-            <img src={image} alt={product.name} className="w-full h-full object-cover" />
+            <img src={image} alt={product.name} crossOrigin="anonymous" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = PRODUCT_IMAGE_FALLBACK }} className="w-full h-full object-cover" />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
               <span className="font-display text-5xl text-gold-400 tracking-widest">GBN</span>

@@ -6,9 +6,17 @@ const WC_SECRET = import.meta.env.VITE_WC_SECRET || ''
 
 const api = axios.create({
   baseURL: `${WC_URL}/wp-json/wc/v3`,
-  auth: WC_KEY ? { username: WC_KEY, password: WC_SECRET } : undefined,
-  timeout: 12000,
+  auth: (WC_KEY && WC_SECRET) ? { username: WC_KEY, password: WC_SECRET } : undefined,
+  timeout: 15000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
 })
+
+// Inline GBN monogram (dark green + gold) used as the image error fallback so a
+// failed product/logo image never shows a broken-image icon.
+export const PRODUCT_IMAGE_FALLBACK =
+  "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Crect%20width='100'%20height='100'%20fill='%23142A1D'/%3E%3Ctext%20x='50'%20y='53'%20text-anchor='middle'%20dominant-baseline='central'%20font-family='Georgia,serif'%20font-size='24'%20letter-spacing='3'%20fill='%23E8C97A'%3EGBN%3C/text%3E%3C/svg%3E"
 
 // ── MOCK DATA ───────────────────────────────────────
 const MOCK_CATEGORIES = [

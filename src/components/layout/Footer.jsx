@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Phone, Mail, MessageCircle } from 'lucide-react'
 import { Instagram, Facebook, Youtube } from '../ui/SocialIcons'
@@ -28,17 +29,23 @@ const PayBadge = ({ children }) => (
 )
 
 export default function Footer() {
+  const [logoError, setLogoError] = useState(false)
   return (
     <footer className="bg-bark text-cream pt-14 pb-8">
       <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
         {/* Brand */}
         <div>
-          <img
-            src={siteConfig.logoUrl}
-            alt={siteConfig.brandName}
-            className="h-20 w-20 object-contain"
-            onError={(e) => { e.target.style.display = 'none' }}
-          />
+          {logoError ? (
+            <span className="font-display text-gold-400 text-xl font-bold">{siteConfig.brandName}</span>
+          ) : (
+            <img
+              src={siteConfig.logoUrl}
+              alt={siteConfig.brandName}
+              className="h-20 w-20 object-contain"
+              crossOrigin="anonymous"
+              onError={() => setLogoError(true)}
+            />
+          )}
           <h3 className="font-display text-gold-400 text-xl font-bold mt-3">{siteConfig.brandName}</h3>
           <p className="font-body text-cream/70 text-sm mt-2 leading-relaxed max-w-xs">{siteConfig.tagline}</p>
           <div className="flex gap-3 mt-4">

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { CreditCard, Smartphone, Building2, Wallet, ShieldCheck, Lock } from 'lucide-react'
 import { useCart } from '../contexts/CartContext'
 import { siteConfig } from '../config/siteConfig'
+import { PRODUCT_IMAGE_FALLBACK } from '../services/woocommerce'
 
 const INDIAN_STATES = ['Andhra Pradesh', 'Bihar', 'Delhi', 'Gujarat', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Punjab', 'Rajasthan', 'Tamil Nadu', 'Telangana', 'Uttar Pradesh', 'West Bengal']
 
@@ -137,7 +138,7 @@ export default function CheckoutPage() {
                   {items.map((it) => (
                     <li key={it.id} className="flex items-center gap-3">
                       <div className="w-12 h-12 rounded-lg overflow-hidden bg-primary-500 flex-shrink-0 flex items-center justify-center relative">
-                        {it.image ? <img src={it.image} alt={it.name} className="w-full h-full object-cover" /> : <span className="text-gold-400 text-[9px] font-display">GBN</span>}
+                        {it.image ? <img src={it.image} alt={it.name} crossOrigin="anonymous" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = PRODUCT_IMAGE_FALLBACK }} className="w-full h-full object-cover" /> : <span className="text-gold-400 text-[9px] font-display">GBN</span>}
                         <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-gold-500 text-primary-500 text-[10px] flex items-center justify-center">{it.quantity}</span>
                       </div>
                       <span className="flex-1 font-body text-xs text-primary-500 line-clamp-2">{it.name}</span>

@@ -18,7 +18,7 @@ export const siteConfig = {
   get checkoutUrl() { return `${this.wcUrl}/checkout` },
   get shopUrl()     { return `${this.wcUrl}/shop` },
 
-  logoUrl: '/images/logo.svg',
+  logoUrl: 'https://mediumseagreen-salamander-686387.hostingersite.com/wp-content/uploads/2025/04/Logo-1-1024x1024.png',
 
   announcements: [
     '🌿 Free Shipping on Orders Above ₹999 — Shop Now',

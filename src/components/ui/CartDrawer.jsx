@@ -6,6 +6,7 @@ import { useUI } from '../../contexts/UIContext'
 import { useCart } from '../../contexts/CartContext'
 import { siteConfig } from '../../config/siteConfig'
 import { getLenis } from '../../hooks/useLenis'
+import { PRODUCT_IMAGE_FALLBACK } from '../../services/woocommerce'
 
 const unitPrice = (it) => {
   const sale = parseFloat(it.salePrice)
@@ -105,7 +106,7 @@ export default function CartDrawer() {
                       >
                         <div className="w-14 h-14 rounded-lg overflow-hidden bg-primary-500 flex-shrink-0 flex items-center justify-center">
                           {it.image
-                            ? <img src={it.image} alt={it.name} className="w-full h-full object-cover" />
+                            ? <img src={it.image} alt={it.name} crossOrigin="anonymous" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = PRODUCT_IMAGE_FALLBACK }} className="w-full h-full object-cover" />
                             : <span className="text-gold-400 text-[10px] font-display">GBN</span>}
                         </div>
                         <div className="flex-1 min-w-0">
