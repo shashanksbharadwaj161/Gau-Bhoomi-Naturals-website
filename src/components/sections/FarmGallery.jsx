@@ -19,7 +19,7 @@ export default function FarmGallery() {
         <div className="flex gap-6 w-max animate-marquee hover:[animation-play-state:paused]">
           {[...photos, ...photos].map((src, i) => (
             <div key={i} className="w-72 h-48 md:w-80 md:h-56 rounded-2xl overflow-hidden flex-shrink-0 shadow-card bg-primary-500">
-              <img src={src} alt="Gau Bhoomi farm" className="w-full h-full object-cover" loading="lazy" />
+              <img src={src} alt="Gau Bhoomi farm" className="w-full h-full object-cover" loading="lazy" onError={(e) => { e.currentTarget.style.display = 'none' }} />
             </div>
           ))}
         </div>

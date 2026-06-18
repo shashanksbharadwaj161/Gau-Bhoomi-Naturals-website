@@ -59,7 +59,7 @@ export default function ProductGrid({ slug = 'all', onCategoryChange, perPage = 
   }, [products, sort])
 
   const shown = sorted.slice(0, visible)
-  const topClass = announcementVisible ? 'top-[108px] lg:top-[116px]' : 'top-16 lg:top-[72px]'
+  const topClass = announcementVisible ? 'top-[116px] lg:top-[128px]' : 'top-[72px] lg:top-[84px]'
   const activeSortLabel = SORTS.find((s) => s.key === sort)?.label
 
   return (

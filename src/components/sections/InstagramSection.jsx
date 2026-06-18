@@ -35,7 +35,7 @@ export default function InstagramSection() {
               rel="noopener noreferrer"
               className="group relative aspect-square rounded-2xl overflow-hidden bg-primary-500"
             >
-              <img src={src} alt="Instagram post" className="w-full h-full object-cover" loading="lazy" />
+              <img src={src} alt="Instagram post" className="w-full h-full object-cover" loading="lazy" onError={(e) => { e.currentTarget.style.display = 'none' }} />
               <div className="absolute inset-0 bg-primary-500/0 group-hover:bg-primary-500/70 transition-colors flex items-center justify-center">
                 <div className="opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center gap-1 text-gold-400">
                   <Instagram size={26} />

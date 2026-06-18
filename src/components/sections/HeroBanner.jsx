@@ -9,6 +9,15 @@ import { siteConfig } from '../../config/siteConfig'
 
 const HeroParticles = lazy(() => import('../three/HeroParticles'))
 
+// Premium branded gradient behind each slide — always renders, so the hero
+// looks designed even if a slide's photo is slow or unavailable.
+const SLIDE_BG = [
+  'radial-gradient(circle at 72% 30%, rgba(201,168,76,0.28) 0%, transparent 55%), linear-gradient(135deg, #1e3d2c 0%, #142A1D 68%, #0D1F14 100%)',
+  'radial-gradient(circle at 28% 68%, rgba(201,168,76,0.20) 0%, transparent 55%), linear-gradient(135deg, #244a34 0%, #142A1D 75%)',
+  'radial-gradient(circle at 75% 35%, rgba(232,201,122,0.30) 0%, transparent 55%), linear-gradient(135deg, #3a2f14 0%, #1a3322 55%, #142A1D 100%)',
+  'radial-gradient(circle at 50% 28%, rgba(201,168,76,0.22) 0%, transparent 60%), linear-gradient(135deg, #1e3d2c 0%, #0D1F14 100%)',
+]
+
 export default function HeroBanner() {
   const slides = siteConfig.heroSlides
   const [emblaRef, emblaApi] = useEmblaCarousel(
@@ -59,12 +68,17 @@ export default function HeroBanner() {
       <div className="overflow-hidden h-full" ref={emblaRef}>
         <div className="flex h-full">
           {slides.map((slide, i) => (
-            <div key={i} className="relative flex-[0_0_100%] h-full">
+            <div
+              key={i}
+              className="relative flex-[0_0_100%] h-full"
+              style={{ background: SLIDE_BG[i % SLIDE_BG.length] }}
+            >
               <img
                 src={slide.image}
                 alt={slide.eyebrow}
                 className="w-full h-full object-cover"
                 loading={i === 0 ? 'eager' : 'lazy'}
+                onError={(e) => { e.currentTarget.style.display = 'none' }}
               />
               <div
                 className="absolute inset-0"

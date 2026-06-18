@@ -78,7 +78,7 @@ export default function Navbar() {
         scrolled ? 'backdrop-blur-md shadow-md' : ''
       }`}
     >
-      <nav className="max-w-7xl mx-auto px-4 md:px-8 h-16 lg:h-[72px] flex items-center justify-between">
+      <nav className="max-w-7xl mx-auto px-4 md:px-8 h-[72px] lg:h-[84px] flex items-center justify-between">
         {/* Left — hamburger (mobile) / logo (desktop) */}
         <button
           type="button"
@@ -90,7 +90,7 @@ export default function Navbar() {
         </button>
 
         <button type="button" onClick={handleLogo} className="hidden lg:block" aria-label="Gau Bhoomi Naturals home">
-          <LogoMark {...logoProps} className="h-16 object-contain" />
+          <LogoMark {...logoProps} className="h-[68px] object-contain" />
         </button>
 
         {/* Center logo (mobile) */}
@@ -100,7 +100,7 @@ export default function Navbar() {
           aria-label="Gau Bhoomi Naturals home"
           className="lg:hidden absolute left-1/2 -translate-x-1/2"
         >
-          <LogoMark {...logoProps} className="h-14 object-contain" />
+          <LogoMark {...logoProps} className="h-16 object-contain" />
         </button>
 
         {/* Desktop nav links */}
@@ -152,7 +152,7 @@ export default function Navbar() {
             transition={{ type: 'spring', damping: 30, stiffness: 280 }}
           >
             <div className="flex items-center justify-between px-5 h-16 border-b border-gold-500/20">
-              <LogoMark {...logoProps} className="h-12 object-contain" />
+              <LogoMark {...logoProps} className="h-14 object-contain" />
               <button type="button" onClick={() => setMenuOpen(false)} aria-label="Close menu" className="text-cream p-2">
                 <X size={26} />
               </button>

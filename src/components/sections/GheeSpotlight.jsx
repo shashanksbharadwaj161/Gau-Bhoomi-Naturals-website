@@ -21,12 +21,13 @@ export default function GheeSpotlight() {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.7 }}
         >
-          <div className="relative rounded-2xl overflow-hidden animate-float" style={{ boxShadow: '0 0 40px rgba(201,168,76,0.3)' }}>
+          <div className="relative rounded-2xl overflow-hidden animate-float min-h-[18rem] md:min-h-[28rem]" style={{ boxShadow: '0 0 40px rgba(201,168,76,0.3)', background: 'radial-gradient(circle at 60% 35%, rgba(201,168,76,0.28) 0%, transparent 60%), linear-gradient(135deg, #1e3d2c 0%, #142A1D 100%)' }}>
             <img
               src="https://images.unsplash.com/photo-1631451095765-2c91616b9d05?w=900&q=80"
               alt="A2 Gir Cow Ghee"
               className="w-full h-72 md:h-[28rem] object-cover"
               loading="lazy"
+              onError={(e) => { e.currentTarget.style.display = 'none' }}
             />
           </div>
         </motion.div>
