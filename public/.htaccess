@@ -13,9 +13,12 @@ RewriteBase /
 RewriteRule ^wp-admin(/.*)?$ - [L]
 RewriteRule ^wp-login\.php$ - [L]
 
-# WordPress REST API — MUST route through WordPress index.php
-# (not served as static file — that causes 404)
-RewriteRule ^wp-json(/.*)?$ /index.php [QSA,L]
+# WordPress REST API — route to WordPress with the REST route preserved
+# (?rest_route=/...), so wc/store and wc/v3 endpoints dispatch correctly
+# regardless of permalink settings. The previous form dropped the route,
+# which made the REST API 404 and forced the app onto mock data.
+RewriteRule ^wp-json/(.+)$ /index.php?rest_route=/$1 [QSA,L]
+RewriteRule ^wp-json/?$   /index.php?rest_route=/ [QSA,L]
 
 # WordPress static files — serve directly
 RewriteRule ^wp-content(/.*)?$ - [L]
