@@ -5,7 +5,6 @@ import { Heart, ShoppingBag, Star, Eye } from 'lucide-react'
 import { useCart } from '../../contexts/CartContext'
 import { useWishlist } from '../../contexts/WishlistContext'
 import { formatPrice } from '../../services/woocommerce'
-import { siteConfig } from '../../config/siteConfig'
 import QuickViewModal from './QuickViewModal'
 
 export default function ProductCard({ product }) {
@@ -20,13 +19,6 @@ export default function ProductCard({ product }) {
   const productUrl = `/product/${product.slug}`
 
   const handleAddToCart = () => {
-    if (price.isOnRequest) {
-      window.open(
-        `https://wa.me/${siteConfig.whatsapp}?text=${encodeURIComponent(`Hi, I'd like to know the price of ${product.name}`)}`,
-        '_blank'
-      )
-      return
-    }
     addItem(product)
   }
 
@@ -97,8 +89,8 @@ export default function ProductCard({ product }) {
 
           {/* Price */}
           <div className="min-h-[1.75rem]">
-            {price.isOnRequest ? (
-              <span className="font-body text-sm text-gray-400 italic">Price on Request</span>
+            {!price.hasPrice ? (
+              <div className="h-6" />
             ) : price.isOnSale ? (
               <span>
                 <span className="font-mono text-gold-500 font-bold text-lg">{price.display}</span>
@@ -128,7 +120,7 @@ export default function ProductCard({ product }) {
               onClick={handleAddToCart}
               className="flex-1 btn-shimmer bg-primary-500 hover:bg-primary-600 text-white font-body font-semibold text-sm h-11 rounded-xl transition-colors"
             >
-              {price.isOnRequest ? 'Contact Us' : 'Add to Cart'}
+              Add to Cart
             </button>
             <button
               type="button"

@@ -111,7 +111,7 @@ export default function CartDrawer() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="font-body text-sm text-primary-500 font-medium line-clamp-2 leading-snug">{it.name}</p>
-                          <p className="font-mono text-gold-600 text-sm mt-0.5">₹{(unitPrice(it)).toLocaleString('en-IN')}</p>
+                          {unitPrice(it) > 0 && <p className="font-mono text-gold-600 text-sm mt-0.5">₹{(unitPrice(it)).toLocaleString('en-IN')}</p>}
                           <div className="flex items-center gap-2 mt-1.5">
                             <div className="flex items-center border border-gold-200 rounded-lg">
                               <button type="button" aria-label="Decrease" onClick={() => updateQuantity(it.id, it.quantity - 1)}

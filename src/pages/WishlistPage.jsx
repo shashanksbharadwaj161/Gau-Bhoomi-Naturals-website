@@ -1,22 +1,15 @@
 import { Link } from 'react-router-dom'
 import { Heart } from 'lucide-react'
-import toast from 'react-hot-toast'
 import ProductCard from '../components/ui/ProductCard'
 import { useWishlist } from '../contexts/WishlistContext'
 import { useCart } from '../contexts/CartContext'
-import { formatPrice } from '../services/woocommerce'
 
 export default function WishlistPage() {
   const { items } = useWishlist()
   const { addItem } = useCart()
 
   const addAll = () => {
-    let added = 0
-    items.forEach((p) => {
-      const price = formatPrice(p.price, p.sale_price)
-      if (!price.isOnRequest) { addItem(p); added++ }
-    })
-    if (added === 0) toast('These items are price-on-request', { icon: 'ℹ️' })
+    items.forEach((p) => addItem(p))
   }
 
   if (items.length === 0) {

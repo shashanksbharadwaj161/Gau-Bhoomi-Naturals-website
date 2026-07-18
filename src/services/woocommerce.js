@@ -220,16 +220,24 @@ export const PRODUCT_IMAGE_FALLBACK =
 export const formatPrice = (price, salePrice) => {
   const p = parseFloat(price)
   const s = parseFloat(salePrice)
-  if (!price || isNaN(p) || p === 0) return { display: 'Price on Request', isOnRequest: true }
+
+  // No price or zero — return null so the UI shows nothing (no fallback text)
+  if (!price || isNaN(p) || p === 0) {
+    return { display: null, original: null, isOnSale: false, hasPrice: false }
+  }
+
+  // Sale price exists and is valid
   if (salePrice && !isNaN(s) && s > 0 && s < p) {
     return {
-      display:   `₹${s.toLocaleString('en-IN')}`,
-      original:  `₹${p.toLocaleString('en-IN')}`,
-      isOnSale:  true,
-      isOnRequest: false,
+      display: `₹${s.toLocaleString('en-IN')}`,
+      original: `₹${p.toLocaleString('en-IN')}`,
+      isOnSale: true,
+      hasPrice: true,
     }
   }
-  return { display: `₹${p.toLocaleString('en-IN')}`, isOnRequest: false }
+
+  // Regular price
+  return { display: `₹${p.toLocaleString('en-IN')}`, original: null, isOnSale: false, hasPrice: true }
 }
 
 export const buildAddToCartUrl = (productId) => `${WC_URL}/?add-to-cart=${productId}`

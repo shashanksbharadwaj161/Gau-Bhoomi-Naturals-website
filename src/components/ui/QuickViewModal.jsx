@@ -24,10 +24,6 @@ export default function QuickViewModal({ product, onClose }) {
   const category = product.categories?.[0]
 
   const handleAdd = () => {
-    if (price.isOnRequest) {
-      window.open(`https://wa.me/${siteConfig.whatsapp}?text=${encodeURIComponent(`Hi, I'd like to know the price of ${product.name}`)}`, '_blank')
-      return
-    }
     addItem(product)
   }
 
@@ -93,8 +89,8 @@ export default function QuickViewModal({ product, onClose }) {
           </h3>
 
           <div className="mt-3">
-            {price.isOnRequest ? (
-              <span className="font-body text-sm text-gray-400 italic">Price on Request</span>
+            {!price.hasPrice ? (
+              <div className="h-6" />
             ) : price.isOnSale ? (
               <span>
                 <span className="font-mono text-gold-500 font-bold text-2xl">{price.display}</span>
@@ -116,7 +112,7 @@ export default function QuickViewModal({ product, onClose }) {
               className="w-full btn-shimmer bg-primary-500 hover:bg-primary-600 text-white font-body font-semibold h-12 rounded-xl flex items-center justify-center gap-2"
             >
               <ShoppingBag size={18} />
-              {price.isOnRequest ? 'Contact Us' : 'Add to Cart'}
+              Add to Cart
             </button>
             <button
               type="button"

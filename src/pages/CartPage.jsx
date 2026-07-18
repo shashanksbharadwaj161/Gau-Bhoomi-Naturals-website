@@ -78,7 +78,7 @@ export default function CartPage() {
                   <div className="flex-1 min-w-0">
                     <Link to={`/product/${it.slug}`} className="font-body text-sm md:text-base text-primary-500 font-medium line-clamp-2 hover:text-gold-600">{it.name}</Link>
                     {it.categorySlug && <p className="font-body text-xs text-gray-400 capitalize mt-0.5">{it.categorySlug.replace('-', ' ')}</p>}
-                    <p className="font-mono text-gold-600 font-semibold mt-1">₹{unitPrice(it).toLocaleString('en-IN')}</p>
+                    {unitPrice(it) > 0 && <p className="font-mono text-gold-600 font-semibold mt-1">₹{unitPrice(it).toLocaleString('en-IN')}</p>}
                     <div className="flex items-center gap-3 mt-2">
                       <div className="flex items-center border border-gold-200 rounded-lg">
                         <button type="button" aria-label="Decrease" onClick={() => updateQuantity(it.id, it.quantity - 1)} className="w-8 h-8 flex items-center justify-center text-primary-500"><Minus size={14} /></button>
@@ -91,7 +91,7 @@ export default function CartPage() {
                     </div>
                   </div>
                   <div className="font-mono text-primary-500 font-semibold whitespace-nowrap">
-                    ₹{(unitPrice(it) * it.quantity).toLocaleString('en-IN')}
+                    {unitPrice(it) > 0 ? `₹${(unitPrice(it) * it.quantity).toLocaleString('en-IN')}` : ''}
                   </div>
                 </motion.div>
               ))}

@@ -142,7 +142,7 @@ export default function CheckoutPage() {
                         <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-gold-500 text-primary-500 text-[10px] flex items-center justify-center">{it.quantity}</span>
                       </div>
                       <span className="flex-1 font-body text-xs text-primary-500 line-clamp-2">{it.name}</span>
-                      <span className="font-mono text-xs text-primary-500">₹{(unitPrice(it) * it.quantity).toLocaleString('en-IN')}</span>
+                      {unitPrice(it) > 0 && <span className="font-mono text-xs text-primary-500">₹{(unitPrice(it) * it.quantity).toLocaleString('en-IN')}</span>}
                     </li>
                   ))}
                 </ul>

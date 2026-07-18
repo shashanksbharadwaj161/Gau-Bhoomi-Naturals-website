@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { Disclosure } from '@headlessui/react'
 import { motion } from 'framer-motion'
-import { Star, Minus, Plus, Truck, ShoppingBag, ChevronDown, MessageCircle, Check } from 'lucide-react'
+import { Star, Minus, Plus, Truck, ShoppingBag, ChevronDown, Check } from 'lucide-react'
 import ProductCarousel from '../components/ui/ProductCarousel'
 import { getProduct, getRelatedProducts, formatPrice, buildAddToCartUrl, PRODUCT_IMAGE_FALLBACK } from '../services/woocommerce'
 import { useCart } from '../contexts/CartContext'
@@ -110,13 +110,9 @@ export default function ProductDetailPage() {
   const images = product.images?.length ? product.images : []
   const category = product.categories?.[0]
   const wishlisted = isWishlisted(product.id)
-  const isFreeShip = !price.isOnRequest && parseFloat(product.sale_price || product.price) >= siteConfig.freeShippingThreshold
+  const isFreeShip = parseFloat(product.sale_price || product.price) >= siteConfig.freeShippingThreshold
 
   const handleAdd = () => {
-    if (price.isOnRequest) {
-      window.open(`https://wa.me/${siteConfig.whatsapp}?text=${encodeURIComponent(`Hi, I'd like to know the price of ${product.name}`)}`, '_blank')
-      return
-    }
     addItem(product, qty)
     openCart()
   }
@@ -182,8 +178,8 @@ export default function ProductDetailPage() {
           </div>
 
           <div className="mt-4">
-            {price.isOnRequest ? (
-              <span className="font-body text-lg text-gray-400 italic">Price on Request</span>
+            {!price.hasPrice ? (
+              <div className="h-8" />
             ) : price.isOnSale ? (
               <span>
                 <span className="font-mono text-gold-600 font-bold text-3xl">{price.display}</span>
@@ -199,19 +195,17 @@ export default function ProductDetailPage() {
           )}
 
           {/* Quantity + actions */}
-          {!price.isOnRequest && (
-            <div className="flex items-center gap-3 mt-6">
-              <div className="flex items-center border border-gold-200 rounded-xl bg-white">
-                <button type="button" aria-label="Decrease quantity" onClick={() => setQty((q) => Math.max(1, q - 1))} className="w-11 h-11 flex items-center justify-center text-primary-500"><Minus size={16} /></button>
-                <input
-                  type="number" min="1" value={qty}
-                  onChange={(e) => setQty(Math.max(1, parseInt(e.target.value) || 1))}
-                  className="w-12 text-center font-mono outline-none bg-transparent"
-                />
-                <button type="button" aria-label="Increase quantity" onClick={() => setQty((q) => q + 1)} className="w-11 h-11 flex items-center justify-center text-primary-500"><Plus size={16} /></button>
-              </div>
+          <div className="flex items-center gap-3 mt-6">
+            <div className="flex items-center border border-gold-200 rounded-xl bg-white">
+              <button type="button" aria-label="Decrease quantity" onClick={() => setQty((q) => Math.max(1, q - 1))} className="w-11 h-11 flex items-center justify-center text-primary-500"><Minus size={16} /></button>
+              <input
+                type="number" min="1" value={qty}
+                onChange={(e) => setQty(Math.max(1, parseInt(e.target.value) || 1))}
+                className="w-12 text-center font-mono outline-none bg-transparent"
+              />
+              <button type="button" aria-label="Increase quantity" onClick={() => setQty((q) => q + 1)} className="w-11 h-11 flex items-center justify-center text-primary-500"><Plus size={16} /></button>
             </div>
-          )}
+          </div>
 
           <div className="flex flex-col sm:flex-row gap-3 mt-4">
             <button
@@ -220,18 +214,16 @@ export default function ProductDetailPage() {
               onClick={handleAdd}
               className="flex-1 btn-shimmer bg-primary-500 hover:bg-primary-600 text-white font-body font-semibold h-12 rounded-xl flex items-center justify-center gap-2"
             >
-              {price.isOnRequest ? <><MessageCircle size={18} /> Ask Us on WhatsApp</> : <><ShoppingBag size={18} /> Add to Cart</>}
+              <ShoppingBag size={18} /> Add to Cart
             </button>
-            {!price.isOnRequest && (
-              <a
-                href={buildAddToCartUrl(product.id)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 border border-gold-400 text-gold-700 hover:bg-gold-500 hover:text-primary-500 font-body font-semibold h-12 rounded-xl flex items-center justify-center transition-colors"
-              >
-                Buy Now
-              </a>
-            )}
+            <a
+              href={buildAddToCartUrl(product.id)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 border border-gold-400 text-gold-700 hover:bg-gold-500 hover:text-primary-500 font-body font-semibold h-12 rounded-xl flex items-center justify-center transition-colors"
+            >
+              Buy Now
+            </a>
           </div>
 
           <button
@@ -300,7 +292,7 @@ export default function ProductDetailPage() {
           onClick={handleAdd}
           className="bg-primary-500 text-white font-body font-semibold px-5 h-11 rounded-xl whitespace-nowrap flex items-center gap-2"
         >
-          <ShoppingBag size={16} /> {price.isOnRequest ? 'Enquire' : 'Add'}
+          <ShoppingBag size={16} /> Add
         </button>
       </motion.div>
     </div>
