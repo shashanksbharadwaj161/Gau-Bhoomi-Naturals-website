@@ -1,5 +1,7 @@
+import { motion } from 'framer-motion'
 import { Instagram } from '../ui/SocialIcons'
 import { siteConfig } from '../../config/siteConfig'
+import { revealOnScroll, staggerOnScroll, staggerItem } from '../../animations/motion'
 
 const tiles = [
   'https://images.unsplash.com/photo-1631451095765-2c91616b9d05?w=500&q=80',
@@ -14,7 +16,7 @@ export default function InstagramSection() {
   return (
     <section className="bg-cream py-14 md:py-20">
       <div className="max-w-6xl mx-auto px-4 md:px-8">
-        <div className="text-center mb-8">
+        <motion.div className="text-center mb-8" {...revealOnScroll}>
           <h2 className="font-display text-display-md text-primary-500 font-bold">Follow Our Journey</h2>
           <a
             href={siteConfig.social.instagram}
@@ -24,12 +26,13 @@ export default function InstagramSection() {
           >
             @gaubhoominaturals
           </a>
-        </div>
+        </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+        <motion.div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4" {...staggerOnScroll(0.06)}>
           {tiles.map((src, i) => (
-            <a
+            <motion.a
               key={i}
+              variants={staggerItem}
               href={siteConfig.social.instagram}
               target="_blank"
               rel="noopener noreferrer"
@@ -42,9 +45,9 @@ export default function InstagramSection() {
                   <span className="font-body text-xs font-semibold">Follow on Instagram</span>
                 </div>
               </div>
-            </a>
+            </motion.a>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   )

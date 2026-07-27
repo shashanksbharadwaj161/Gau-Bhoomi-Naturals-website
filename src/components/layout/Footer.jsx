@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { Phone, Mail, MessageCircle } from 'lucide-react'
 import { Instagram, Facebook, Youtube } from '../ui/SocialIcons'
 import { siteConfig } from '../../config/siteConfig'
+import { staggerOnScroll, staggerItem } from '../../animations/motion'
 
 const quickLinks = [
   { label: 'Home', to: '/' },
@@ -32,9 +34,12 @@ export default function Footer() {
   const [logoError, setLogoError] = useState(false)
   return (
     <footer className="bg-bark text-cream pt-14 pb-8">
-      <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+      <motion.div
+        className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10"
+        {...staggerOnScroll(0.08)}
+      >
         {/* Brand */}
-        <div>
+        <motion.div variants={staggerItem}>
           {logoError ? (
             <span className="font-display text-gold-400 text-xl font-bold">{siteConfig.brandName}</span>
           ) : (
@@ -61,10 +66,10 @@ export default function Footer() {
               </a>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Quick Links */}
-        <div>
+        <motion.div variants={staggerItem}>
           <h4 className="font-display text-cream font-semibold text-lg mb-4">Quick Links</h4>
           <ul className="space-y-2.5">
             {quickLinks.map((l) => (
@@ -77,10 +82,10 @@ export default function Footer() {
                 className="font-body text-cream/70 text-sm hover:text-gold-400 transition-colors">Track Order</a>
             </li>
           </ul>
-        </div>
+        </motion.div>
 
         {/* Categories */}
-        <div>
+        <motion.div variants={staggerItem}>
           <h4 className="font-display text-cream font-semibold text-lg mb-4">Categories</h4>
           <ul className="space-y-2.5">
             {footerCategories.map((c) => (
@@ -89,10 +94,10 @@ export default function Footer() {
               </li>
             ))}
           </ul>
-        </div>
+        </motion.div>
 
         {/* Contact */}
-        <div>
+        <motion.div variants={staggerItem}>
           <h4 className="font-display text-cream font-semibold text-lg mb-4">Get in Touch</h4>
           <ul className="space-y-3">
             <li className="flex items-center gap-2.5 font-body text-cream/70 text-sm">
@@ -112,8 +117,8 @@ export default function Footer() {
             <PayBadge>Mastercard</PayBadge>
             <PayBadge>Razorpay</PayBadge>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* Bottom bar */}
       <div className="max-w-7xl mx-auto px-4 md:px-8 mt-12 pt-6 border-t border-gold-500/30 flex flex-col sm:flex-row items-center justify-between gap-3">

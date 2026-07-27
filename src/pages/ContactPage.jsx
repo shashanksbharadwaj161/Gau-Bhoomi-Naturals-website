@@ -1,7 +1,9 @@
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 import { Phone, Mail, MessageCircle, MapPin } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { siteConfig } from '../config/siteConfig'
+import { revealOnScroll, staggerOnScroll, staggerItem } from '../animations/motion'
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
@@ -29,7 +31,7 @@ export default function ContactPage() {
 
       <div className="max-w-6xl mx-auto px-4 md:px-8 py-12 grid grid-cols-1 lg:grid-cols-2 gap-10">
         {/* Info */}
-        <div className="space-y-4">
+        <motion.div className="space-y-4" {...staggerOnScroll(0.07)}>
           {info.map(({ Icon, label, value, href }) => {
             const content = (
               <div className="bg-white rounded-2xl p-5 shadow-card flex items-center gap-4 hover:border-gold-300 border border-transparent transition-colors">
@@ -43,20 +45,20 @@ export default function ContactPage() {
               </div>
             )
             return href ? (
-              <a key={label} href={href} target="_blank" rel="noopener noreferrer" className="block">{content}</a>
+              <motion.a key={label} variants={staggerItem} href={href} target="_blank" rel="noopener noreferrer" className="block">{content}</motion.a>
             ) : (
-              <div key={label}>{content}</div>
+              <motion.div key={label} variants={staggerItem}>{content}</motion.div>
             )
           })}
 
           {/* Map placeholder */}
-          <div className="bg-primary-500 rounded-2xl h-40 flex items-center justify-center text-gold-400 font-display text-xl">
+          <motion.div variants={staggerItem} className="bg-primary-500 rounded-2xl h-40 flex items-center justify-center text-gold-400 font-display text-xl">
             📍 India
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="bg-white rounded-2xl p-6 shadow-card space-y-4">
+        <motion.form onSubmit={handleSubmit} className="bg-white rounded-2xl p-6 shadow-card space-y-4" {...revealOnScroll}>
           <h2 className="font-display text-lg text-primary-500 font-bold">Send a Message</h2>
           <input name="name" required value={form.name} onChange={handleChange} placeholder="Your Name"
             className="w-full border border-gold-200 focus:border-gold-500 rounded-lg px-4 py-3 font-body text-sm outline-none" />
@@ -69,7 +71,7 @@ export default function ContactPage() {
           <button type="submit" className="w-full btn-shimmer bg-gold-500 hover:bg-gold-400 text-primary-500 font-body font-bold py-3.5 rounded-xl">
             Send Message
           </button>
-        </form>
+        </motion.form>
       </div>
     </div>
   )

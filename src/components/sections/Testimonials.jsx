@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
 import Autoplay from 'embla-carousel-autoplay'
+import { motion } from 'framer-motion'
 import { Star } from 'lucide-react'
 import { siteConfig } from '../../config/siteConfig'
+import { revealOnScroll } from '../../animations/motion'
 
 export default function Testimonials() {
   const [emblaRef, emblaApi] = useEmblaCarousel(
@@ -25,15 +27,18 @@ export default function Testimonials() {
 
   return (
     <section className="bg-primary-500 py-16 md:py-20">
-      <h2 className="font-display text-display-md text-gold-400 font-bold text-center mb-10 px-4">
+      <motion.h2
+        className="font-display text-display-md text-gold-400 font-bold text-center mb-10 px-4"
+        {...revealOnScroll}
+      >
         What Our Customers Say
-      </h2>
+      </motion.h2>
 
       <div className="max-w-7xl mx-auto px-4 md:px-8 overflow-hidden" ref={emblaRef}>
         <div className="flex gap-6">
           {siteConfig.testimonials.map((t, i) => (
             <div key={i} className="flex-[0_0_100%] md:flex-[0_0_calc(50%-12px)] lg:flex-[0_0_calc(33.333%-16px)]">
-              <div className="bg-cream rounded-2xl p-6 h-full flex flex-col">
+              <div className="bg-cream rounded-2xl p-6 h-full flex flex-col border border-gold-500/25">
                 <span className="font-display text-6xl text-gold-400 leading-none">“</span>
                 <p className="font-body text-primary-500 text-sm leading-relaxed -mt-4 flex-1">{t.text}</p>
                 <div className="flex gap-0.5 mt-4">
