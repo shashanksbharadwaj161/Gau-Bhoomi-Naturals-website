@@ -14,7 +14,6 @@ export default defineConfig({
           if (id.includes('react-dom') || /node_modules\/react\//.test(id) || /node_modules\/scheduler\//.test(id)) return 'vendor-react'
           if (id.includes('framer-motion') || id.includes('motion-dom') || id.includes('motion-utils')) return 'vendor-motion'
           if (id.includes('gsap')) return 'vendor-gsap'
-          if (id.includes('three')) return 'vendor-three'
           if (id.includes('embla-carousel')) return 'vendor-embla'
           if (id.includes('lucide-react') || id.includes('@headlessui') || id.includes('react-hot-toast') || id.includes('axios')) return 'vendor-ui'
         }
@@ -28,6 +27,6 @@ export default defineConfig({
     cors: true,
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'framer-motion', 'gsap', 'three', 'lenis'],
+    include: ['react', 'react-dom', 'framer-motion', 'gsap', 'lenis'],
   },
 })

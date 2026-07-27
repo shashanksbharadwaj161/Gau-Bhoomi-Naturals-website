@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import useEmblaCarousel from 'embla-carousel-react'
 import Autoplay from 'embla-carousel-autoplay'
@@ -6,8 +6,7 @@ import { motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react'
 import { gsap, ScrollTrigger } from '../../hooks/useGSAP'
 import { siteConfig } from '../../config/siteConfig'
-
-const HeroParticles = lazy(() => import('../three/HeroParticles'))
+import HeroParticles from '../ui/HeroParticles'
 
 // Premium branded gradient behind each slide — always renders, so the hero
 // looks designed even if a slide's photo is slow or unavailable.
@@ -92,12 +91,8 @@ export default function HeroBanner() {
         </div>
       </div>
 
-      {/* Three.js particles — desktop only */}
-      {isDesktop && (
-        <Suspense fallback={null}>
-          <HeroParticles />
-        </Suspense>
-      )}
+      {/* Gold particle field — desktop only */}
+      {isDesktop && <HeroParticles />}
 
       {/* Content overlay (re-animates per slide) */}
       <div className="hero-content absolute z-10 bottom-8 md:bottom-16 left-6 md:left-24 max-w-xl pr-6">
