@@ -123,9 +123,15 @@ export default function Navbar() {
             className="hidden lg:flex p-2 text-cream hover:text-gold-400 transition-colors relative">
             <Heart size={22} className={wishlistCount > 0 ? 'fill-gold-400 text-gold-400' : ''} />
             {wishlistCount > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 px-1 rounded-full bg-gold-500 text-primary-500 text-[10px] font-bold flex items-center justify-center">
+              <motion.span
+                key={wishlistCount}
+                initial={{ scale: 0.5 }}
+                animate={{ scale: 1 }}
+                transition={{ type: 'spring', stiffness: 500, damping: 15 }}
+                className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 px-1 rounded-full bg-gold-500 text-primary-500 text-[10px] font-bold flex items-center justify-center"
+              >
                 {wishlistCount}
-              </span>
+              </motion.span>
             )}
           </button>
 
@@ -133,9 +139,15 @@ export default function Navbar() {
             className="p-2 text-cream hover:text-gold-400 transition-colors relative">
             <ShoppingBag size={22} />
             {cartCount > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 px-1 rounded-full bg-gold-500 text-primary-500 text-[10px] font-bold flex items-center justify-center">
+              <motion.span
+                key={cartCount}
+                initial={{ scale: 0.5 }}
+                animate={{ scale: 1 }}
+                transition={{ type: 'spring', stiffness: 500, damping: 15 }}
+                className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 px-1 rounded-full bg-gold-500 text-primary-500 text-[10px] font-bold flex items-center justify-center"
+              >
                 {cartCount}
-              </span>
+              </motion.span>
             )}
           </button>
         </div>

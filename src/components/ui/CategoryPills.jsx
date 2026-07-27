@@ -47,32 +47,24 @@ export default function CategoryPills({ activeSlug = 'all', onCategoryChange }) 
                 scale:   { type: 'spring', stiffness: 280, damping: 18 },
               }}
               whileTap={{ scale: 0.92 }}
-              className="flex-shrink-0 flex flex-col items-center justify-center gap-2 rounded-2xl transition-[background-color,border-color,box-shadow] duration-200 focus:outline-none"
-              style={{
-                width: 88,
-                height: 88,
-                minWidth: 88,
-                backgroundColor: isActive ? '#142A1D' : '#FFFFFF',
-                border: isActive
-                  ? '2px solid #C9A84C'
-                  : '1.5px solid rgba(201,168,76,0.3)',
-                boxShadow: isActive
-                  ? '0 4px 16px rgba(20,42,29,0.18)'
-                  : '0 1px 4px rgba(20,42,29,0.06)',
-              }}
+              // Colours come from the Tailwind tokens rather than inline hex, so
+              // a palette change reaches this component too. Border width is
+              // constant to avoid a 0.5px reflow when the active pill changes.
+              className={`flex-shrink-0 min-w-[88px] flex flex-col items-center justify-center gap-2 rounded-2xl border-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 transition-[background-color,border-color,box-shadow] duration-200 ${
+                isActive
+                  ? 'bg-primary-500 border-gold-500 shadow-card'
+                  : 'bg-white border-gold-500/30 shadow-sm hover:border-gold-500 hover:shadow-card'
+              }`}
+              style={{ width: 88, height: 88 }}
             >
               <Icon
                 size={26}
                 color={isActive ? '#FFFFFF' : '#C9A84C'}
               />
               <span
-                className="font-body font-semibold text-center leading-tight"
-                style={{
-                  fontSize: 10,
-                  color: isActive ? '#FFFFFF' : '#142A1D',
-                  letterSpacing: '0.03em',
-                  maxWidth: 72,
-                }}
+                className={`font-body font-semibold text-center leading-tight text-[10px] max-w-[72px] tracking-[0.03em] ${
+                  isActive ? 'text-white' : 'text-primary-500'
+                }`}
               >
                 {cat.name}
               </span>

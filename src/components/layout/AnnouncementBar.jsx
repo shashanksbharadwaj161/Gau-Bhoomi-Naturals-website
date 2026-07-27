@@ -22,7 +22,7 @@ export default function AnnouncementBar() {
     <div className="sticky top-0 z-[60] h-11 bg-gold-500 text-primary-500 flex items-center overflow-hidden">
       {/* Mobile: marquee */}
       <div className="md:hidden flex-1 overflow-hidden">
-        <div className="flex w-max animate-marquee whitespace-nowrap">
+        <div className="flex w-max animate-marquee hover:[animation-play-state:paused] whitespace-nowrap">
           {[0, 1].map((dup) => (
             <div key={dup} className="flex" aria-hidden={dup === 1}>
               {messages.map((msg, i) => (

@@ -1,6 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  // Wraps every hover: and group-hover: utility in @media (hover: hover), so
+  // hover styles never stick after a tap on touch devices. One flag instead of
+  // guarding each call site.
+  future: { hoverOnlyWhenSupported: true },
   theme: {
     extend: {
       colors: {

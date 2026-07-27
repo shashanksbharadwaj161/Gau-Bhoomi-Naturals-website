@@ -5,6 +5,7 @@ import { Heart, ShoppingBag, Star, Eye, X } from 'lucide-react'
 import { useCart } from '../../contexts/CartContext'
 import { useWishlist } from '../../contexts/WishlistContext'
 import { formatPrice } from '../../services/woocommerce'
+import { DURATION, EASE } from '../../animations/motion'
 import QuickViewModal from './QuickViewModal'
 
 export default function ProductCard({ product }) {
@@ -35,9 +36,9 @@ export default function ProductCard({ product }) {
   return (
     <>
       <motion.div
-        whileHover={{ y: -8 }}
-        transition={{ duration: 0.3, ease: 'easeOut' }}
-        className="group relative rounded-2xl overflow-hidden bg-white shadow-card hover:shadow-card-hover transition-shadow duration-300 flex flex-col h-full"
+        whileHover={{ y: -6 }}
+        transition={{ duration: DURATION.fast, ease: EASE }}
+        className="group relative rounded-2xl overflow-hidden bg-white shadow-card hover:shadow-card-hover border border-transparent hover:border-gold-400 transition-[box-shadow,border-color] duration-300 flex flex-col h-full"
       >
         {/* Image area */}
         <div className="relative h-[220px] overflow-hidden bg-primary-500">
@@ -57,7 +58,7 @@ export default function ProductCard({ product }) {
                 alt={product.name}
                 loading="lazy"
                 onError={(e) => { e.currentTarget.style.display = 'none' }}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
               />
             )}
           </button>

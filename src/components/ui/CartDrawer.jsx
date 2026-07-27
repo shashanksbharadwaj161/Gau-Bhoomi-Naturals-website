@@ -94,13 +94,16 @@ export default function CartDrawer() {
                 {/* Items */}
                 <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
                   <AnimatePresence initial={false}>
-                    {items.map((it) => (
+                    {items.map((it, i) => (
                       <motion.div
                         key={it.id}
                         layout
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, x: 40 }}
+                        // Stagger only on open; once the drawer is up, edits
+                        // should feel immediate rather than queued.
+                        transition={{ delay: cartOpen ? i * 0.05 : 0 }}
                         className="flex gap-3"
                       >
                         <div className="relative w-14 h-14 rounded-lg overflow-hidden bg-primary-500 flex-shrink-0">
