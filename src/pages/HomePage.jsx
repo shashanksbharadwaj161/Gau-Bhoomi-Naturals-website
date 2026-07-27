@@ -11,16 +11,9 @@ import InstagramSection from '../components/sections/InstagramSection'
 import Newsletter from '../components/sections/Newsletter'
 import ProductCarousel from '../components/ui/ProductCarousel'
 import CategoryPills from '../components/ui/CategoryPills'
-import { getProducts, getProductsByCategory } from '../services/woocommerce'
+import { getProductsByCategory } from '../services/woocommerce'
 import { siteConfig } from '../config/siteConfig'
 import { getLenis } from '../hooks/useLenis'
-
-function buildBestsellerOrder(products, gheeProduct, oilsProduct) {
-  const pinned = [gheeProduct, oilsProduct].filter(Boolean)
-  const pinnedIds = new Set(pinned.map((p) => p.id))
-  const rest = products.filter((p) => !pinnedIds.has(p.id))
-  return [...pinned, ...rest]
-}
 
 const GoldDivider = () => (
   <div className="relative bg-cream overflow-hidden h-12">
@@ -52,16 +45,15 @@ export default function HomePage() {
   useEffect(() => {
     let active = true
     ;(async () => {
-      const [best, ghee, rice, hny, oils] = await Promise.all([
-        getProducts({ orderby: 'popularity', per_page: 16 }),
+      const [ghee, rice, hny, oils] = await Promise.all([
         getProductsByCategory('ghee', 12),
         getProductsByCategory('masalas', 12),
         getProductsByCategory('honey', 12),
-        getProductsByCategory('oils', 1),
+        getProductsByCategory('oils', 12),
       ])
       if (!active) return
-      const sortedBest = buildBestsellerOrder(best, ghee[0], oils[0])
-      setBestsellers(sortedBest); setExplore(sortedBest); setExploreLoading(false)
+      const bestsellersList = [...ghee, ...oils]
+      setBestsellers(bestsellersList); setExplore(bestsellersList); setExploreLoading(false)
       setGheeOils(ghee); setLoadingGhee(false)
       setRiceMasalas(rice); setLoadingRice(false)
       setHoney(hny); setLoadingHoney(false)
