@@ -1,23 +1,14 @@
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { getLenis } from './useLenis'
+import { prefersReducedMotion } from './useReducedMotion'
 
 gsap.registerPlugin(ScrollTrigger)
 
-// Connect Lenis to GSAP ScrollTrigger.
-// Lenis already drives its own requestAnimationFrame loop (see useLenis), so we
-// only sync ScrollTrigger to Lenis scroll events here — adding a second
-// gsap.ticker raf driver would advance Lenis twice per frame (double scroll speed).
-export function initGSAPLenis() {
-  const lenis = getLenis()
-  if (!lenis) return
-  lenis.on('scroll', ScrollTrigger.update)
-  gsap.ticker.lagSmoothing(0)
-  ScrollTrigger.refresh()
-}
-
 // Utility: animate elements into view when they enter viewport
 export function animateInView(selector, options = {}) {
+  // Safe to skip entirely: the fromTo start state is what hides these, so not
+  // running leaves them in their natural visible state.
+  if (prefersReducedMotion()) return
   const elements = document.querySelectorAll(selector)
   elements.forEach((el, i) => {
     gsap.fromTo(el,
@@ -40,6 +31,12 @@ export function animateInView(selector, options = {}) {
 
 // Utility: count-up animation
 export function animateCounter(el, target, suffix = '') {
+  // Unlike animateInView this can't just be skipped — the final value is only
+  // ever written by onUpdate, so write it directly.
+  if (prefersReducedMotion()) {
+    el.textContent = target.toLocaleString('en-IN') + suffix
+    return
+  }
   const obj = { value: 0 }
   gsap.to(obj, {
     value: target,

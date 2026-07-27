@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion, MotionConfig } from 'framer-motion'
 import { lazy, Suspense, useState, useEffect } from 'react'
 import { Toaster } from 'react-hot-toast'
 
@@ -7,7 +7,7 @@ import { CartProvider } from './contexts/CartContext'
 import { WishlistProvider } from './contexts/WishlistContext'
 import { UIProvider } from './contexts/UIContext'
 import { useLenis, scrollToTop } from './hooks/useLenis'
-import { initGSAPLenis } from './hooks/useGSAP'
+import { ScrollTrigger } from './hooks/useGSAP'
 import { siteConfig } from './config/siteConfig'
 
 import AnnouncementBar from './components/layout/AnnouncementBar'
@@ -160,25 +160,31 @@ export default function App() {
   })
   useLenis()
 
+  // Document height changes a lot as the preloader leaves and sections settle;
+  // one refresh keeps the pinned Bilona track's offsets correct.
   useEffect(() => {
-    if (preloaderDone) initGSAPLenis()
+    if (preloaderDone) ScrollTrigger.refresh()
   }, [preloaderDone])
 
   return (
-    <CartProvider>
-      <WishlistProvider>
-        <UIProvider>
-          <BrowserRouter>
-            {!preloaderDone && (
-              <Preloader onComplete={() => {
-                setPreloaderDone(true)
-                setTimeout(initGSAPLenis, 100)
-              }} />
-            )}
-            {preloaderDone && <AppInner />}
-          </BrowserRouter>
-        </UIProvider>
-      </WishlistProvider>
-    </CartProvider>
+    <MotionConfig reducedMotion="user">
+      <CartProvider>
+        <WishlistProvider>
+          <UIProvider>
+            <BrowserRouter>
+              {/* AppInner mounts immediately and renders *behind* the curtain, so
+                  WooCommerce fetches and image loads run during the intro rather
+                  than starting after it. */}
+              <AppInner />
+              <AnimatePresence>
+                {!preloaderDone && (
+                  <Preloader onComplete={() => setPreloaderDone(true)} />
+                )}
+              </AnimatePresence>
+            </BrowserRouter>
+          </UIProvider>
+        </WishlistProvider>
+      </CartProvider>
+    </MotionConfig>
   )
 }

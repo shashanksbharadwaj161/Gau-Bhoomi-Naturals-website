@@ -45,7 +45,10 @@ export default function HeroBanner() {
         y: 80,
         ease: 'none',
         scrollTrigger: {
-          trigger: '.hero-section',
+          // The element itself, not a selector: gsap.context scopes selector
+          // strings to descendants of sectionRef, and .hero-section IS that
+          // element — so the string never resolved.
+          trigger: sectionRef.current,
           start: 'top top',
           end: 'bottom top',
           scrub: true,

@@ -128,6 +128,23 @@ html.lenis-loading { overflow: hidden; }
   mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
 }
 
+/* ── Reduced motion ───────────────────────────────── */
+/* Duration is collapsed, NOT removed: `.animate-in` above starts at opacity 0
+   and depends on fadeUp's `forwards` fill to become visible, so
+   `animation: none` would hide that content permanently. Delay is zeroed too,
+   or the .stagger-* classes withhold content for up to 0.5s. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* Spinners convey loading status rather than decoration — keep them turning. */
+  .animate-spin { animation-duration: 1s !important; }
+}
+
 /* ── Mobile-specific ──────────────────────────────── */
 @media (max-width: 768px) {
   /* Prevent bottom nav overlap */

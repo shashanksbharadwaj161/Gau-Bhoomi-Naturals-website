@@ -1,21 +1,40 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { siteConfig } from '../../config/siteConfig'
+import { getLenis } from '../../hooks/useLenis'
+import { prefersReducedMotion } from '../../hooks/useReducedMotion'
+
+const BRAND = 'GAU BHOOMI NATURALS'
+const TAGLINE = 'Pure from the Gaushala · Delivered to Your Doorstep'
+
+// Timings, in ms. Total ≈ 2.1s — the page is already rendered and fetching
+// underneath, so this is a curtain, not a loading gate.
+const LOGO_HOLD = 450
+const CHAR_STEP = 32
+const TAGLINE_HOLD = 420
+const EXIT = 550
 
 export default function Preloader({ onComplete }) {
   const [phase, setPhase] = useState('logo')
-  const [progress, setProgress] = useState(0)
-  const [visible, setVisible] = useState(true)
   const [charCount, setCharCount] = useState(0)
-  const [showTagline, setShowTagline] = useState(false)
 
-  const brandText = 'GAU BHOOMI NATURALS'
-  const tagline = 'Pure from the Gaushala · Delivered to Your Doorstep'
-  const chars = brandText.split('')
-
-  // Phase: logo → text → tagline → bar → exit
+  // Hold the page still behind the curtain. Same pattern as CartDrawer/SearchOverlay.
   useEffect(() => {
-    const t = setTimeout(() => setPhase('text'), 900)
+    const lenis = getLenis()
+    lenis?.stop()
+    return () => lenis?.start()
+  }, [])
+
+  // Reduced motion: no curtain at all, straight to the site.
+  useEffect(() => {
+    if (!prefersReducedMotion()) return
+    try { sessionStorage.setItem('gbn_loaded', '1') } catch { /* ignore */ }
+    onComplete?.()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    const t = setTimeout(() => setPhase('text'), LOGO_HOLD)
     return () => clearTimeout(t)
   }, [])
 
@@ -23,56 +42,35 @@ export default function Preloader({ onComplete }) {
     if (phase !== 'text') return
     let i = 0
     const iv = setInterval(() => {
-      i++
-      setCharCount(i)
-      if (i >= chars.length) {
+      setCharCount(++i)
+      if (i >= BRAND.length) {
         clearInterval(iv)
-        setTimeout(() => {
-          setShowTagline(true)
-          setTimeout(() => setPhase('bar'), 500)
-        }, 200)
+        setTimeout(() => setPhase('exit'), TAGLINE_HOLD)
       }
-    }, 45)
-    return () => clearInterval(iv)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase])
-
-  useEffect(() => {
-    if (phase !== 'bar') return
-    let p = 0
-    const iv = setInterval(() => {
-      p += 1.5
-      setProgress(Math.min(p, 100))
-      if (p >= 100) {
-        clearInterval(iv)
-        setTimeout(() => setPhase('exit'), 150)
-      }
-    }, 18)
+    }, CHAR_STEP)
     return () => clearInterval(iv)
   }, [phase])
 
   useEffect(() => {
     if (phase !== 'exit') return
     const t = setTimeout(() => {
-      setVisible(false)
       try { sessionStorage.setItem('gbn_loaded', '1') } catch { /* ignore */ }
       onComplete?.()
-    }, 950)
+    }, EXIT)
     return () => clearTimeout(t)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase])
-
-  if (!visible) return null
 
   return (
     <motion.div
       className="fixed inset-0 flex flex-col items-center justify-center z-[9999] overflow-hidden"
       style={{ backgroundColor: '#142A1D' }}
-      animate={phase === 'exit'
-        ? { clipPath: 'circle(0% at 50% 50%)' }
-        : { clipPath: 'circle(150% at 50% 50%)' }
-      }
-      transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
+      initial={{ opacity: 1 }}
+      // Opacity + scale only — both GPU-composited. The previous clipPath
+      // circle() wipe is not composited on all browsers and janked on low-end
+      // mobile.
+      animate={phase === 'exit' ? { opacity: 0, scale: 1.04 } : { opacity: 1, scale: 1 }}
+      transition={{ duration: EXIT / 1000, ease: [0.22, 1, 0.36, 1] }}
     >
       {/* Golden glow behind logo */}
       <div
@@ -90,20 +88,13 @@ export default function Preloader({ onComplete }) {
         className="relative z-10"
         initial={{ opacity: 0, scale: 0.6 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{
-          type: 'spring',
-          stiffness: 120,
-          damping: 14,
-          duration: 0.8,
-        }}
+        transition={{ type: 'spring', stiffness: 140, damping: 15 }}
       >
         <img
           src={siteConfig.logoUrl}
           alt="Gau Bhoomi Naturals"
           className="w-32 h-32 md:w-40 md:h-40 object-contain"
-          onError={(e) => {
-            e.currentTarget.style.display = 'none'
-          }}
+          onError={(e) => { e.currentTarget.style.display = 'none' }}
         />
       </motion.div>
 
@@ -112,11 +103,8 @@ export default function Preloader({ onComplete }) {
         className="relative z-10 bg-gold-500 rounded-full mt-6"
         style={{ height: 1.5 }}
         initial={{ width: 0, opacity: 0 }}
-        animate={{
-          width: phase !== 'logo' ? 80 : 0,
-          opacity: phase !== 'logo' ? 1 : 0,
-        }}
-        transition={{ duration: 0.4, ease: 'easeOut', delay: 0.05 }}
+        animate={{ width: phase !== 'logo' ? 80 : 0, opacity: phase !== 'logo' ? 1 : 0 }}
+        transition={{ duration: 0.35, ease: 'easeOut' }}
       />
 
       {/* Brand name typing */}
@@ -124,38 +112,23 @@ export default function Preloader({ onComplete }) {
         className="relative z-10 mt-5 tracking-[0.3em] text-[13px] md:text-[14px] font-body font-semibold"
         style={{ color: '#C9A84C', minHeight: '20px', letterSpacing: '0.3em' }}
       >
-        {phase !== 'logo' ? chars.slice(0, charCount).join('') : ''}
+        {phase !== 'logo' ? BRAND.slice(0, charCount) : ''}
       </div>
 
       {/* Tagline */}
       <AnimatePresence>
-        {showTagline && (
+        {charCount >= BRAND.length && (
           <motion.p
             className="relative z-10 text-center font-body italic mt-3 px-8"
-            style={{
-              color: 'rgba(201,168,76,0.65)',
-              fontSize: '11px',
-              letterSpacing: '0.12em',
-              maxWidth: 320,
-            }}
+            style={{ color: 'rgba(201,168,76,0.65)', fontSize: '11px', letterSpacing: '0.12em', maxWidth: 320 }}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
           >
-            {tagline}
+            {TAGLINE}
           </motion.p>
         )}
       </AnimatePresence>
-
-      {/* Progress bar at bottom */}
-      {(phase === 'bar' || phase === 'exit') && (
-        <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-primary-700">
-          <motion.div
-            className="h-full bg-gold-500"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-      )}
     </motion.div>
   )
 }
