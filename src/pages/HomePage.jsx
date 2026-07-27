@@ -15,6 +15,19 @@ import { getProducts, getProductsByCategory } from '../services/woocommerce'
 import { siteConfig } from '../config/siteConfig'
 import { getLenis } from '../hooks/useLenis'
 
+const BESTSELLER_CATEGORY_ORDER = ['ghee', 'oils']
+
+function sortBestsellers(products) {
+  return [...products].sort((a, b) => {
+    const rankOf = (p) => {
+      const slug = p.categories?.[0]?.slug
+      const idx = BESTSELLER_CATEGORY_ORDER.indexOf(slug)
+      return idx === -1 ? BESTSELLER_CATEGORY_ORDER.length : idx
+    }
+    return rankOf(a) - rankOf(b)
+  })
+}
+
 const GoldDivider = () => (
   <div className="relative bg-cream overflow-hidden h-12">
     <svg viewBox="0 0 1440 48" className="absolute bottom-0 w-full" preserveAspectRatio="none">
@@ -52,7 +65,8 @@ export default function HomePage() {
         getProductsByCategory('honey', 12),
       ])
       if (!active) return
-      setBestsellers(best); setExplore(best); setExploreLoading(false)
+      const sortedBest = sortBestsellers(best)
+      setBestsellers(sortedBest); setExplore(sortedBest); setExploreLoading(false)
       setGheeOils(ghee); setLoadingGhee(false)
       setRiceMasalas(rice); setLoadingRice(false)
       setHoney(hny); setLoadingHoney(false)

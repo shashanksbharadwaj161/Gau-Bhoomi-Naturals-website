@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { Disclosure } from '@headlessui/react'
 import { motion } from 'framer-motion'
-import { Star, Minus, Plus, Truck, ShoppingBag, ChevronDown, Check } from 'lucide-react'
+import { Star, Minus, Plus, Truck, ShoppingBag, ChevronDown, Check, X } from 'lucide-react'
 import ProductCarousel from '../components/ui/ProductCarousel'
 import { getProduct, getRelatedProducts, formatPrice, buildAddToCartUrl, PRODUCT_IMAGE_FALLBACK } from '../services/woocommerce'
 import { useCart } from '../contexts/CartContext'
@@ -45,8 +45,18 @@ export default function ProductDetailPage() {
   const [related, setRelated] = useState([])
   const [recent, setRecent] = useState([])
   const [showStickyBar, setShowStickyBar] = useState(false)
+  const [lightboxOpen, setLightboxOpen] = useState(false)
 
   const addBtnRef = useRef(null)
+
+  useEffect(() => {
+    if (!lightboxOpen) return
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') setLightboxOpen(false)
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [lightboxOpen])
 
   useEffect(() => {
     let active = true
@@ -122,7 +132,12 @@ export default function ProductDetailPage() {
       <div className="max-w-6xl mx-auto px-4 md:px-8 py-8 md:py-12 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
         {/* Left — gallery */}
         <div className="md:sticky md:top-28 md:self-start">
-          <div className="relative aspect-square rounded-2xl overflow-hidden bg-primary-500 group">
+          <button
+            type="button"
+            onClick={() => images[activeImage]?.src && setLightboxOpen(true)}
+            className="relative aspect-square w-full rounded-2xl overflow-hidden bg-primary-500 group block text-left"
+            aria-label={`View ${product.name} image fullscreen`}
+          >
             <div className="absolute inset-0 flex items-center justify-center">
               <span className="font-display text-6xl text-gold-400 tracking-widest">GBN</span>
             </div>
@@ -135,7 +150,7 @@ export default function ProductDetailPage() {
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               />
             )}
-          </div>
+          </button>
           {images.length > 1 && (
             <div className="flex gap-2 mt-3">
               {images.map((img, i) => (
@@ -295,6 +310,28 @@ export default function ProductDetailPage() {
           <ShoppingBag size={16} /> Add
         </button>
       </motion.div>
+
+      {lightboxOpen && images[activeImage]?.src && (
+        <div
+          className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-6"
+          onClick={() => setLightboxOpen(false)}
+        >
+          <button
+            type="button"
+            onClick={() => setLightboxOpen(false)}
+            aria-label="Close"
+            className="absolute top-5 right-5 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-xl"
+          >
+            <X size={22} />
+          </button>
+          <img
+            src={images[activeImage].src}
+            alt={product.name}
+            onClick={(e) => e.stopPropagation()}
+            className="max-w-full max-h-full object-contain rounded-lg"
+          />
+        </div>
+      )}
     </div>
   )
 }
