@@ -15,17 +15,11 @@ import { getProducts, getProductsByCategory } from '../services/woocommerce'
 import { siteConfig } from '../config/siteConfig'
 import { getLenis } from '../hooks/useLenis'
 
-const BESTSELLER_CATEGORY_ORDER = ['ghee', 'oils']
-
-function sortBestsellers(products) {
-  return [...products].sort((a, b) => {
-    const rankOf = (p) => {
-      const slug = p.categories?.[0]?.slug
-      const idx = BESTSELLER_CATEGORY_ORDER.indexOf(slug)
-      return idx === -1 ? BESTSELLER_CATEGORY_ORDER.length : idx
-    }
-    return rankOf(a) - rankOf(b)
-  })
+function buildBestsellerOrder(products, gheeProduct, oilsProduct) {
+  const pinned = [gheeProduct, oilsProduct].filter(Boolean)
+  const pinnedIds = new Set(pinned.map((p) => p.id))
+  const rest = products.filter((p) => !pinnedIds.has(p.id))
+  return [...pinned, ...rest]
 }
 
 const GoldDivider = () => (
@@ -58,14 +52,15 @@ export default function HomePage() {
   useEffect(() => {
     let active = true
     ;(async () => {
-      const [best, ghee, rice, hny] = await Promise.all([
+      const [best, ghee, rice, hny, oils] = await Promise.all([
         getProducts({ orderby: 'popularity', per_page: 16 }),
         getProductsByCategory('ghee', 12),
         getProductsByCategory('masalas', 12),
         getProductsByCategory('honey', 12),
+        getProductsByCategory('oils', 1),
       ])
       if (!active) return
-      const sortedBest = sortBestsellers(best)
+      const sortedBest = buildBestsellerOrder(best, ghee[0], oils[0])
       setBestsellers(sortedBest); setExplore(sortedBest); setExploreLoading(false)
       setGheeOils(ghee); setLoadingGhee(false)
       setRiceMasalas(rice); setLoadingRice(false)
