@@ -64,7 +64,7 @@ export default function Testimonials() {
             type="button"
             aria-label={`Go to testimonial ${i + 1}`}
             onClick={() => emblaApi && emblaApi.scrollTo(i)}
-            className={`h-2 rounded-full transition-all ${i === selected ? 'w-6 bg-gold-500' : 'w-2 bg-white/30'}`}
+            className={`relative after:absolute after:content-[''] after:-inset-3 h-2 rounded-full transition-all ${i === selected ? 'w-6 bg-gold-500' : 'w-2 bg-white/30'}`}
           />
         ))}
       </div>

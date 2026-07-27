@@ -61,7 +61,7 @@ export default function Footer() {
               { href: `https://wa.me/${siteConfig.whatsapp}`, Icon: MessageCircle, label: 'WhatsApp' },
             ].map(({ href, Icon, label }) => (
               <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label}
-                className="w-9 h-9 rounded-full border border-cream/20 flex items-center justify-center text-cream/70 hover:text-gold-400 hover:border-gold-400 transition-colors">
+                className="w-11 h-11 rounded-full border border-cream/20 flex items-center justify-center text-cream/70 hover:text-gold-400 hover:border-gold-400 transition-colors">
                 <Icon size={17} />
               </a>
             ))}

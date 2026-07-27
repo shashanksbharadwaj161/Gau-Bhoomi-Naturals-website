@@ -155,7 +155,7 @@ export default function HeroBanner() {
             type="button"
             aria-label={`Go to slide ${i + 1}`}
             onClick={() => scrollTo(i)}
-            className={`h-2 rounded-full transition-all duration-300 ${
+            className={`relative after:absolute after:content-[''] after:-inset-3 h-2 rounded-full transition-all duration-300 ${
               i === selected ? 'w-6 bg-gold-500' : 'w-2 bg-white/40'
             }`}
           />

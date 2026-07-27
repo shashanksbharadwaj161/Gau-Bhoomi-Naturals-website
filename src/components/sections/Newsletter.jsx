@@ -31,11 +31,11 @@ export default function Newsletter() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
-            className="flex-1 bg-transparent px-5 py-2.5 font-body text-sm text-primary-500 outline-none min-w-0"
+            className="flex-1 bg-transparent px-5 py-3 font-body text-sm text-primary-500 outline-none min-w-0 min-h-[44px]"
           />
           <button
             type="submit"
-            className="bg-primary-500 text-white hover:bg-primary-700 rounded-full px-6 py-2.5 font-body font-semibold text-sm whitespace-nowrap transition-colors"
+            className="bg-primary-500 text-white hover:bg-primary-700 rounded-full px-6 py-3 min-h-[44px] font-body font-semibold text-sm whitespace-nowrap transition-colors"
           >
             Subscribe
           </button>

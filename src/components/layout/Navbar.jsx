@@ -82,7 +82,7 @@ export default function Navbar() {
         {/* Left — hamburger (mobile) / logo (desktop) */}
         <button
           type="button"
-          className="lg:hidden text-cream p-2 -ml-2"
+          className="lg:hidden text-cream p-2 -ml-2 min-w-[44px] min-h-[44px] flex items-center justify-center"
           aria-label="Open menu"
           onClick={() => setMenuOpen(true)}
         >
@@ -98,7 +98,7 @@ export default function Navbar() {
           type="button"
           onClick={handleLogo}
           aria-label="Gau Bhoomi Naturals home"
-          className="lg:hidden absolute left-1/2 -translate-x-1/2"
+          className="lg:hidden absolute left-1/2 -translate-x-1/2 min-h-[44px] flex items-center"
         >
           <LogoMark {...logoProps} className="h-16 object-contain" />
         </button>
@@ -115,7 +115,7 @@ export default function Navbar() {
         {/* Right — icons */}
         <div className="flex items-center gap-1 sm:gap-2">
           <button type="button" onClick={openSearch} aria-label="Search"
-            className="p-2 text-cream hover:text-gold-400 transition-colors">
+            className="p-2 text-cream hover:text-gold-400 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center">
             <Search size={22} />
           </button>
 
@@ -136,7 +136,7 @@ export default function Navbar() {
           </button>
 
           <button type="button" onClick={openCart} aria-label="Cart"
-            className="p-2 text-cream hover:text-gold-400 transition-colors relative">
+            className="p-2 text-cream hover:text-gold-400 transition-colors relative min-w-[44px] min-h-[44px] flex items-center justify-center">
             <ShoppingBag size={22} />
             {cartCount > 0 && (
               <motion.span
