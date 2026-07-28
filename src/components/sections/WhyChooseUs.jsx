@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { siteConfig } from '../../config/siteConfig'
 import { revealOnScroll, staggerOnScroll, staggerItem } from '../../animations/motion'
 import GoldRule from '../ui/GoldRule'
+import WobbleCard from '../ui/WobbleCard'
 
 export default function WhyChooseUs() {
   return (
@@ -18,16 +19,16 @@ export default function WhyChooseUs() {
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
         >
           {siteConfig.whyChooseUs.map((item) => (
-            <motion.div
-              key={item.title}
-              variants={staggerItem}
-              whileHover={{ y: -6 }}
-              className="bg-white rounded-2xl p-6 shadow-card border border-transparent hover:border-gold-300 transition-colors text-center"
-            >
-              <div className="text-4xl">{item.emoji}</div>
-              <GoldRule from="center" width="w-8" className="my-3 mx-auto" />
-              <h3 className="font-display text-primary-500 font-bold text-lg">{item.title}</h3>
-              <p className="font-body text-gray-500 text-sm leading-relaxed mt-2">{item.desc}</p>
+            <motion.div key={item.title} variants={staggerItem}>
+              {/* Tilt lives on its own element: the entrance variant already
+                  animates y on the parent, and rotateX/rotateY here would be
+                  overwritten if they shared a node. */}
+              <WobbleCard className="h-full bg-white rounded-2xl p-6 shadow-card border border-transparent hover:border-gold-300 transition-colors text-center">
+                <div className="text-4xl">{item.emoji}</div>
+                <GoldRule from="center" width="w-8" className="my-3 mx-auto" />
+                <h3 className="font-display text-primary-500 font-bold text-lg">{item.title}</h3>
+                <p className="font-body text-gray-500 text-sm leading-relaxed mt-2">{item.desc}</p>
+              </WobbleCard>
             </motion.div>
           ))}
         </motion.div>

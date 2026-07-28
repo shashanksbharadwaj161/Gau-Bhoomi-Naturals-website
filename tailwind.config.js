@@ -47,6 +47,9 @@ export default {
       },
       animation: {
         'marquee':     'marquee 35s linear infinite',
+        // Testimonial cards are much wider than trust badges; at 35s they slide
+        // past faster than a quote can be read.
+        'marquee-slow': 'marquee 75s linear infinite',
         'marquee2':    'marquee2 35s linear infinite',
         'float':       'float 4s ease-in-out infinite',
         'float-delay': 'float 4s ease-in-out 2s infinite',

@@ -13,8 +13,12 @@ const benefits = [
 
 export default function GheeSpotlight() {
   return (
-    <section className="bg-primary-500 py-16 md:py-24 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
+    // `grain` reuses the existing noise overlay (already on WhyChooseUs and
+    // FarmGallery) for the artisanal tooth the brief asks for. It needs
+    // `relative` on the section and `z-10` on the content, since the overlay is
+    // an absolutely positioned ::before at z-index 0.
+    <section className="relative bg-primary-500 grain py-16 md:py-24 overflow-hidden">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
         {/* Image (top on mobile) */}
         <motion.div
           className="order-1 md:order-2"
