@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronDown, Check } from 'lucide-react'
 import ProductCard from './ProductCard'
+import Parallax from './Parallax'
 import SkeletonCard from './SkeletonCard'
 import CategoryPills from './CategoryPills'
 import { useUI } from '../../contexts/UIContext'
@@ -118,7 +119,7 @@ export default function ProductGrid({ slug = 'all', onCategoryChange, perPage = 
           <>
             <motion.div layout className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               <AnimatePresence mode="popLayout">
-                {shown.map((product) => (
+                {shown.map((product, i) => (
                   <motion.div
                     key={product.id}
                     layout
@@ -127,7 +128,11 @@ export default function ProductGrid({ slug = 'all', onCategoryChange, perPage = 
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.25 }}
                   >
-                    <ProductCard product={product} />
+                    {/* Alternating drift direction gives neighbouring cards
+                        different apparent depth as the grid scrolls past. */}
+                    <Parallax distance={i % 2 === 0 ? 20 : -20}>
+                      <ProductCard product={product} />
+                    </Parallax>
                   </motion.div>
                 ))}
               </AnimatePresence>

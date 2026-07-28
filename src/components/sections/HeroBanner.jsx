@@ -7,6 +7,7 @@ import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react'
 import { gsap, ScrollTrigger } from '../../hooks/useGSAP'
 import { siteConfig } from '../../config/siteConfig'
 import HeroParticles from '../ui/HeroParticles'
+import Spotlight from '../ui/Spotlight'
 
 // Premium branded gradient behind each slide — always renders, so the hero
 // looks designed even if a slide's photo is slow or unavailable.
@@ -36,23 +37,28 @@ export default function HeroBanner() {
     return () => emblaApi.off('select', onSelect)
   }, [emblaApi, onSelect])
 
-  // Desktop parallax on scroll
+  // Desktop parallax on scroll. Two layers at different rates — the photo drifts
+  // at roughly 0.4x the text — which is what reads as depth. A single moving
+  // layer just looks like lag.
   useEffect(() => {
     if (window.innerWidth < 768) return
     const ctx = gsap.context(() => {
-      gsap.to('.hero-content', {
-        y: 80,
-        ease: 'none',
-        scrollTrigger: {
-          // The element itself, not a selector: gsap.context scopes selector
-          // strings to descendants of sectionRef, and .hero-section IS that
-          // element — so the string never resolved.
-          trigger: sectionRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: true,
-        },
-      })
+      const scrollTrigger = {
+        // The element itself, not a selector: gsap.context scopes selector
+        // strings to descendants of sectionRef, and .hero-section IS that
+        // element — so the string never resolved.
+        trigger: sectionRef.current,
+        start: 'top top',
+        end: 'bottom top',
+        scrub: true,
+      }
+
+      // Overscale the photo first so 34px of travel never exposes an edge.
+      // GSAP owns the whole transform here — setting scale via a Tailwind class
+      // would be overwritten the moment GSAP writes `y`.
+      gsap.set('.hero-img', { scale: 1.08 })
+      gsap.to('.hero-img', { y: 34, ease: 'none', scrollTrigger })
+      gsap.to('.hero-content', { y: 80, ease: 'none', scrollTrigger })
     }, sectionRef)
     ScrollTrigger.refresh()
     return () => ctx.revert()
@@ -78,7 +84,7 @@ export default function HeroBanner() {
               <img
                 src={slide.image}
                 alt={slide.eyebrow}
-                className="w-full h-full object-cover"
+                className="hero-img w-full h-full object-cover"
                 loading={i === 0 ? 'eager' : 'lazy'}
                 onError={(e) => { e.currentTarget.style.display = 'none' }}
               />
@@ -91,8 +97,10 @@ export default function HeroBanner() {
         </div>
       </div>
 
-      {/* Breathing gold bloom + woven texture — CSS only, no image request */}
-      <div className="hero-bloom" />
+      {/* Two-tone spotlight for depth, plus the woven texture. The earlier
+          single gold bloom is gone — Spotlight supersedes it, and running both
+          stacked two glows in one viewport. */}
+      <Spotlight className="z-[1]" />
       <div className="hero-texture" />
 
       {/* Gold particle field — desktop only */}
