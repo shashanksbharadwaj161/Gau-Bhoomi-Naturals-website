@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, Search, Heart, ShoppingBag, MessageCircle } from 'lucide-react'
@@ -186,17 +187,26 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile menu overlay */}
+      {/* Mobile menu overlay — portalled to <body>, see below */}
+      {createPortal(
       <AnimatePresence>
         {menuOpen && (
           <motion.div
             id="mobile-menu"
-            // Starts at the header's bottom edge instead of `inset-0`, so the
-            // announcement bar and the logo stay visible above it. This also
-            // sidesteps a stacking trap: this panel is a child of <header>,
-            // which has z-50 and creates its own stacking context, so the
-            // panel's z-[100] is scoped *inside* the header and could never
-            // paint above the z-60 announcement bar however high it was set.
+            // Rendered into <body> rather than inside <header>, which is what
+            // makes this work at all.
+            //
+            // The header gets `backdrop-blur-md` once you scroll past 80px, and
+            // backdrop-filter makes an element a *containing block for fixed
+            // descendants*. Nested here, the panel stopped resolving against
+            // the viewport: `top` landed relative to the header's box and
+            // `bottom:0` resolved to the header's own bottom — a negative
+            // height, clamped to 0. The panel collapsed and its children spilled
+            // out over the page. That only happened once scrolled, which is why
+            // testing it at scroll 0 missed it entirely.
+            //
+            // Portalling also frees z-[100] from the header's z-50 stacking
+            // context, so it genuinely outranks the z-60 announcement bar.
             className="fixed left-0 right-0 bottom-0 z-[100] bg-primary-500 lg:hidden flex flex-col"
             style={{ top: topOffset }}
             initial={{ x: '-100%' }}
@@ -257,7 +267,9 @@ export default function Navbar() {
             </div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>,
+      document.body
+      )}
     </header>
   )
 }
