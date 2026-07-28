@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import HeroBanner from '../components/sections/HeroBanner'
 import TrustBadges from '../components/sections/TrustBadges'
 import GheeSpotlight from '../components/sections/GheeSpotlight'
@@ -31,8 +32,8 @@ const GoldDivider = () => (
 )
 
 export default function HomePage() {
+  const navigate = useNavigate()
   const [activeSlug, setActiveSlug] = useState('all')
-  const [bestsellers, setBestsellers] = useState([])
   const [explore, setExplore] = useState([])
   const [exploreLoading, setExploreLoading] = useState(true)
   const [gheeOils, setGheeOils] = useState([])
@@ -54,8 +55,8 @@ export default function HomePage() {
         getProductsByCategory('oils', 12),
       ])
       if (!active) return
-      const bestsellersList = [...ghee, ...oils]
-      setBestsellers(bestsellersList); setExplore(bestsellersList); setExploreLoading(false)
+      // Best Sellers ordering: Ghee first, then Oils — do not reorder.
+      setExplore([...ghee, ...oils]); setExploreLoading(false)
       setGheeOils(ghee); setLoadingGhee(false)
       setRiceMasalas(rice); setLoadingRice(false)
       setHoney(hny); setLoadingHoney(false)
@@ -64,6 +65,13 @@ export default function HomePage() {
   }, [])
 
   const handleCategoryChange = async (slug) => {
+    // "All" leaves the homepage for the full catalogue rather than resetting
+    // the carousel in place. Every other pill still filters the carousel here.
+    if (slug === 'all') {
+      navigate('/shop')
+      return
+    }
+
     setActiveSlug(slug)
     setExploreLoading(true)
     // Scroll to the explore carousel
@@ -73,12 +81,8 @@ export default function HomePage() {
       if (lenis) lenis.scrollTo(el, { offset: -120 })
       else el.scrollIntoView({ behavior: 'smooth' })
     }
-    if (slug === 'all') {
-      setExplore(bestsellers); setExploreLoading(false)
-    } else {
-      const data = await getProductsByCategory(slug, 16)
-      setExplore(data); setExploreLoading(false)
-    }
+    const data = await getProductsByCategory(slug, 16)
+    setExplore(data); setExploreLoading(false)
   }
 
   const activeCategory = siteConfig.categories.find((c) => c.slug === activeSlug)
