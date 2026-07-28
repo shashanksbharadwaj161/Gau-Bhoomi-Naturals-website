@@ -48,9 +48,10 @@ export default function ProductCard({ product }) {
             ring away. */}
         <GlowingBorder className="rounded-2xl h-full">
           <div className="group relative rounded-2xl overflow-hidden bg-white shadow-card hover:shadow-card-hover border border-transparent hover:border-gold-400 transition-[box-shadow,border-color] duration-300 flex flex-col h-full">
-        {/* Image area — a fixed 4:3 box rather than a fixed pixel height, so
-            every card frames its photo identically at any column width. */}
-        <div className="relative w-full aspect-[4/3] overflow-hidden bg-primary-500">
+        {/* Square box, not 4:3. These are portrait bottle and jar shots: in a
+            4:3 landscape box `cover` showed only ~37% of the image height, so
+            the body and base of every bottle were cut off. */}
+        <div className="relative w-full aspect-square overflow-hidden bg-primary-500">
           <button
             type="button"
             onClick={() => image && setLightboxOpen(true)}
@@ -67,10 +68,12 @@ export default function ProductCard({ product }) {
                 alt={product.name}
                 loading="lazy"
                 onError={(e) => { e.currentTarget.style.display = 'none' }}
-                // object-top, not the default centre: these are tall bottle and
-                // jar shots with the product sitting high in frame, so a centred
-                // crop cuts the cap and the label off.
-                className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]"
+                // `contain`, so the whole product is always visible — no crop at
+                // any aspect ratio. The photography is shot on a deep-green
+                // backdrop that matches bg-primary-500 behind it, so the fit
+                // blends into the card instead of reading as letterboxing.
+                // object-position is irrelevant under contain and is gone.
+                className="absolute inset-0 w-full h-full object-contain transition-transform duration-500 group-hover:scale-[1.04]"
               />
             )}
           </button>
