@@ -67,7 +67,10 @@ export default function ProductCard({ product }) {
                 alt={product.name}
                 loading="lazy"
                 onError={(e) => { e.currentTarget.style.display = 'none' }}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                // object-top, not the default centre: these are tall bottle and
+                // jar shots with the product sitting high in frame, so a centred
+                // crop cuts the cap and the label off.
+                className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]"
               />
             )}
           </button>

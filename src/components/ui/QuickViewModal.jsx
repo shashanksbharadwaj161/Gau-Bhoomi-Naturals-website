@@ -55,7 +55,7 @@ export default function QuickViewModal({ product, onClose }) {
             <span className="font-display text-5xl text-gold-400 tracking-widest">GBN</span>
           </div>
           {image && (
-            <img src={image} alt={product.name} onError={(e) => { e.currentTarget.style.display = 'none' }} className="absolute inset-0 w-full h-full object-cover" />
+            <img src={image} alt={product.name} onError={(e) => { e.currentTarget.style.display = 'none' }} className="absolute inset-0 w-full h-full object-cover object-top" />
           )}
           <button
             type="button"

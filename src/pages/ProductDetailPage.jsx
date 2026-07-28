@@ -139,11 +139,13 @@ export default function ProductDetailPage() {
           <button
             type="button"
             onClick={() => images[activeImage]?.src && setLightboxOpen(true)}
-            className="relative aspect-square w-full rounded-2xl overflow-hidden bg-primary-500 group block text-left"
+            className="relative aspect-square w-full rounded-2xl overflow-hidden bg-cream group block text-left"
             aria-label={`View ${product.name} image fullscreen`}
           >
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="font-display text-6xl text-gold-400 tracking-widest">GBN</span>
+              {/* gold-600, not gold-400 — this sits on cream now, and the
+                  lighter tone was near-invisible against it. */}
+              <span className="font-display text-6xl text-gold-600 tracking-widest">GBN</span>
             </div>
             {images[activeImage]?.src && (
               <img
@@ -151,7 +153,9 @@ export default function ProductDetailPage() {
                 src={images[activeImage].src}
                 alt={product.name}
                 onError={(e) => { e.currentTarget.style.display = 'none' }}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                // contain, not cover — this is the buying decision, so the whole
+                // product must be visible. Cream fills the letterboxing.
+                className="absolute inset-0 w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
               />
             )}
           </button>
@@ -162,9 +166,10 @@ export default function ProductDetailPage() {
                   key={i}
                   type="button"
                   onClick={() => setActiveImage(i)}
-                  className={`w-16 h-16 rounded-lg overflow-hidden border-2 transition-[transform,border-color] duration-200 hover:scale-105 ${i === activeImage ? 'border-gold-500' : 'border-transparent'}`}
+                  className={`w-16 h-16 md:w-20 md:h-20 shrink-0 rounded-lg overflow-hidden bg-cream border-2 transition-[transform,border-color] duration-200 hover:scale-105 ${i === activeImage ? 'border-gold-500' : 'border-gold-200'}`}
                 >
-                  <img src={img.src} alt={`${product.name} ${i + 1}`} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = PRODUCT_IMAGE_FALLBACK }} className="w-full h-full object-cover" />
+                  {/* contain on cream — thumbnails never crop */}
+                  <img src={img.src} alt={`${product.name} ${i + 1}`} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = PRODUCT_IMAGE_FALLBACK }} className="w-full h-full object-contain" />
                 </button>
               ))}
             </div>
