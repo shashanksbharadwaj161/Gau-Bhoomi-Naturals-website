@@ -9,6 +9,8 @@ import { useCart } from '../contexts/CartContext'
 import { useWishlist } from '../contexts/WishlistContext'
 import { useUI } from '../contexts/UIContext'
 import { siteConfig } from '../config/siteConfig'
+import MovingBorder from '../components/ui/MovingBorder'
+import { particleBurst } from '../animations/particleBurst'
 
 const RECENT_KEY = 'gbn_recent_v2'
 
@@ -122,8 +124,9 @@ export default function ProductDetailPage() {
   const wishlisted = isWishlisted(product.id)
   const isFreeShip = parseFloat(product.sale_price || product.price) >= siteConfig.freeShippingThreshold
 
-  const handleAdd = () => {
+  const handleAdd = (e) => {
     addItem(product, qty)
+    particleBurst(e.currentTarget)
     openCart()
   }
 
@@ -223,14 +226,18 @@ export default function ProductDetailPage() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 mt-4">
-            <button
-              ref={addBtnRef}
-              type="button"
-              onClick={handleAdd}
-              className="flex-1 btn-shimmer bg-primary-500 hover:bg-primary-600 text-white font-body font-semibold h-12 rounded-xl flex items-center justify-center gap-2"
-            >
-              <ShoppingBag size={18} /> Add to Cart
-            </button>
+            {/* The most important button on the site — it gets the travelling
+                gold border. Nothing else on this page does. */}
+            <MovingBorder rounded="rounded-xl" className="flex-1">
+              <button
+                ref={addBtnRef}
+                type="button"
+                onClick={handleAdd}
+                className="w-full btn-shimmer bg-primary-500 hover:bg-primary-600 text-white font-body font-semibold h-12 rounded-xl flex items-center justify-center gap-2 transition-colors"
+              >
+                <ShoppingBag size={18} /> Add to Cart
+              </button>
+            </MovingBorder>
             <a
               href={buildAddToCartUrl(product.id)}
               target="_blank"

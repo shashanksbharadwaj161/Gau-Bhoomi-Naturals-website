@@ -9,6 +9,7 @@ import { siteConfig } from '../../config/siteConfig'
 import HeroParticles from '../ui/HeroParticles'
 import Spotlight from '../ui/Spotlight'
 import BlurText from '../ui/BlurText'
+import Magnet from '../ui/Magnet'
 
 // Premium branded gradient behind each slide — always renders, so the hero
 // looks designed even if a slide's photo is slow or unavailable.
@@ -138,14 +139,16 @@ export default function HeroBanner() {
             className="flex flex-wrap items-center gap-3"
             initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.38 }}
           >
-            {/* Primary: gold fill, arrow slides on hover */}
-            <Link
-              to={active.ctaLink}
-              className="group inline-flex items-center gap-2.5 bg-gold-500 text-primary-500 font-body font-bold px-8 py-4 rounded-full hover:bg-gold-400 hover:shadow-gold-lg transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 btn-shimmer"
-            >
-              {active.cta}
-              <ArrowRight size={18} className="transition-transform duration-200 group-hover:translate-x-1" />
-            </Link>
+            {/* Primary: gold fill, arrow slides on hover, leans toward cursor */}
+            <Magnet strength={7}>
+              <Link
+                to={active.ctaLink}
+                className="group inline-flex items-center gap-2.5 bg-gold-500 text-primary-500 font-body font-bold px-8 py-4 rounded-full hover:bg-gold-400 hover:shadow-gold-lg transition-[background-color,box-shadow] duration-200 btn-shimmer"
+              >
+                {active.cta}
+                <ArrowRight size={18} className="transition-transform duration-200 group-hover:translate-x-1" />
+              </Link>
+            </Magnet>
             {/* Secondary: outline, per the brief's two-CTA hero */}
             <Link
               to="/shop"

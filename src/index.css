@@ -219,6 +219,57 @@ html.lenis-loading { overflow: hidden; }
   100% { transform: translate3d(-150px, 480px, 0) rotate(215deg); opacity: 0; }
 }
 
+/* ── Glowing border (product cards) ───────────────── */
+/* Pointer-following gold ring. Two stacked backgrounds with mask-composite
+   cut out the interior so only the 1px edge lights up. Pointer devices only —
+   on touch there is no pointer to follow and the ring would stick after a tap. */
+@media (hover: hover) and (pointer: fine) {
+  .glow-border::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+    background: radial-gradient(
+      160px circle at var(--gx, 50%) var(--gy, 50%),
+      rgba(201, 168, 76, 0.95) 0%,
+      rgba(201, 168, 76, 0.35) 35%,
+      transparent 70%
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+  .glow-border-on::after { opacity: 1; }
+}
+
+/* ── Moving border (primary CTA) ──────────────────── */
+/* A conic gradient rotating behind the button. Sized to the diagonal (200%) so
+   the square never shows a corner as it turns. */
+.moving-border-ring {
+  position: absolute;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 250deg,
+    rgba(201, 168, 76, 0.5) 300deg,
+    #c9a84c 340deg,
+    #e8c97a 360deg
+  );
+  animation: borderSpin 3s linear infinite;
+  will-change: transform;
+}
+@keyframes borderSpin {
+  to { transform: rotate(360deg); }
+}
+
 /* ── Reduced motion ───────────────────────────────── */
 /* Duration is collapsed, NOT removed: `.animate-in` above starts at opacity 0
    and depends on fadeUp's `forwards` fill to become visible, so

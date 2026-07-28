@@ -7,6 +7,8 @@ import { useWishlist } from '../../contexts/WishlistContext'
 import { formatPrice } from '../../services/woocommerce'
 import { DURATION, EASE } from '../../animations/motion'
 import QuickViewModal from './QuickViewModal'
+import GlowingBorder from './GlowingBorder'
+import { particleBurst } from '../../animations/particleBurst'
 
 export default function ProductCard({ product }) {
   const { addItem } = useCart()
@@ -29,8 +31,9 @@ export default function ProductCard({ product }) {
   const wishlisted = isWishlisted(product.id)
   const productUrl = `/product/${product.slug}`
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (e) => {
     addItem(product)
+    particleBurst(e.currentTarget)
   }
 
   return (
@@ -38,8 +41,13 @@ export default function ProductCard({ product }) {
       <motion.div
         whileHover={{ y: -6 }}
         transition={{ duration: DURATION.fast, ease: EASE }}
-        className="group relative rounded-2xl overflow-hidden bg-white shadow-card hover:shadow-card-hover border border-transparent hover:border-gold-400 transition-[box-shadow,border-color] duration-300 flex flex-col h-full"
+        className="h-full"
       >
+        {/* The glow ring lives on its own element wrapping the card, so the
+            card can keep `overflow-hidden` for its image without clipping the
+            ring away. */}
+        <GlowingBorder className="rounded-2xl h-full">
+          <div className="group relative rounded-2xl overflow-hidden bg-white shadow-card hover:shadow-card-hover border border-transparent hover:border-gold-400 transition-[box-shadow,border-color] duration-300 flex flex-col h-full">
         {/* Image area */}
         <div className="relative h-[220px] overflow-hidden bg-primary-500">
           <button
@@ -158,7 +166,9 @@ export default function ProductCard({ product }) {
               </motion.span>
             </button>
           </div>
-        </div>
+          </div>
+          </div>
+        </GlowingBorder>
       </motion.div>
 
       <AnimatePresence>
