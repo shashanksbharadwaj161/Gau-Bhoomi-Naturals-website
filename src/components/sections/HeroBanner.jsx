@@ -8,6 +8,7 @@ import { gsap, ScrollTrigger } from '../../hooks/useGSAP'
 import { siteConfig } from '../../config/siteConfig'
 import HeroParticles from '../ui/HeroParticles'
 import Spotlight from '../ui/Spotlight'
+import BlurText from '../ui/BlurText'
 
 // Premium branded gradient behind each slide — always renders, so the hero
 // looks designed even if a slide's photo is slow or unavailable.
@@ -120,12 +121,11 @@ export default function HeroBanner() {
             </p>
           </motion.div>
 
-          <motion.h1
+          <BlurText
+            as="h1"
+            text={active.headline}
             className="font-display text-display-xl text-white font-bold whitespace-pre-line leading-[0.95] tracking-[-0.02em] [text-shadow:0_2px_28px_rgba(0,0,0,0.35)]"
-            initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-          >
-            {active.headline}
-          </motion.h1>
+          />
 
           <motion.p
             className="font-body text-white/85 text-base md:text-lg leading-relaxed mt-5 mb-7 max-w-md"

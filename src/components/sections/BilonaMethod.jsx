@@ -1,6 +1,7 @@
 import { useRef, useEffect } from 'react'
 import { gsap, ScrollTrigger } from '../../hooks/useGSAP'
 import { siteConfig } from '../../config/siteConfig'
+import GoldRule from '../ui/GoldRule'
 
 export default function BilonaMethod() {
   const containerRef = useRef(null)
@@ -83,7 +84,7 @@ export default function BilonaMethod() {
             <div className="relative z-10 max-w-lg mx-auto px-8 text-center md:text-left">
               <p className="bilona-text font-mono text-gold-500 text-6xl font-bold opacity-20 leading-none">{step.step}</p>
               <h3 className="bilona-text font-display text-display-md text-white mt-2 font-bold">{step.title}</h3>
-              <div className="bilona-text w-12 h-0.5 bg-gold-500 my-4 mx-auto md:mx-0" />
+              <GoldRule from="center" width="w-12" className="bilona-text my-4 mx-auto md:mx-0" />
               <p className="bilona-text font-body text-white/75 text-base md:text-lg leading-relaxed">{step.description}</p>
             </div>
           </div>

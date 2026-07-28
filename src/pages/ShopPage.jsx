@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import ProductGrid from '../components/ui/ProductGrid'
 import { staggerOnScroll, staggerItem } from '../animations/motion'
+import BlurText from '../components/ui/BlurText'
 
 export default function ShopPage() {
   const [slug, setSlug] = useState('all')
@@ -14,7 +15,9 @@ export default function ShopPage() {
         <motion.nav variants={staggerItem} className="font-body text-cream/60 text-xs mb-3">
           <Link to="/" className="hover:text-gold-400">Home</Link> / <span className="text-gold-400">Shop</span>
         </motion.nav>
-        <motion.h1 variants={staggerItem} className="font-display text-display-lg text-white font-bold">All Products</motion.h1>
+        <motion.div variants={staggerItem}>
+          <BlurText as="h1" text="All Products" className="font-display text-display-lg text-white font-bold" />
+        </motion.div>
         <motion.p variants={staggerItem} className="font-body text-cream/70 text-sm mt-2">Pure, organic & traditionally made — explore the full range</motion.p>
       </motion.div>
 

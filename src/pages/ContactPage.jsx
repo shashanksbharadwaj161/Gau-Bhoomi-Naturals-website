@@ -4,6 +4,7 @@ import { Phone, Mail, MessageCircle, MapPin } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { siteConfig } from '../config/siteConfig'
 import { revealOnScroll, staggerOnScroll, staggerItem } from '../animations/motion'
+import BlurText from '../components/ui/BlurText'
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
@@ -25,7 +26,7 @@ export default function ContactPage() {
   return (
     <div className="bg-cream min-h-screen">
       <div className="bg-primary-500 py-12 md:py-16 text-center">
-        <h1 className="font-display text-display-lg text-white font-bold">Get in Touch</h1>
+        <BlurText as="h1" text="Get in Touch" className="font-display text-display-lg text-white font-bold" />
         <p className="font-body text-cream/70 mt-2">We’d love to hear from you</p>
       </div>
 

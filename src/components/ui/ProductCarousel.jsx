@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react'
 import ProductCard from './ProductCard'
 import SkeletonCard from './SkeletonCard'
-import { useInView } from '../../hooks/useInView'
+import GoldRule from './GoldRule'
 
 export default function ProductCarousel({
   title,
@@ -23,7 +22,6 @@ export default function ProductCarousel({
   })
   const [canPrev, setCanPrev] = useState(false)
   const [canNext, setCanNext] = useState(false)
-  const [headRef, headVisible] = useInView({ threshold: 0.4 })
 
   const onSelect = useCallback((api) => {
     if (!api) return
@@ -48,15 +46,10 @@ export default function ProductCarousel({
   return (
     <section className={`py-12 md:py-16 ${bgClass}`}>
       {/* Header */}
-      <div ref={headRef} className="flex items-end justify-between mb-8 px-4 md:px-8 max-w-7xl mx-auto">
+      <div className="flex items-end justify-between mb-8 px-4 md:px-8 max-w-7xl mx-auto">
         <div>
           <h2 className="font-display text-display-md text-primary-500 font-bold">{title}</h2>
-          <motion.div
-            className="h-0.5 bg-gold-500 mt-2"
-            initial={{ width: 0 }}
-            animate={{ width: headVisible ? 64 : 0 }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
-          />
+          <GoldRule className="mt-2" />
           {subtitle && <p className="font-body text-gray-500 text-sm mt-2">{subtitle}</p>}
         </div>
         {viewAllLink && (

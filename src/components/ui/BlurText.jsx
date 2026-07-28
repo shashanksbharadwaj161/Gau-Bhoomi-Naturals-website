@@ -32,27 +32,32 @@ export default function BlurText({
       }}
       aria-label={text}
     >
-      {text.split(' ').map((word, i) => (
-        <motion.span
-          key={`${word}-${i}`}
-          aria-hidden="true"
-          // inline-block so transforms apply; the trailing space is a separate
-          // node so words don't run together when they wrap.
-          className="inline-block whitespace-pre"
-          variants={{
-            hidden: { opacity: 0, y: '0.4em', filter: 'blur(10px)' },
-            show: {
-              opacity: 1,
-              y: '0em',
-              filter: 'blur(0px)',
-              transition: { duration: DURATION.slow, ease: EASE },
-            },
-          }}
-        >
-          {word}
-          {i < text.split(' ').length - 1 ? ' ' : ''}
-        </motion.span>
-      ))}
+      {/* Split keeping the separators, so newlines in the source survive. The
+          hero headline is "Pure.\nNatural.\nDesi." — splitting on ' ' alone
+          would treat all three lines as one token and nothing would stagger. */}
+      {text.split(/(\s+)/).map((token, i) =>
+        /^\s+$/.test(token) ? (
+          <span key={i} aria-hidden="true" className="whitespace-pre">{token}</span>
+        ) : (
+          <motion.span
+            key={i}
+            aria-hidden="true"
+            // inline-block so the transform applies — inline elements ignore it.
+            className="inline-block"
+            variants={{
+              hidden: { opacity: 0, y: '0.4em', filter: 'blur(10px)' },
+              show: {
+                opacity: 1,
+                y: '0em',
+                filter: 'blur(0px)',
+                transition: { duration: DURATION.slow, ease: EASE },
+              },
+            }}
+          >
+            {token}
+          </motion.span>
+        )
+      )}
     </MotionTag>
   )
 }

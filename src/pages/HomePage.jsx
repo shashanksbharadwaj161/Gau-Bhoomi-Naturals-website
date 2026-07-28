@@ -14,6 +14,8 @@ import CategoryPills from '../components/ui/CategoryPills'
 import { getProductsByCategory } from '../services/woocommerce'
 import { siteConfig } from '../config/siteConfig'
 import { getLenis } from '../hooks/useLenis'
+import GoldRule from '../components/ui/GoldRule'
+import LampHeading from '../components/ui/LampHeading'
 
 const GoldDivider = () => (
   <div className="relative bg-cream overflow-hidden h-12">
@@ -91,10 +93,12 @@ export default function HomePage() {
       {/* Shop by Category */}
       <section className="py-10 md:py-14 bg-cream overflow-hidden">
         <div className="text-center mb-8 px-4">
-          <h2 className="font-display text-3xl md:text-4xl text-primary-500 font-bold">
-            Shop by Category
-          </h2>
-          <div className="w-16 h-0.5 bg-gold-500 mx-auto mt-3 mb-4" />
+          <LampHeading>
+            <h2 className="font-display text-3xl md:text-4xl text-primary-500 font-bold">
+              Shop by Category
+            </h2>
+          </LampHeading>
+          <GoldRule from="center" className="mx-auto mt-3 mb-4" />
           <p className="font-body text-gray-500 text-sm md:text-base">
             Tap a category to explore pure, traceable organic goodness.
           </p>

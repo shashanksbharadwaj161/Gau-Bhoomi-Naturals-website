@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { siteConfig } from '../../config/siteConfig'
 import { revealOnScroll, staggerOnScroll, staggerItem } from '../../animations/motion'
+import GoldRule from '../ui/GoldRule'
 
 export default function WhyChooseUs() {
   return (
@@ -24,7 +25,7 @@ export default function WhyChooseUs() {
               className="bg-white rounded-2xl p-6 shadow-card border border-transparent hover:border-gold-300 transition-colors text-center"
             >
               <div className="text-4xl">{item.emoji}</div>
-              <div className="w-8 h-0.5 bg-gold-500 my-3 mx-auto" />
+              <GoldRule from="center" width="w-8" className="my-3 mx-auto" />
               <h3 className="font-display text-primary-500 font-bold text-lg">{item.title}</h3>
               <p className="font-body text-gray-500 text-sm leading-relaxed mt-2">{item.desc}</p>
             </motion.div>

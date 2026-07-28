@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { Check, ArrowRight } from 'lucide-react'
 import Parallax from '../ui/Parallax'
+import GoldRule from '../ui/GoldRule'
 
 const benefits = [
   'Hand-churned using the ancient wooden Bilona',
@@ -48,7 +49,7 @@ export default function GheeSpotlight() {
         >
           <p className="font-body text-gold-400 text-[11px] tracking-[0.3em] uppercase font-semibold mb-3">Our Signature Product</p>
           <h2 className="font-display text-display-lg text-white font-bold leading-tight">A2 Gir Cow Ghee — The Bilona Way</h2>
-          <div className="w-16 h-0.5 bg-gold-500 my-5" />
+          <GoldRule className="my-5" />
           <p className="font-body text-cream/80 text-base leading-relaxed mb-6">
             Liquid gold in every jar. Our flagship ghee is crafted with patience and tradition, simmered slowly to preserve
             its golden grain, heavenly aroma and time-honoured purity.
