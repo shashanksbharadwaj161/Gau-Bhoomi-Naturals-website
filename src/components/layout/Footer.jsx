@@ -33,7 +33,7 @@ const PayBadge = ({ children }) => (
 export default function Footer() {
   const [logoError, setLogoError] = useState(false)
   return (
-    <footer className="bg-bark text-cream pt-14 pb-8">
+    <footer className="bg-bark text-cream pt-14 pb-8 border-t border-gold-500/35">
       <motion.div
         className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10"
         {...staggerOnScroll(0.08)}
@@ -61,7 +61,7 @@ export default function Footer() {
               { href: `https://wa.me/${siteConfig.whatsapp}`, Icon: MessageCircle, label: 'WhatsApp' },
             ].map(({ href, Icon, label }) => (
               <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label}
-                className="w-11 h-11 rounded-full border border-cream/20 flex items-center justify-center text-cream/70 hover:text-gold-400 hover:border-gold-400 transition-colors">
+                className="w-11 h-11 rounded-full border border-cream/20 flex items-center justify-center text-cream/70 hover:text-gold-400 hover:border-gold-400 hover:scale-110 transition-[color,border-color,transform] duration-200">
                 <Icon size={17} />
               </a>
             ))}
@@ -70,7 +70,7 @@ export default function Footer() {
 
         {/* Quick Links */}
         <motion.div variants={staggerItem}>
-          <h4 className="font-display text-cream font-semibold text-lg mb-4">Quick Links</h4>
+          <h4 className="font-display text-gold-400 font-semibold text-lg mb-4">Quick Links</h4>
           <ul className="space-y-2.5">
             {quickLinks.map((l) => (
               <li key={l.to}>
@@ -86,7 +86,7 @@ export default function Footer() {
 
         {/* Categories */}
         <motion.div variants={staggerItem}>
-          <h4 className="font-display text-cream font-semibold text-lg mb-4">Categories</h4>
+          <h4 className="font-display text-gold-400 font-semibold text-lg mb-4">Categories</h4>
           <ul className="space-y-2.5">
             {footerCategories.map((c) => (
               <li key={c.slug}>
@@ -98,7 +98,7 @@ export default function Footer() {
 
         {/* Contact */}
         <motion.div variants={staggerItem}>
-          <h4 className="font-display text-cream font-semibold text-lg mb-4">Get in Touch</h4>
+          <h4 className="font-display text-gold-400 font-semibold text-lg mb-4">Get in Touch</h4>
           <ul className="space-y-3">
             <li className="flex items-center gap-2.5 font-body text-cream/70 text-sm">
               <Phone size={15} className="text-gold-400" /> {siteConfig.phone}

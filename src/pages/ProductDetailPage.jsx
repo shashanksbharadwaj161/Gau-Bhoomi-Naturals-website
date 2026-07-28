@@ -11,6 +11,7 @@ import { useUI } from '../contexts/UIContext'
 import { siteConfig } from '../config/siteConfig'
 import MovingBorder from '../components/ui/MovingBorder'
 import { particleBurst } from '../animations/particleBurst'
+import TracingBeam from '../components/ui/TracingBeam'
 
 const RECENT_KEY = 'gbn_recent_v2'
 
@@ -161,7 +162,7 @@ export default function ProductDetailPage() {
                   key={i}
                   type="button"
                   onClick={() => setActiveImage(i)}
-                  className={`w-16 h-16 rounded-lg overflow-hidden border-2 ${i === activeImage ? 'border-gold-500' : 'border-transparent'}`}
+                  className={`w-16 h-16 rounded-lg overflow-hidden border-2 transition-[transform,border-color] duration-200 hover:scale-105 ${i === activeImage ? 'border-gold-500' : 'border-transparent'}`}
                 >
                   <img src={img.src} alt={`${product.name} ${i + 1}`} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = PRODUCT_IMAGE_FALLBACK }} className="w-full h-full object-cover" />
                 </button>
@@ -266,8 +267,8 @@ export default function ProductDetailPage() {
             <Truck size={18} className="text-gold-600" /> Usually ships in 2–3 days
           </div>
 
-          {/* Accordion */}
-          <div className="mt-8">
+          {/* Accordion — the tracing beam rails the product story as it is read */}
+          <TracingBeam className="mt-8">
             <Accordion title="Description" defaultOpen>
               <div dangerouslySetInnerHTML={{ __html: product.description || `<p>${siteConfig.description}</p>` }} />
             </Accordion>
@@ -283,7 +284,7 @@ export default function ProductDetailPage() {
             <Accordion title="Shipping & Returns">
               Free shipping on orders above ₹{siteConfig.freeShippingThreshold}. Dispatched within 2–3 days. Easy 7-day return policy on unopened items.
             </Accordion>
-          </div>
+          </TracingBeam>
         </div>
       </div>
 

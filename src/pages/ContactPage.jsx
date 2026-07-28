@@ -62,13 +62,13 @@ export default function ContactPage() {
         <motion.form onSubmit={handleSubmit} className="bg-white rounded-2xl p-6 shadow-card space-y-4" {...revealOnScroll}>
           <h2 className="font-display text-lg text-primary-500 font-bold">Send a Message</h2>
           <input name="name" required value={form.name} onChange={handleChange} placeholder="Your Name"
-            className="w-full border border-gold-200 focus:border-gold-500 rounded-lg px-4 py-3 font-body text-sm outline-none" />
+            className="w-full border border-gold-200 focus:border-gold-500 rounded-lg px-4 py-3 font-body text-sm outline-none transition-[border-color,box-shadow] duration-200 focus:shadow-[0_0_0_3px_rgba(201,168,76,0.22)]" />
           <input name="email" type="email" required value={form.email} onChange={handleChange} placeholder="Email Address"
-            className="w-full border border-gold-200 focus:border-gold-500 rounded-lg px-4 py-3 font-body text-sm outline-none" />
+            className="w-full border border-gold-200 focus:border-gold-500 rounded-lg px-4 py-3 font-body text-sm outline-none transition-[border-color,box-shadow] duration-200 focus:shadow-[0_0_0_3px_rgba(201,168,76,0.22)]" />
           <input name="subject" value={form.subject} onChange={handleChange} placeholder="Subject"
-            className="w-full border border-gold-200 focus:border-gold-500 rounded-lg px-4 py-3 font-body text-sm outline-none" />
+            className="w-full border border-gold-200 focus:border-gold-500 rounded-lg px-4 py-3 font-body text-sm outline-none transition-[border-color,box-shadow] duration-200 focus:shadow-[0_0_0_3px_rgba(201,168,76,0.22)]" />
           <textarea name="message" required rows="5" value={form.message} onChange={handleChange} placeholder="Your Message"
-            className="w-full border border-gold-200 focus:border-gold-500 rounded-lg px-4 py-3 font-body text-sm outline-none resize-none" />
+            className="w-full border border-gold-200 focus:border-gold-500 rounded-lg px-4 py-3 font-body text-sm outline-none transition-[border-color,box-shadow] duration-200 focus:shadow-[0_0_0_3px_rgba(201,168,76,0.22)] resize-none" />
           <button type="submit" className="w-full btn-shimmer bg-gold-500 hover:bg-gold-400 text-primary-500 font-body font-bold py-3.5 rounded-xl">
             Send Message
           </button>
