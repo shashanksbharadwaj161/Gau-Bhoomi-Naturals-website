@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, Search, Heart, ShoppingBag, MessageCircle } from 'lucide-react'
@@ -42,6 +42,30 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [logoError, setLogoError] = useState(false)
+  const headerRef = useRef(null)
+  const [topOffset, setTopOffset] = useState(0)
+
+  // Where the mobile menu panel should start. Measured from the header's own
+  // bottom edge rather than by summing the announcement bar and nav heights —
+  // one measurement, and it stays correct however the bar is styled or whether
+  // it is showing at all.
+  //
+  // A ResizeObserver covers the bar being dismissed and the nav shrinking on
+  // scroll; the resize listener covers orientation changes.
+  useEffect(() => {
+    const measure = () => {
+      const rect = headerRef.current?.getBoundingClientRect()
+      setTopOffset(rect ? Math.max(0, Math.round(rect.bottom)) : 0)
+    }
+    measure()
+    window.addEventListener('resize', measure)
+    const ro = new ResizeObserver(measure)
+    if (headerRef.current) ro.observe(headerRef.current)
+    return () => {
+      window.removeEventListener('resize', measure)
+      ro.disconnect()
+    }
+  }, [announcementVisible, menuOpen])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 80)
@@ -74,6 +98,7 @@ export default function Navbar() {
 
   return (
     <header
+      ref={headerRef}
       className={`sticky z-50 ${announcementVisible ? 'top-11' : 'top-0'} bg-primary-500 transition-shadow duration-300 ${
         scrolled ? 'backdrop-blur-md shadow-md' : ''
       }`}
@@ -83,10 +108,18 @@ export default function Navbar() {
         <button
           type="button"
           className="lg:hidden text-cream p-2 -ml-2 min-w-[44px] min-h-[44px] flex items-center justify-center"
-          aria-label="Open menu"
-          onClick={() => setMenuOpen(true)}
+          // Named "Menu" with aria-expanded rather than flipping the label to
+          // "Close menu": the panel has its own close button, and two controls
+          // sharing one accessible name is ambiguous to a screen reader.
+          aria-label="Menu"
+          aria-expanded={menuOpen}
+          aria-controls="mobile-menu"
+          // Toggles rather than only opening: the panel now sits below the
+          // navbar, so this button stays visible while the menu is open and
+          // must do something when tapped again.
+          onClick={() => setMenuOpen((o) => !o)}
         >
-          <Menu size={26} />
+          {menuOpen ? <X size={26} /> : <Menu size={26} />}
         </button>
 
         <button type="button" onClick={handleLogo} className="hidden lg:block" aria-label="Gau Bhoomi Naturals home">
@@ -157,15 +190,30 @@ export default function Navbar() {
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            className="fixed inset-0 z-[100] bg-primary-500 lg:hidden flex flex-col"
+            id="mobile-menu"
+            // Starts at the header's bottom edge instead of `inset-0`, so the
+            // announcement bar and the logo stay visible above it. This also
+            // sidesteps a stacking trap: this panel is a child of <header>,
+            // which has z-50 and creates its own stacking context, so the
+            // panel's z-[100] is scoped *inside* the header and could never
+            // paint above the z-60 announcement bar however high it was set.
+            className="fixed left-0 right-0 bottom-0 z-[100] bg-primary-500 lg:hidden flex flex-col"
+            style={{ top: topOffset }}
             initial={{ x: '-100%' }}
             animate={{ x: 0 }}
             exit={{ x: '-100%' }}
             transition={{ type: 'spring', damping: 30, stiffness: 280 }}
           >
-            <div className="flex items-center justify-between px-5 h-16 border-b border-gold-500/20">
-              <LogoMark {...logoProps} className="h-14 object-contain" />
-              <button type="button" onClick={() => setMenuOpen(false)} aria-label="Close menu" className="text-cream p-2">
+            {/* No logo repeated here — the real one is visible in the navbar
+                directly above now. */}
+            <div className="flex items-center justify-between px-5 h-14 border-b border-gold-500/20">
+              <span className="font-body text-cream/60 text-xs tracking-[0.2em] uppercase">Menu</span>
+              <button
+                type="button"
+                onClick={() => setMenuOpen(false)}
+                aria-label="Close menu"
+                className="text-cream -mr-2 min-w-[44px] min-h-[44px] flex items-center justify-center"
+              >
                 <X size={26} />
               </button>
             </div>
