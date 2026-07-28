@@ -91,41 +91,59 @@ export default function HeroBanner() {
         </div>
       </div>
 
+      {/* Breathing gold bloom + woven texture — CSS only, no image request */}
+      <div className="hero-bloom" />
+      <div className="hero-texture" />
+
       {/* Gold particle field — desktop only */}
       {isDesktop && <HeroParticles />}
 
       {/* Content overlay (re-animates per slide) */}
-      <div className="hero-content absolute z-10 bottom-8 md:bottom-16 left-6 md:left-24 max-w-xl pr-6">
+      <div className="hero-content absolute z-10 bottom-8 md:bottom-16 left-6 md:left-24 max-w-2xl pr-6">
         <motion.div key={selected}>
-          <motion.p
-            className="font-body text-gold-400 text-[11px] tracking-[0.3em] uppercase font-semibold mb-3"
+          {/* Eyebrow sits against a drawn vertical rule for a firmer left edge */}
+          <motion.div
+            className="flex items-center gap-3 mb-4"
             initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
           >
-            {active.eyebrow}
-          </motion.p>
+            <span className="hero-rule block w-px h-8 bg-gold-500" />
+            <p className="font-body text-gold-400 text-[11px] tracking-[0.34em] uppercase font-semibold">
+              {active.eyebrow}
+            </p>
+          </motion.div>
+
           <motion.h1
-            className="font-display text-display-xl text-white font-bold whitespace-pre-line leading-[1.05]"
-            initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}
+            className="font-display text-display-xl text-white font-bold whitespace-pre-line leading-[0.95] tracking-[-0.02em] [text-shadow:0_2px_28px_rgba(0,0,0,0.35)]"
+            initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
           >
             {active.headline}
           </motion.h1>
-          <motion.div
-            className="w-16 h-0.5 bg-gold-500 my-4"
-            initial={{ opacity: 0, scaleX: 0 }} animate={{ opacity: 1, scaleX: 1 }}
-            style={{ transformOrigin: 'left' }} transition={{ duration: 0.5, delay: 0.15 }}
-          />
+
           <motion.p
-            className="font-body text-white/80 text-base md:text-lg leading-relaxed mb-6 max-w-md"
+            className="font-body text-white/85 text-base md:text-lg leading-relaxed mt-5 mb-7 max-w-md"
             initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}
           >
             {active.subheadline}
           </motion.p>
-          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 }}>
+
+          <motion.div
+            className="flex flex-wrap items-center gap-3"
+            initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.38 }}
+          >
+            {/* Primary: gold fill, arrow slides on hover */}
             <Link
               to={active.ctaLink}
-              className="inline-flex items-center gap-2 bg-gold-500 text-primary-500 font-body font-bold px-8 py-3.5 rounded-full hover:bg-gold-400 hover:scale-105 transition-all duration-200 btn-shimmer"
+              className="group inline-flex items-center gap-2.5 bg-gold-500 text-primary-500 font-body font-bold px-8 py-4 rounded-full hover:bg-gold-400 hover:shadow-gold-lg transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 btn-shimmer"
             >
-              {active.cta} <ArrowRight size={18} />
+              {active.cta}
+              <ArrowRight size={18} className="transition-transform duration-200 group-hover:translate-x-1" />
+            </Link>
+            {/* Secondary: outline, per the brief's two-CTA hero */}
+            <Link
+              to="/shop"
+              className="inline-flex items-center gap-2 border border-white/35 text-white font-body font-semibold px-7 py-4 rounded-full backdrop-blur-sm hover:border-gold-400 hover:text-gold-400 transition-colors duration-200"
+            >
+              Shop All
             </Link>
           </motion.div>
         </motion.div>

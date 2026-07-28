@@ -1,6 +1,4 @@
-import { motion } from 'framer-motion'
 import { Leaf, Award, Truck, RotateCcw, FlaskConical } from 'lucide-react'
-import { staggerOnScroll, staggerItem } from '../../animations/motion'
 
 const badges = [
   { Icon: Leaf,        title: '100% Organic',    subtitle: 'Certified Natural' },
@@ -10,27 +8,34 @@ const badges = [
   { Icon: FlaskConical,title: 'Zero Chemicals',  subtitle: 'No Additives' },
 ]
 
+function Badge({ Icon, title, subtitle }) {
+  return (
+    <div className="flex items-center gap-3 px-8 shrink-0">
+      <Icon size={30} className="text-gold-400 shrink-0" strokeWidth={1.6} />
+      <div className="text-left whitespace-nowrap">
+        <p className="font-body font-bold text-white text-sm leading-tight">{title}</p>
+        <p className="font-body text-white/55 text-xs leading-tight mt-0.5">{subtitle}</p>
+      </div>
+      <span className="w-1 h-1 rounded-full bg-gold-500/40 ml-5" />
+    </div>
+  )
+}
+
 export default function TrustBadges() {
   return (
-    <section className="bg-primary-500 py-8">
-      <motion.div
-        {...staggerOnScroll(0.08)}
-        className="max-w-7xl mx-auto px-4 md:px-8 flex gap-4 md:gap-0 overflow-x-auto hide-scrollbar md:grid md:grid-cols-5"
-      >
-        {badges.map(({ Icon, title, subtitle }, i) => (
-          <motion.div
-            key={title}
-            variants={staggerItem}
-            className={`flex flex-col items-center text-center gap-2 min-w-[140px] md:min-w-0 px-4 ${
-              i < badges.length - 1 ? 'md:border-r md:border-gold-500/20' : ''
-            }`}
-          >
-            <Icon size={36} className="text-gold-400" strokeWidth={1.6} />
-            <p className="font-body font-bold text-white text-sm">{title}</p>
-            <p className="font-body text-white/60 text-xs">{subtitle}</p>
-          </motion.div>
-        ))}
-      </motion.div>
+    <section className="bg-primary-500 py-7 border-y border-gold-500/15 overflow-hidden">
+      {/* Infinite marquee: the list is rendered twice and the track translates
+          exactly -50%, so the seam lands on an identical frame. CSS-only — no
+          rAF loop — and it pauses on hover. */}
+      <div className="marquee-mask">
+        <div className="flex w-max animate-marquee hover:[animation-play-state:paused] motion-reduce:animate-none">
+          {[0, 1].map((copy) => (
+            <div key={copy} className="flex" aria-hidden={copy === 1}>
+              {badges.map((b) => <Badge key={b.title} {...b} />)}
+            </div>
+          ))}
+        </div>
+      </div>
     </section>
   )
 }

@@ -93,6 +93,40 @@ html.lenis-loading { overflow: hidden; }
 .stagger-4 { animation-delay: 0.4s; }
 .stagger-5 { animation-delay: 0.5s; }
 
+/* Hero texture: a fine diagonal weave plus a slow-breathing gold bloom. Pure
+   CSS — no image request, no library. Sits above the photo, below the content. */
+.hero-texture {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background-image:
+    repeating-linear-gradient(45deg, rgba(201,168,76,0.045) 0 1px, transparent 1px 6px),
+    repeating-linear-gradient(-45deg, rgba(255,255,255,0.022) 0 1px, transparent 1px 7px);
+}
+.hero-bloom {
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(circle at 68% 42%, rgba(201,168,76,0.20) 0%, transparent 58%);
+  animation: heroBloom 11s ease-in-out infinite;
+}
+@keyframes heroBloom {
+  0%, 100% { transform: scale(1);    opacity: 0.75; }
+  50%      { transform: scale(1.14); opacity: 1; }
+}
+
+/* Vertical rule that draws itself in beside the hero eyebrow. */
+.hero-rule {
+  transform-origin: top;
+  animation: heroRule 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+}
+@keyframes heroRule {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+
 /* Three.js canvas */
 .hero-canvas {
   position: absolute;
