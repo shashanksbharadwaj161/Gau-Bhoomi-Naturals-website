@@ -122,7 +122,11 @@ export default function ProductGrid({ slug = 'all', onCategoryChange, perPage = 
                 product name makes its whole row taller than its neighbours. */}
             <motion.div layout className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 items-stretch auto-rows-fr">
               <AnimatePresence mode="popLayout">
-                {shown.map((product, i) => (
+                {/* No parallax on catalogue cards. Drifting neighbours in
+                    opposite directions read as a broken grid, not as depth —
+                    measured 28px apart mid-scroll while the cards were all
+                    exactly the same height. A grid has to look like a grid. */}
+                {shown.map((product) => (
                   <motion.div
                     key={product.id}
                     layout
@@ -132,15 +136,7 @@ export default function ProductGrid({ slug = 'all', onCategoryChange, perPage = 
                     transition={{ duration: 0.25 }}
                     className="h-full"
                   >
-                    {/* Alternating drift direction gives neighbouring cards
-                        different apparent depth as the grid scrolls past.
-                        `h-full` has to carry all the way down this chain —
-                        the card's own h-full resolves against its parent, so a
-                        single auto-height wrapper anywhere breaks stretching
-                        and the row ends up ragged. */}
-                    <Parallax distance={i % 2 === 0 ? 20 : -20} className="h-full">
-                      <ProductCard product={product} />
-                    </Parallax>
+                    <ProductCard product={product} />
                   </motion.div>
                 ))}
               </AnimatePresence>
