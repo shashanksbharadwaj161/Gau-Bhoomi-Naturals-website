@@ -48,8 +48,9 @@ export default function ProductCard({ product }) {
             ring away. */}
         <GlowingBorder className="rounded-2xl h-full">
           <div className="group relative rounded-2xl overflow-hidden bg-white shadow-card hover:shadow-card-hover border border-transparent hover:border-gold-400 transition-[box-shadow,border-color] duration-300 flex flex-col h-full">
-        {/* Image area */}
-        <div className="relative h-[220px] overflow-hidden bg-primary-500">
+        {/* Image area — a fixed 4:3 box rather than a fixed pixel height, so
+            every card frames its photo identically at any column width. */}
+        <div className="relative w-full aspect-[4/3] overflow-hidden bg-primary-500">
           <button
             type="button"
             onClick={() => image && setLightboxOpen(true)}

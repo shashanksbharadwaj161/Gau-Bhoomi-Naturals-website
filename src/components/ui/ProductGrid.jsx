@@ -117,7 +117,10 @@ export default function ProductGrid({ slug = 'all', onCategoryChange, perPage = 
           </div>
         ) : (
           <>
-            <motion.div layout className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {/* `items-stretch` equalises cards within a row; `auto-rows-fr`
+                equalises the rows themselves. Without the latter a two-line
+                product name makes its whole row taller than its neighbours. */}
+            <motion.div layout className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 items-stretch auto-rows-fr">
               <AnimatePresence mode="popLayout">
                 {shown.map((product, i) => (
                   <motion.div
@@ -127,10 +130,15 @@ export default function ProductGrid({ slug = 'all', onCategoryChange, perPage = 
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.25 }}
+                    className="h-full"
                   >
                     {/* Alternating drift direction gives neighbouring cards
-                        different apparent depth as the grid scrolls past. */}
-                    <Parallax distance={i % 2 === 0 ? 20 : -20}>
+                        different apparent depth as the grid scrolls past.
+                        `h-full` has to carry all the way down this chain —
+                        the card's own h-full resolves against its parent, so a
+                        single auto-height wrapper anywhere breaks stretching
+                        and the row ends up ragged. */}
+                    <Parallax distance={i % 2 === 0 ? 20 : -20} className="h-full">
                       <ProductCard product={product} />
                     </Parallax>
                   </motion.div>
