@@ -12,6 +12,7 @@ import InstagramSection from '../components/sections/InstagramSection'
 import Newsletter from '../components/sections/Newsletter'
 import ProductCarousel from '../components/ui/ProductCarousel'
 import CategoryPills from '../components/ui/CategoryPills'
+import CategoryBoxes from '../components/sections/CategoryBoxes'
 import { getProductsByCategory } from '../services/woocommerce'
 import { siteConfig } from '../config/siteConfig'
 import { getLenis } from '../hooks/useLenis'
@@ -123,6 +124,8 @@ export default function HomePage() {
           bgClass="bg-white"
         />
       </div>
+
+      <CategoryBoxes />
 
       <ProductCarousel
         title="Pure Desi Ghee & Oils"

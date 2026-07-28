@@ -79,6 +79,24 @@ export const siteConfig = {
     { name: 'Other',           slug: 'other',      emoji: '✨', icon: 'Sparkles'     },
   ],
 
+  // Two feature boxes under the homepage Bestsellers rail. `image: null` renders
+  // the GBN monogram panel used elsewhere as the image fallback — drop a URL in
+  // here when the photography lands, nothing else needs to change.
+  categoryBoxes: [
+    {
+      name: 'Ghee',
+      slug: 'ghee',
+      blurb: 'Hand-churned the ancient Bilona way, from our own Gir cows.',
+      image: null,
+    },
+    {
+      name: 'Cold Pressed Oils',
+      slug: 'oils',
+      blurb: 'Wood-pressed in small batches. Nothing refined, nothing stripped.',
+      image: null,
+    },
+  ],
+
   freeShippingThreshold: 999,
   shippingCost: 99,
 
