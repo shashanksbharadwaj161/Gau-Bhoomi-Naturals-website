@@ -87,7 +87,7 @@ export default function SearchOverlay() {
             </div>
 
             {/* Body */}
-            <div className="mt-6 bg-white rounded-2xl overflow-hidden max-h-[60vh] overflow-y-auto">
+            <div data-lenis-prevent className="mt-6 bg-white rounded-2xl overflow-hidden max-h-[60vh] overflow-y-auto">
               {query.trim().length < 2 ? (
                 <div className="p-6">
                   <p className="font-body text-gray-400 text-xs uppercase tracking-wide mb-3">Popular Searches</p>

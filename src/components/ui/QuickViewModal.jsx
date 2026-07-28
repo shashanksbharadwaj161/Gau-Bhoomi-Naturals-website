@@ -68,7 +68,7 @@ export default function QuickViewModal({ product, onClose }) {
         </div>
 
         {/* Content */}
-        <div className="relative md:w-1/2 p-6 overflow-y-auto">
+        <div data-lenis-prevent className="relative md:w-1/2 p-6 overflow-y-auto">
           <button
             type="button"
             onClick={onClose}

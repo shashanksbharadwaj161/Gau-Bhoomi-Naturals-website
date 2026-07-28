@@ -92,7 +92,7 @@ export default function CartDrawer() {
                 )}
 
                 {/* Items */}
-                <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
+                <div data-lenis-prevent className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
                   <AnimatePresence initial={false}>
                     {items.map((it, i) => (
                       <motion.div

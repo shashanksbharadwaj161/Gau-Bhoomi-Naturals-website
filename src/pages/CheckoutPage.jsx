@@ -134,7 +134,7 @@ export default function CheckoutPage() {
               {items.length === 0 ? (
                 <p className="font-body text-sm text-gray-400">Your cart is empty. <Link to="/shop" className="text-gold-600">Shop now</Link></p>
               ) : (
-                <ul className="space-y-3 max-h-60 overflow-y-auto pr-1">
+                <ul data-lenis-prevent className="space-y-3 max-h-60 overflow-y-auto pr-1">
                   {items.map((it) => (
                     <li key={it.id} className="flex items-center gap-3">
                       <div className="w-12 h-12 rounded-lg overflow-hidden bg-primary-500 flex-shrink-0 flex items-center justify-center relative">

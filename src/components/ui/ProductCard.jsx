@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Heart, ShoppingBag, Star, Eye, X } from 'lucide-react'
+import { Heart, ShoppingBag, Star, Eye } from 'lucide-react'
 import { useCart } from '../../contexts/CartContext'
 import { useWishlist } from '../../contexts/WishlistContext'
 import { formatPrice } from '../../services/woocommerce'
@@ -14,16 +14,6 @@ export default function ProductCard({ product }) {
   const { addItem } = useCart()
   const { toggleWishlist, isWishlisted } = useWishlist()
   const [quickOpen, setQuickOpen] = useState(false)
-  const [lightboxOpen, setLightboxOpen] = useState(false)
-
-  useEffect(() => {
-    if (!lightboxOpen) return
-    const onKeyDown = (e) => {
-      if (e.key === 'Escape') setLightboxOpen(false)
-    }
-    window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
-  }, [lightboxOpen])
 
   const price = formatPrice(product.price, product.sale_price)
   const image = product.images?.[0]?.src
@@ -52,11 +42,13 @@ export default function ProductCard({ product }) {
             4:3 landscape box `cover` showed only ~37% of the image height, so
             the body and base of every bottle were cut off. */}
         <div className="relative w-full aspect-square overflow-hidden bg-primary-500">
-          <button
-            type="button"
-            onClick={() => image && setLightboxOpen(true)}
-            className="block w-full h-full text-left"
-            aria-label={`View ${product.name} image`}
+          {/* The photo goes to the product page, same destination as the name
+              below it. A fullscreen lightbox belongs on the product page, not
+              on a card sitting inside a carousel. */}
+          <Link
+            to={productUrl}
+            className="block w-full h-full"
+            aria-label={product.name}
           >
             {/* GBN fallback — always rendered behind the image */}
             <div className="absolute inset-0 flex items-center justify-center">
@@ -76,7 +68,7 @@ export default function ProductCard({ product }) {
                 className="absolute inset-0 w-full h-full object-contain transition-transform duration-500 group-hover:scale-[1.04]"
               />
             )}
-          </button>
+          </Link>
 
           {/* Badges */}
           <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
@@ -92,12 +84,15 @@ export default function ProductCard({ product }) {
             </span>
           )}
 
-          {/* Hover overlay — Quick View (desktop) */}
-          <div className="absolute inset-0 bg-primary-500/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden md:flex items-end justify-center pb-5">
+          {/* Hover overlay — Quick View (desktop).
+              pointer-events-none on the tint: it spans the whole photo, so
+              without this it swallows every click on the image link beneath —
+              the button opts back in. */}
+          <div className="absolute inset-0 bg-primary-500/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden md:flex items-end justify-center pb-5 pointer-events-none">
             <button
               type="button"
               onClick={() => setQuickOpen(true)}
-              className="translate-y-2 group-hover:translate-y-0 transition-transform duration-300 inline-flex items-center gap-2 bg-gold-500 text-primary-500 font-body font-semibold text-sm px-5 py-2.5 rounded-full hover:bg-gold-400"
+              className="pointer-events-auto translate-y-2 group-hover:translate-y-0 transition-transform duration-300 inline-flex items-center gap-2 bg-gold-500 text-primary-500 font-body font-semibold text-sm px-5 py-2.5 rounded-full hover:bg-gold-400"
             >
               <Eye size={16} /> Quick View
             </button>
@@ -183,28 +178,6 @@ export default function ProductCard({ product }) {
           <QuickViewModal product={product} onClose={() => setQuickOpen(false)} />
         )}
       </AnimatePresence>
-
-      {lightboxOpen && image && (
-        <div
-          className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-6"
-          onClick={() => setLightboxOpen(false)}
-        >
-          <button
-            type="button"
-            onClick={() => setLightboxOpen(false)}
-            aria-label="Close"
-            className="absolute top-5 right-5 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-xl"
-          >
-            <X size={22} />
-          </button>
-          <img
-            src={image}
-            alt={product.name}
-            onClick={(e) => e.stopPropagation()}
-            className="max-w-full max-h-full object-contain rounded-lg"
-          />
-        </div>
-      )}
     </>
   )
 }

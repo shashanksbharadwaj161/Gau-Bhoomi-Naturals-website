@@ -228,7 +228,10 @@ export default function Navbar() {
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto px-6 py-6">
+            {/* data-lenis-prevent: Lenis hijacks touchmove globally to drive the
+                page scroll, which otherwise swallows the gesture here and leaves
+                this list frozen on touch devices. */}
+            <div data-lenis-prevent className="flex-1 overflow-y-auto px-6 py-6">
               <ul className="space-y-1">
                 {mobileLinks.map((l) => (
                   <li key={l.to}>
