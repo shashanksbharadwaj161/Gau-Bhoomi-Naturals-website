@@ -123,8 +123,17 @@ export default function Navbar() {
           {menuOpen ? <X size={26} /> : <Menu size={26} />}
         </button>
 
-        <button type="button" onClick={handleLogo} className="hidden lg:block" aria-label="Gau Bhoomi Naturals home">
-          <LogoMark {...logoProps} className="h-[68px] object-contain" />
+        {/* The logo is rendered taller than the bar and clipped, so the artwork
+            itself reaches the top and bottom edges. Sizing it to exactly the bar
+            height leaves a gap, because the source PNG carries transparent
+            margin of its own. Adjust the image height, not the bar. */}
+        <button
+          type="button"
+          onClick={handleLogo}
+          className="hidden lg:flex items-center h-[84px] overflow-hidden"
+          aria-label="Gau Bhoomi Naturals home"
+        >
+          <LogoMark {...logoProps} className="h-[96px] object-contain" />
         </button>
 
         {/* Center logo (mobile) */}
@@ -132,9 +141,9 @@ export default function Navbar() {
           type="button"
           onClick={handleLogo}
           aria-label="Gau Bhoomi Naturals home"
-          className="lg:hidden absolute left-1/2 -translate-x-1/2 min-h-[44px] flex items-center"
+          className="lg:hidden absolute left-1/2 -translate-x-1/2 h-[72px] overflow-hidden flex items-center"
         >
-          <LogoMark {...logoProps} className="h-16 object-contain" />
+          <LogoMark {...logoProps} className="h-[82px] object-contain" />
         </button>
 
         {/* Desktop nav links */}
