@@ -3,11 +3,8 @@ import { Link } from 'react-router-dom'
 import useEmblaCarousel from 'embla-carousel-react'
 import { motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react'
-import { gsap, ScrollTrigger } from '../../hooks/useGSAP'
 import { prefersReducedMotion as getPrefersReducedMotion } from '../../hooks/useReducedMotion'
 import { siteConfig } from '../../config/siteConfig'
-import HeroParticles from '../ui/HeroParticles'
-import Spotlight from '../ui/Spotlight'
 import BlurText from '../ui/BlurText'
 import Magnet from '../ui/Magnet'
 
@@ -28,7 +25,6 @@ export default function HeroBanner() {
   const [isPageVisible, setIsPageVisible] = useState(
     () => typeof document === 'undefined' || document.visibilityState === 'visible',
   )
-  const [isDesktop] = useState(() => typeof window !== 'undefined' && window.innerWidth >= 768)
   const [reducedMotion] = useState(
     () => typeof window !== 'undefined' && getPrefersReducedMotion(),
   )
@@ -121,26 +117,6 @@ export default function HeroBanner() {
     }
   }, [failedSlides, isHeroVisible, isPageVisible, reducedMotion, scrollNext, selected, slides])
 
-  useEffect(() => {
-    if (!isDesktop || reducedMotion) return undefined
-
-    const ctx = gsap.context(() => {
-      const scrollTrigger = {
-        trigger: sectionRef.current,
-        start: 'top top',
-        end: 'bottom top',
-        scrub: true,
-      }
-
-      gsap.set('.hero-media', { scale: 1.08 })
-      gsap.to('.hero-media', { y: 34, ease: 'none', scrollTrigger })
-      gsap.to('.hero-content', { y: 80, ease: 'none', scrollTrigger })
-    }, sectionRef)
-
-    ScrollTrigger.refresh()
-    return () => ctx.revert()
-  }, [isDesktop, reducedMotion])
-
   const markVideoFailed = useCallback((index) => {
     setFailedSlides((current) => new Set(current).add(index))
   }, [])
@@ -150,7 +126,7 @@ export default function HeroBanner() {
   return (
     <section
       ref={sectionRef}
-      className="hero-section relative h-[clamp(34rem,70svh,43rem)] md:h-[88vh] md:min-h-[38rem] md:max-h-[60rem] overflow-hidden bg-primary-500"
+      className="hero-section relative h-[clamp(35rem,72svh,43rem)] md:h-[calc(100svh-8rem)] md:min-h-[40rem] md:max-h-[60rem] overflow-hidden bg-primary-500"
     >
       <div className="overflow-hidden h-full" ref={emblaRef}>
         <div className="flex h-full">
@@ -159,6 +135,7 @@ export default function HeroBanner() {
             const focalPoint = {
               '--hero-position-mobile': slide.focalPoint?.mobile || '50% 50%',
               '--hero-position-desktop': slide.focalPoint?.desktop || '50% 50%',
+              '--hero-brightness': slide.brightness || 1,
             }
 
             return (
@@ -202,14 +179,11 @@ export default function HeroBanner() {
         </div>
       </div>
 
-      <Spotlight className="z-[1]" />
-      <div className="hero-texture" />
-      {isDesktop && <HeroParticles />}
 
-      <div className="hero-content absolute z-10 bottom-16 md:bottom-16 left-6 md:left-24 max-w-[calc(100%-3rem)] md:max-w-2xl md:pr-6">
+      <div className="hero-content absolute z-10 bottom-[4.75rem] md:bottom-16 left-6 md:left-[clamp(4.5rem,7vw,7rem)] max-w-[calc(100%-3rem)] md:max-w-[36rem] md:pr-6">
         <motion.div key={selected}>
           <motion.div
-            className="flex items-center gap-3 mb-4"
+            className="flex items-center gap-3 mb-3 md:mb-4"
             initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
           >
             <span className="hero-rule block w-px h-8 bg-gold-500" />
@@ -221,24 +195,24 @@ export default function HeroBanner() {
           <BlurText
             as="h1"
             text={active.headline}
-            className="font-display text-display-xl text-white font-bold whitespace-pre-line leading-[0.95] tracking-[-0.02em] [text-shadow:0_2px_28px_rgba(0,0,0,0.35)]"
+            className="font-display text-[clamp(2.5rem,11.5vw,3.15rem)] md:text-[clamp(3.75rem,5vw,5rem)] text-white font-bold whitespace-pre-line leading-[0.94] tracking-normal [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]"
           />
 
           <motion.p
-            className="font-body text-white/85 text-base md:text-lg leading-relaxed mt-5 mb-7 max-w-md"
+            className="font-body text-white/90 text-[15px] md:text-lg leading-relaxed mt-4 md:mt-5 mb-6 md:mb-7 max-w-[29rem] [text-shadow:0_1px_12px_rgba(0,0,0,0.45)]"
             initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}
           >
             {active.subheadline}
           </motion.p>
 
           <motion.div
-            className="flex flex-wrap items-center gap-3"
+            className="flex flex-nowrap items-center gap-3"
             initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.38 }}
           >
             <Magnet strength={7}>
               <Link
                 to={active.ctaLink}
-                className="group inline-flex items-center gap-2.5 bg-gold-500 text-primary-500 font-body font-bold px-8 py-4 rounded-full hover:bg-gold-400 hover:shadow-gold-lg transition-[background-color,box-shadow] duration-200 btn-shimmer"
+                className="group inline-flex min-h-14 items-center justify-center gap-2.5 bg-gold-500 text-primary-500 font-body font-bold px-7 md:px-8 py-3.5 rounded-full hover:bg-gold-400 hover:shadow-gold-lg transition-[background-color,box-shadow] duration-200 btn-shimmer whitespace-nowrap"
               >
                 {active.cta}
                 <ArrowRight size={18} className="transition-transform duration-200 group-hover:translate-x-1" />
@@ -246,7 +220,7 @@ export default function HeroBanner() {
             </Magnet>
             <Link
               to="/shop"
-              className="inline-flex items-center gap-2 border border-white/35 text-white font-body font-semibold px-7 py-4 rounded-full backdrop-blur-sm hover:border-gold-400 hover:text-gold-400 transition-colors duration-200"
+              className="inline-flex min-h-14 items-center justify-center gap-2 border border-white/50 bg-black/10 text-white font-body font-semibold px-6 md:px-7 py-3.5 rounded-full backdrop-blur-[2px] hover:border-gold-400 hover:text-gold-400 transition-colors duration-200 whitespace-nowrap"
             >
               Shop All
             </Link>
