@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const WC_URL = import.meta.env.VITE_WC_URL || 'https://mediumseagreen-salamander-686387.hostingersite.com'
+const WC_URL = import.meta.env.VITE_WC_URL || 'https://gaubhoominaturals.com'
 
 // ── WooCommerce Store API (public, no authentication required) ──────────────
 // The Store API (wc/store/v1) is the customer-facing, read-only API used by

@@ -14,11 +14,14 @@ export const siteConfig = {
     youtube:   'https://youtube.com/@gaubhoominaturals',
   },
 
-  wcUrl:       import.meta.env.VITE_WC_URL || 'https://mediumseagreen-salamander-686387.hostingersite.com',
+  wcUrl:       import.meta.env.VITE_WC_URL || 'https://gaubhoominaturals.com',
   get checkoutUrl() { return `${this.wcUrl}/checkout` },
   get shopUrl()     { return `${this.wcUrl}/shop` },
 
-  logoUrl: 'https://mediumseagreen-salamander-686387.hostingersite.com/wp-content/uploads/2025/04/Logo-1-1024x1024.png',
+  // Derived from wcUrl like the two above, so a domain move only ever means
+  // changing VITE_WC_URL. Hardcoding this left the navbar, footer and preloader
+  // all pointing at the old host after the domain changed.
+  get logoUrl() { return `${this.wcUrl}/wp-content/uploads/2025/04/Logo-1-1024x1024.png` },
 
   announcements: [
     '🌿 Free Shipping on Orders Above ₹999 — Shop Now',
