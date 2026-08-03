@@ -1,18 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import useEmblaCarousel from 'embla-carousel-react'
-import Autoplay from 'embla-carousel-autoplay'
 import { motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react'
 import { gsap, ScrollTrigger } from '../../hooks/useGSAP'
+import { prefersReducedMotion as getPrefersReducedMotion } from '../../hooks/useReducedMotion'
 import { siteConfig } from '../../config/siteConfig'
 import HeroParticles from '../ui/HeroParticles'
 import Spotlight from '../ui/Spotlight'
 import BlurText from '../ui/BlurText'
 import Magnet from '../ui/Magnet'
 
-// Premium branded gradient behind each slide — always renders, so the hero
-// looks designed even if a slide's photo is slow or unavailable.
 const SLIDE_BG = [
   'radial-gradient(circle at 72% 30%, rgba(201,168,76,0.28) 0%, transparent 55%), linear-gradient(135deg, #1e3d2c 0%, #142A1D 68%, #0D1F14 100%)',
   'radial-gradient(circle at 28% 68%, rgba(201,168,76,0.20) 0%, transparent 55%), linear-gradient(135deg, #244a34 0%, #142A1D 75%)',
@@ -22,96 +20,194 @@ const SLIDE_BG = [
 
 export default function HeroBanner() {
   const slides = siteConfig.heroSlides
-  const [emblaRef, emblaApi] = useEmblaCarousel(
-    { loop: true },
-    [Autoplay({ delay: 5000, stopOnInteraction: false })]
-  )
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true })
   const [selected, setSelected] = useState(0)
+  const [progress, setProgress] = useState(0)
+  const [failedSlides, setFailedSlides] = useState(() => new Set())
+  const [isHeroVisible, setIsHeroVisible] = useState(true)
+  const [isPageVisible, setIsPageVisible] = useState(
+    () => typeof document === 'undefined' || document.visibilityState === 'visible',
+  )
   const [isDesktop] = useState(() => typeof window !== 'undefined' && window.innerWidth >= 768)
+  const [reducedMotion] = useState(
+    () => typeof window !== 'undefined' && getPrefersReducedMotion(),
+  )
   const sectionRef = useRef(null)
+  const videoRefs = useRef([])
+  const fallbackTimerRef = useRef(null)
 
   const onSelect = useCallback((api) => setSelected(api.selectedScrollSnap()), [])
+  const scrollTo = useCallback((index) => emblaApi?.scrollTo(index), [emblaApi])
+  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi])
+  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi])
 
   useEffect(() => {
-    if (!emblaApi) return
+    if (!emblaApi) return undefined
+
     onSelect(emblaApi)
     emblaApi.on('select', onSelect)
     return () => emblaApi.off('select', onSelect)
   }, [emblaApi, onSelect])
 
-  // Desktop parallax on scroll. Two layers at different rates — the photo drifts
-  // at roughly 0.4x the text — which is what reads as depth. A single moving
-  // layer just looks like lag.
   useEffect(() => {
-    if (window.innerWidth < 768) return
+    const section = sectionRef.current
+    if (!section) return undefined
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsHeroVisible(entry.isIntersecting),
+      { threshold: 0.15 },
+    )
+
+    observer.observe(section)
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const onVisibilityChange = () => setIsPageVisible(document.visibilityState === 'visible')
+    document.addEventListener('visibilitychange', onVisibilityChange)
+    return () => document.removeEventListener('visibilitychange', onVisibilityChange)
+  }, [])
+
+  useEffect(() => {
+    window.clearTimeout(fallbackTimerRef.current)
+    setProgress(0)
+
+    videoRefs.current.forEach((video, index) => {
+      if (!video || index === selected) return
+      video.pause()
+      if (video.readyState > 0) video.currentTime = 0
+    })
+
+    if (reducedMotion || !isHeroVisible || !isPageVisible) return undefined
+
+    const activeSlide = slides[selected]
+    const scheduleFallbackAdvance = () => {
+      window.clearTimeout(fallbackTimerRef.current)
+      fallbackTimerRef.current = window.setTimeout(
+        scrollNext,
+        (activeSlide.duration || 8) * 1000,
+      )
+    }
+
+    if (failedSlides.has(selected)) {
+      scheduleFallbackAdvance()
+      return () => window.clearTimeout(fallbackTimerRef.current)
+    }
+
+    const video = videoRefs.current[selected]
+    if (!video) return undefined
+
+    const playVideo = () => {
+      const playPromise = video.play()
+      if (playPromise) {
+        playPromise.catch((error) => {
+          if (error?.name === 'AbortError') return
+          setFailedSlides((current) => new Set(current).add(selected))
+        })
+      }
+    }
+
+    if (video.readyState >= 2) {
+      playVideo()
+    } else {
+      video.load()
+      video.addEventListener('canplay', playVideo, { once: true })
+    }
+
+    return () => {
+      video.removeEventListener('canplay', playVideo)
+      video.pause()
+      window.clearTimeout(fallbackTimerRef.current)
+    }
+  }, [failedSlides, isHeroVisible, isPageVisible, reducedMotion, scrollNext, selected, slides])
+
+  useEffect(() => {
+    if (!isDesktop || reducedMotion) return undefined
+
     const ctx = gsap.context(() => {
       const scrollTrigger = {
-        // The element itself, not a selector: gsap.context scopes selector
-        // strings to descendants of sectionRef, and .hero-section IS that
-        // element — so the string never resolved.
         trigger: sectionRef.current,
         start: 'top top',
         end: 'bottom top',
         scrub: true,
       }
 
-      // Overscale the photo first so 34px of travel never exposes an edge.
-      // GSAP owns the whole transform here — setting scale via a Tailwind class
-      // would be overwritten the moment GSAP writes `y`.
-      gsap.set('.hero-img', { scale: 1.08 })
-      gsap.to('.hero-img', { y: 34, ease: 'none', scrollTrigger })
+      gsap.set('.hero-media', { scale: 1.08 })
+      gsap.to('.hero-media', { y: 34, ease: 'none', scrollTrigger })
       gsap.to('.hero-content', { y: 80, ease: 'none', scrollTrigger })
     }, sectionRef)
+
     ScrollTrigger.refresh()
     return () => ctx.revert()
-  }, [])
+  }, [isDesktop, reducedMotion])
 
-  const scrollTo = (i) => emblaApi && emblaApi.scrollTo(i)
-  const scrollPrev = () => emblaApi && emblaApi.scrollPrev()
-  const scrollNext = () => emblaApi && emblaApi.scrollNext()
+  const markVideoFailed = useCallback((index) => {
+    setFailedSlides((current) => new Set(current).add(index))
+  }, [])
 
   const active = slides[selected]
 
   return (
-    <section ref={sectionRef} className="hero-section relative h-[55vh] md:h-[88vh] overflow-hidden bg-primary-500">
-      {/* Slides (background images) */}
+    <section
+      ref={sectionRef}
+      className="hero-section relative h-[clamp(34rem,70svh,43rem)] md:h-[88vh] md:min-h-[38rem] md:max-h-[60rem] overflow-hidden bg-primary-500"
+    >
       <div className="overflow-hidden h-full" ref={emblaRef}>
         <div className="flex h-full">
-          {slides.map((slide, i) => (
-            <div
-              key={i}
-              className="relative flex-[0_0_100%] h-full"
-              style={{ background: SLIDE_BG[i % SLIDE_BG.length] }}
-            >
-              <img
-                src={slide.image}
-                alt={slide.eyebrow}
-                className="hero-img w-full h-full object-cover"
-                loading={i === 0 ? 'eager' : 'lazy'}
-                onError={(e) => { e.currentTarget.style.display = 'none' }}
-              />
+          {slides.map((slide, index) => {
+            const showPoster = reducedMotion || failedSlides.has(index)
+            const focalPoint = {
+              '--hero-position-mobile': slide.focalPoint?.mobile || '50% 50%',
+              '--hero-position-desktop': slide.focalPoint?.desktop || '50% 50%',
+            }
+
+            return (
               <div
-                className="absolute inset-0"
-                style={{ background: 'linear-gradient(to right, rgba(20,42,29,0.88) 0%, rgba(20,42,29,0.55) 55%, rgba(20,42,29,0.15) 100%)' }}
-              />
-            </div>
-          ))}
+                key={slide.video}
+                className="relative flex-[0_0_100%] h-full"
+                style={{ background: SLIDE_BG[index % SLIDE_BG.length] }}
+              >
+                {showPoster ? (
+                  <img
+                    src={slide.poster}
+                    alt=""
+                    className="hero-media w-full h-full object-cover"
+                    style={focalPoint}
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                    aria-hidden="true"
+                  />
+                ) : (
+                  <video
+                    ref={(element) => { videoRefs.current[index] = element }}
+                    src={index === selected ? slide.video : undefined}
+                    className="hero-media w-full h-full object-cover"
+                    style={focalPoint}
+                    poster={slide.poster}
+                    muted
+                    playsInline
+                    preload={index === selected ? 'auto' : 'none'}
+                    onTimeUpdate={(event) => {
+                      if (index !== selected || !event.currentTarget.duration) return
+                      setProgress((event.currentTarget.currentTime / event.currentTarget.duration) * 100)
+                    }}
+                    onEnded={scrollNext}
+                    onError={() => markVideoFailed(index)}
+                    aria-hidden="true"
+                  />
+                )}
+                <div className="hero-scrim absolute inset-0" />
+              </div>
+            )
+          })}
         </div>
       </div>
 
-      {/* Two-tone spotlight for depth, plus the woven texture. The earlier
-          single gold bloom is gone — Spotlight supersedes it, and running both
-          stacked two glows in one viewport. */}
       <Spotlight className="z-[1]" />
       <div className="hero-texture" />
-
-      {/* Gold particle field — desktop only */}
       {isDesktop && <HeroParticles />}
 
-      {/* Content overlay (re-animates per slide) */}
-      <div className="hero-content absolute z-10 bottom-8 md:bottom-16 left-6 md:left-24 max-w-2xl pr-6">
+      <div className="hero-content absolute z-10 bottom-16 md:bottom-16 left-6 md:left-24 max-w-[calc(100%-3rem)] md:max-w-2xl md:pr-6">
         <motion.div key={selected}>
-          {/* Eyebrow sits against a drawn vertical rule for a firmer left edge */}
           <motion.div
             className="flex items-center gap-3 mb-4"
             initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
@@ -139,7 +235,6 @@ export default function HeroBanner() {
             className="flex flex-wrap items-center gap-3"
             initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.38 }}
           >
-            {/* Primary: gold fill, arrow slides on hover, leans toward cursor */}
             <Magnet strength={7}>
               <Link
                 to={active.ctaLink}
@@ -149,7 +244,6 @@ export default function HeroBanner() {
                 <ArrowRight size={18} className="transition-transform duration-200 group-hover:translate-x-1" />
               </Link>
             </Magnet>
-            {/* Secondary: outline, per the brief's two-CTA hero */}
             <Link
               to="/shop"
               className="inline-flex items-center gap-2 border border-white/35 text-white font-body font-semibold px-7 py-4 rounded-full backdrop-blur-sm hover:border-gold-400 hover:text-gold-400 transition-colors duration-200"
@@ -160,38 +254,32 @@ export default function HeroBanner() {
         </motion.div>
       </div>
 
-      {/* Progress bar */}
       <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white/10 z-20">
         <motion.div
-          key={selected}
           className="h-full bg-gold-500"
-          initial={{ width: '0%' }}
-          animate={{ width: '100%' }}
-          transition={{ duration: 5, ease: 'linear' }}
+          animate={{ width: progress + '%' }}
+          transition={{ duration: 0.15, ease: 'linear' }}
         />
       </div>
 
-      {/* Slide counter */}
       <div className="absolute bottom-4 right-4 md:bottom-8 md:right-8 z-20 font-mono text-gold-400 text-[13px]">
         {String(selected + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}
       </div>
 
-      {/* Dots */}
       <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 flex gap-2">
-        {slides.map((_, i) => (
+        {slides.map((slide, index) => (
           <button
-            key={i}
+            key={slide.video}
             type="button"
-            aria-label={`Go to slide ${i + 1}`}
-            onClick={() => scrollTo(i)}
-            className={`relative after:absolute after:content-[''] after:-inset-3 h-2 rounded-full transition-all duration-300 ${
-              i === selected ? 'w-6 bg-gold-500' : 'w-2 bg-white/40'
-            }`}
+            aria-label={'Go to slide ' + (index + 1)}
+            onClick={() => scrollTo(index)}
+            className={'relative after:absolute after:content-[\'\'] after:-inset-3 h-2 rounded-full transition-all duration-300 ' + (
+              index === selected ? 'w-6 bg-gold-500' : 'w-2 bg-white/40'
+            )}
           />
         ))}
       </div>
 
-      {/* Arrows — desktop */}
       <button type="button" onClick={scrollPrev} aria-label="Previous slide"
         className="hidden md:flex absolute left-6 top-1/2 -translate-y-1/2 z-20 w-[52px] h-[52px] rounded-full bg-white/15 backdrop-blur-sm items-center justify-center text-gold-400 hover:bg-white/25 transition-colors">
         <ChevronLeft size={24} />

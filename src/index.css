@@ -124,6 +124,27 @@ html.lenis-loading { overflow: hidden; }
   z-index: 1;
 }
 
+
+.hero-media {
+  object-position: var(--hero-position-mobile, 50% 50%);
+}
+
+.hero-scrim {
+  background:
+    linear-gradient(to top, rgba(13, 31, 20, 0.94) 0%, rgba(13, 31, 20, 0.58) 55%, rgba(13, 31, 20, 0.14) 100%),
+    linear-gradient(to right, rgba(13, 31, 20, 0.5) 0%, transparent 75%);
+}
+
+@media (min-width: 768px) {
+  .hero-media {
+    object-position: var(--hero-position-desktop, 50% 50%);
+  }
+
+  .hero-scrim {
+    background: linear-gradient(to right, rgba(20, 42, 29, 0.9) 0%, rgba(20, 42, 29, 0.58) 48%, rgba(20, 42, 29, 0.12) 100%);
+  }
+}
+
 /* Product image tilt on hover (CSS perspective) */
 .card-3d {
   perspective: 1000px;

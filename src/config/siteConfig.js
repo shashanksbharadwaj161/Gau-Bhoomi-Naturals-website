@@ -33,7 +33,10 @@ export const siteConfig = {
 
   heroSlides: [
     {
-      image:       'https://images.unsplash.com/photo-1631451095765-2c91616b9d05?w=1600&q=80',
+      video:       '/videos/hero-01.mp4',
+      poster:      '/images/hero/hero-01-poster.webp',
+      duration:    8,
+      focalPoint:  { mobile: '50% 50%', desktop: '50% 50%' },
       eyebrow:     'A2 GIR COW GHEE',
       headline:    'Pure.\nNatural.\nDesi.',
       subheadline: 'Crafted the ancient Bilona way — no shortcuts, no additives',
@@ -42,7 +45,10 @@ export const siteConfig = {
       align:       'left',
     },
     {
-      image:       'https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=1600&q=80',
+      video:       '/videos/hero-02.mp4',
+      poster:      '/images/hero/hero-02-poster.webp',
+      duration:    8,
+      focalPoint:  { mobile: '50% 50%', desktop: '50% 50%' },
       eyebrow:     'FROM OUR GAUSHALA',
       headline:    'Farm Fresh.\nChemical Free.\nDelivered.',
       subheadline: '100% organic goodness, grown with love and ancient wisdom',
@@ -51,7 +57,10 @@ export const siteConfig = {
       align:       'left',
     },
     {
-      image:       'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=1600&q=80',
+      video:       '/videos/hero-03.mp4',
+      poster:      '/images/hero/hero-03-poster.webp',
+      duration:    8,
+      focalPoint:  { mobile: '50% 50%', desktop: '50% 50%' },
       eyebrow:     'WILD FOREST HONEY',
       headline:    "Nature's\nSweetest\nGift",
       subheadline: 'Harvested from pristine Indian forests, raw and unprocessed',
@@ -60,7 +69,10 @@ export const siteConfig = {
       align:       'center',
     },
     {
-      image:       'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=1600&q=80',
+      video:       '/videos/hero-04.mp4',
+      poster:      '/images/hero/hero-04-poster.webp',
+      duration:    8,
+      focalPoint:  { mobile: '50% 50%', desktop: '50% 50%' },
       eyebrow:     'SUPERFOODS & SEEDS',
       headline:    'The Goodness\nof Gau\nBhoomi',
       subheadline: 'Premium dry fruits, seeds & superfoods for a healthier you',
