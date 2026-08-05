@@ -143,7 +143,14 @@ export default function HeroBanner() {
   return (
     <section
       ref={sectionRef}
-      className="hero-section relative h-[clamp(35rem,72svh,43rem)] md:h-[calc(100svh-8rem)] md:min-h-[40rem] md:max-h-[60rem] overflow-hidden bg-primary-500"
+      // Mobile matches the footage's own 720x1128 ratio, so object-cover has
+      // nothing to trim. The previous fixed clamp bottomed out at 35rem, which
+      // is shorter than the video needs at any width past ~358px — that cropped
+      // 28px off the top at 393px wide and 42px at 412px, cutting through the
+      // logo burned into the top of every clip. max-h is only a safety rail for
+      // wide/short viewports; if it ever engages, object-position pins the top
+      // so the logo still survives. Desktop keeps its own height untouched.
+      className="hero-section relative h-[min(calc(100vw*47/30),calc(100svh-7.5rem))] md:h-[calc(100svh-8rem)] md:min-h-[40rem] md:max-h-[60rem] overflow-hidden bg-primary-500"
     >
       <div className="overflow-hidden h-full" ref={emblaRef}>
         <div className="flex h-full">
@@ -153,9 +160,10 @@ export default function HeroBanner() {
             // falls through to the original fields.
             const media = isMobile && slide.mobile ? slide.mobile : slide
             const focalPoint = {
-              // The mobile cuts are centred, finished compositions — the
-              // per-slide focal nudges were tuned for the desktop footage.
-              '--hero-position-mobile': slide.mobile ? '50% 50%' : (slide.focalPoint?.mobile || '50% 50%'),
+              // Top-anchored for the mobile cuts: the logo sits at the very top
+              // of the frame, so if anything ever has to be trimmed it comes off
+              // the bottom. The per-slide focal nudges were tuned for desktop.
+              '--hero-position-mobile': slide.mobile ? '50% 0%' : (slide.focalPoint?.mobile || '50% 50%'),
               '--hero-position-desktop': slide.focalPoint?.desktop || '50% 50%',
               '--hero-brightness': slide.brightness || 1,
             }
