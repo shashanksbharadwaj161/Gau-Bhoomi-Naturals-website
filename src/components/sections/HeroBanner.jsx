@@ -28,6 +28,11 @@ export default function HeroBanner() {
   const [reducedMotion] = useState(
     () => typeof window !== 'undefined' && getPrefersReducedMotion(),
   )
+  // Live, not a one-shot innerWidth read: a phone rotated after mount, or a
+  // desktop window dragged narrow, has to resolve to the right video source.
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches,
+  )
   const sectionRef = useRef(null)
   const videoRefs = useRef([])
   const fallbackTimerRef = useRef(null)
@@ -62,6 +67,14 @@ export default function HeroBanner() {
     const onVisibilityChange = () => setIsPageVisible(document.visibilityState === 'visible')
     document.addEventListener('visibilitychange', onVisibilityChange)
     return () => document.removeEventListener('visibilitychange', onVisibilityChange)
+  }, [])
+
+  useEffect(() => {
+    const query = window.matchMedia('(max-width: 767px)')
+    const onChange = (event) => setIsMobile(event.matches)
+    setIsMobile(query.matches)
+    query.addEventListener('change', onChange)
+    return () => query.removeEventListener('change', onChange)
   }, [])
 
   useEffect(() => {
@@ -115,13 +128,17 @@ export default function HeroBanner() {
       video.pause()
       window.clearTimeout(fallbackTimerRef.current)
     }
-  }, [failedSlides, isHeroVisible, isPageVisible, reducedMotion, scrollNext, selected, slides])
+  }, [failedSlides, isHeroVisible, isMobile, isPageVisible, reducedMotion, scrollNext, selected, slides])
 
   const markVideoFailed = useCallback((index) => {
     setFailedSlides((current) => new Set(current).add(index))
   }, [])
 
   const active = slides[selected]
+  // On mobile the footage is a finished ad — logo, eyebrow and headline are
+  // burned in — so the overlay keeps only the CTA, pointed at the category the
+  // video is actually selling.
+  const activeMobile = isMobile && active.mobile ? active.mobile : null
 
   return (
     <section
@@ -132,8 +149,13 @@ export default function HeroBanner() {
         <div className="flex h-full">
           {slides.map((slide, index) => {
             const showPoster = reducedMotion || failedSlides.has(index)
+            // Mobile runs its own vertical cut when one exists; desktop always
+            // falls through to the original fields.
+            const media = isMobile && slide.mobile ? slide.mobile : slide
             const focalPoint = {
-              '--hero-position-mobile': slide.focalPoint?.mobile || '50% 50%',
+              // The mobile cuts are centred, finished compositions — the
+              // per-slide focal nudges were tuned for the desktop footage.
+              '--hero-position-mobile': slide.mobile ? '50% 50%' : (slide.focalPoint?.mobile || '50% 50%'),
               '--hero-position-desktop': slide.focalPoint?.desktop || '50% 50%',
               '--hero-brightness': slide.brightness || 1,
             }
@@ -146,7 +168,7 @@ export default function HeroBanner() {
               >
                 {showPoster ? (
                   <img
-                    src={slide.poster}
+                    src={media.poster}
                     alt=""
                     className="hero-media w-full h-full object-cover"
                     style={focalPoint}
@@ -156,10 +178,10 @@ export default function HeroBanner() {
                 ) : (
                   <video
                     ref={(element) => { videoRefs.current[index] = element }}
-                    src={index === selected ? slide.video : undefined}
+                    src={index === selected ? media.video : undefined}
                     className="hero-media w-full h-full object-cover"
                     style={focalPoint}
-                    poster={slide.poster}
+                    poster={media.poster}
                     muted
                     playsInline
                     preload={index === selected ? 'auto' : 'none'}
@@ -182,28 +204,30 @@ export default function HeroBanner() {
 
       <div className="hero-content absolute z-10 bottom-[4.75rem] md:bottom-16 left-6 md:left-[clamp(4.5rem,7vw,7rem)] max-w-[calc(100%-3rem)] md:max-w-[36rem] md:pr-6">
         <motion.div key={selected}>
-          <motion.div
-            className="flex items-center gap-3 mb-3 md:mb-4"
-            initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
-          >
-            <span className="hero-rule block w-px h-8 bg-gold-500" />
-            <p className="font-body text-gold-400 text-[11px] tracking-[0.34em] uppercase font-semibold">
-              {active.eyebrow}
-            </p>
-          </motion.div>
+          <div className={activeMobile ? 'hidden' : undefined}>
+            <motion.div
+              className="flex items-center gap-3 mb-3 md:mb-4"
+              initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
+            >
+              <span className="hero-rule block w-px h-8 bg-gold-500" />
+              <p className="font-body text-gold-400 text-[11px] tracking-[0.34em] uppercase font-semibold">
+                {active.eyebrow}
+              </p>
+            </motion.div>
 
-          <BlurText
-            as="h1"
-            text={active.headline}
-            className="font-display text-[clamp(2.5rem,11.5vw,3.15rem)] md:text-[clamp(3.75rem,5vw,5rem)] text-white font-bold whitespace-pre-line leading-[0.94] tracking-normal [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]"
-          />
+            <BlurText
+              as="h1"
+              text={active.headline}
+              className="font-display text-[clamp(2.5rem,11.5vw,3.15rem)] md:text-[clamp(3.75rem,5vw,5rem)] text-white font-bold whitespace-pre-line leading-[0.94] tracking-normal [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]"
+            />
 
-          <motion.p
-            className="font-body text-white/90 text-[15px] md:text-lg leading-relaxed mt-4 md:mt-5 mb-6 md:mb-7 max-w-[29rem] [text-shadow:0_1px_12px_rgba(0,0,0,0.45)]"
-            initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            {active.subheadline}
-          </motion.p>
+            <motion.p
+              className="font-body text-white/90 text-[15px] md:text-lg leading-relaxed mt-4 md:mt-5 mb-6 md:mb-7 max-w-[29rem] [text-shadow:0_1px_12px_rgba(0,0,0,0.45)]"
+              initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              {active.subheadline}
+            </motion.p>
+          </div>
 
           <motion.div
             className="flex flex-nowrap items-center gap-3"
@@ -211,10 +235,10 @@ export default function HeroBanner() {
           >
             <Magnet strength={7}>
               <Link
-                to={active.ctaLink}
+                to={activeMobile ? activeMobile.ctaLink : active.ctaLink}
                 className="group inline-flex min-h-14 items-center justify-center gap-2.5 bg-gold-500 text-primary-500 font-body font-bold px-7 md:px-8 py-3.5 rounded-full hover:bg-gold-400 hover:shadow-gold-lg transition-[background-color,box-shadow] duration-200 btn-shimmer whitespace-nowrap"
               >
-                {active.cta}
+                {activeMobile ? activeMobile.cta : active.cta}
                 <ArrowRight size={18} className="transition-transform duration-200 group-hover:translate-x-1" />
               </Link>
             </Magnet>

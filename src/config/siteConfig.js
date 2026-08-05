@@ -43,6 +43,15 @@ export const siteConfig = {
       cta:         'Shop Ghee',
       ctaLink:     '/shop/ghee',
       align:       'left',
+      // Mobile runs its own vertical cut. These are finished ads — logo,
+      // eyebrow and headline are burned into the footage — so the overlay
+      // drops its text on mobile and shows only the CTA. Desktop is untouched.
+      mobile: {
+        video:   '/videos/hero-mobile-01.mp4',
+        poster:  '/images/hero/hero-mobile-01-poster.webp',
+        cta:     'Shop Ghee',
+        ctaLink: '/shop/ghee',
+      },
     },
     {
       video:       '/videos/hero-02.mp4',
@@ -55,6 +64,12 @@ export const siteConfig = {
       cta:         'Explore All',
       ctaLink:     '/shop',
       align:       'left',
+      mobile: {
+        video:   '/videos/hero-mobile-02.mp4',
+        poster:  '/images/hero/hero-mobile-02-poster.webp',
+        cta:     'Shop Oils',
+        ctaLink: '/shop/oils',
+      },
     },
     {
       video:       '/videos/hero-03.mp4',
@@ -68,6 +83,12 @@ export const siteConfig = {
       cta:         'Shop Honey',
       ctaLink:     '/shop/honey',
       align:       'center',
+      mobile: {
+        video:   '/videos/hero-mobile-03.mp4',
+        poster:  '/images/hero/hero-mobile-03-poster.webp',
+        cta:     'Shop Rice & Grains',
+        ctaLink: '/shop/rice',
+      },
     },
     {
       video:       '/videos/hero-04.mp4',
@@ -81,6 +102,12 @@ export const siteConfig = {
       cta:         'Shop Now',
       ctaLink:     '/shop',
       align:       'right',
+      mobile: {
+        video:   '/videos/hero-mobile-04.mp4',
+        poster:  '/images/hero/hero-mobile-04-poster.webp',
+        cta:     'Shop Masalas',
+        ctaLink: '/shop/masalas',
+      },
     },
   ],
 

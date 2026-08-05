@@ -129,10 +129,18 @@ html.lenis-loading { overflow: hidden; }
   object-position: var(--hero-position-mobile, 50% 50%);
 }
 
+/* Mobile scrim. The mobile cuts are finished ads that carry their own logo,
+   eyebrow and headline, and the overlay drops its text there — so this only
+   needs to hold contrast under the CTA row. The old gradient sat at 0.42 across
+   the middle of the frame, which greyed out the footage's own typography. */
 .hero-scrim {
-  background:
-    linear-gradient(to top, rgba(8, 20, 13, 0.88) 0%, rgba(8, 20, 13, 0.42) 48%, rgba(8, 20, 13, 0.05) 78%),
-    linear-gradient(to right, rgba(8, 20, 13, 0.36) 0%, transparent 78%);
+  background: linear-gradient(
+    to top,
+    rgba(8, 20, 13, 0.86) 0%,
+    rgba(8, 20, 13, 0.52) 12%,
+    rgba(8, 20, 13, 0.16) 26%,
+    transparent 42%
+  );
 }
 
 @media (min-width: 768px) {
