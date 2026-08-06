@@ -20,7 +20,9 @@ export default function CategoryBoxes() {
               {/* Deep-green panel, matching the product-image treatment. The GBN
                   monogram sits behind, so an absent photo still reads as
                   deliberate. */}
-              <div className="relative w-full aspect-[16/10] overflow-hidden bg-primary-500">
+              {/* 1:1 — the posters are 1024x1024, so a square box shows them
+                  whole with no crop at any width. */}
+              <div className="relative w-full aspect-square overflow-hidden bg-primary-500">
                 <div className="absolute inset-0 flex items-center justify-center">
                   <span className="font-display text-4xl text-gold-400 tracking-widest">GBN</span>
                 </div>

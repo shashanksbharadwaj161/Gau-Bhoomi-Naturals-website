@@ -131,13 +131,13 @@ export const siteConfig = {
       name: 'Ghee',
       slug: 'ghee',
       blurb: 'Hand-churned the ancient Bilona way, from our own Gir cows.',
-      image: null,
+      image: '/images/categories/ghee.jpg',
     },
     {
       name: 'Cold Pressed Oils',
       slug: 'oils',
       blurb: 'Wood-pressed in small batches. Nothing refined, nothing stripped.',
-      image: null,
+      image: '/images/categories/oils.jpg',
     },
   ],
 

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Check, ArrowRight } from 'lucide-react'
 import Parallax from '../ui/Parallax'
 import GoldRule from '../ui/GoldRule'
+import BilonaProcess from '../ui/BilonaProcess'
 
 const benefits = [
   'Hand-churned using the ancient wooden Bilona',
@@ -31,15 +32,7 @@ export default function GheeSpotlight() {
               that ignores scroll reads as decoration; tying it to scroll reads
               as depth. */}
           <Parallax distance={28}>
-            <div className="relative rounded-2xl overflow-hidden min-h-[18rem] md:min-h-[28rem]" style={{ boxShadow: '0 0 40px rgba(201,168,76,0.3)', background: 'radial-gradient(circle at 60% 35%, rgba(201,168,76,0.28) 0%, transparent 60%), linear-gradient(135deg, #1e3d2c 0%, #142A1D 100%)' }}>
-              <img
-                src="https://images.unsplash.com/photo-1631451095765-2c91616b9d05?w=900&q=80"
-                alt="A2 Gir Cow Ghee"
-                className="w-full h-72 md:h-[28rem] object-cover"
-                loading="lazy"
-                onError={(e) => { e.currentTarget.style.display = 'none' }}
-              />
-            </div>
+            <BilonaProcess />
           </Parallax>
         </motion.div>
 
