@@ -6,16 +6,17 @@ import { prefersReducedMotion } from '../../hooks/useReducedMotion'
 // Step circle positions as percentages of the square poster, measured from the
 // artwork's 3x2 grid. Centre-based — each overlay is translated by -50%.
 const STEPS = [
-  { n: 1, x: 17.5, y: 39.2, label: 'Hand-Milked at Dawn' },
-  { n: 2, x: 50.0, y: 39.2, label: 'Boiled on Firewood' },
-  { n: 3, x: 82.5, y: 39.2, label: 'Set as Curd' },
-  { n: 4, x: 17.5, y: 67.8, label: 'Hand-Churned Bilona' },
-  { n: 5, x: 50.0, y: 67.8, label: 'Slowly Simmered' },
-  { n: 6, x: 82.5, y: 67.8, label: 'Pure Gau Ghee. Ready.' },
+  { n: 1, x: 18.4, y: 39.5, label: 'Hand-Milked at Dawn' },
+  { n: 2, x: 50.3, y: 39.5, label: 'Boiled on Firewood' },
+  { n: 3, x: 82.5, y: 39.5, label: 'Set as Curd' },
+  { n: 4, x: 18.4, y: 68.4, label: 'Hand-Churned Bilona' },
+  { n: 5, x: 50.3, y: 68.4, label: 'Slowly Simmered' },
+  { n: 6, x: 82.5, y: 68.4, label: 'Pure Gau Ghee. Ready.' },
 ]
 
-// Diameter of each overlay, as a percentage of the poster's width.
-const SIZE = 15
+// Diameter of each overlay, as a percentage of the poster's width. Measured off
+// the artwork: the illustration circles are ~205px across on the 1024px source.
+const SIZE = 20
 
 export default function BilonaProcess({ poster = '/images/process/bilona-process.jpg' }) {
   const [active, setActive] = useState(0)
