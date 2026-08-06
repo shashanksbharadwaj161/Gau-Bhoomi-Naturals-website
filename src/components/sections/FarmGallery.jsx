@@ -1,13 +1,11 @@
-// Gaushala photos. To use our own shots, drop the files into
-// public/images/gaushala/ and swap `src` for '/images/gaushala/<name>.webp'.
-// Nothing else in this file needs to change.
+// Shot at our own gaushala. All five are pre-cropped to 3:2 at 1200x800 so the
+// rail keeps one card ratio at every breakpoint and nothing re-crops in CSS.
 const photos = [
-  { src: 'https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=800&q=80', caption: 'Open pasture at first light' },
-  { src: 'https://images.unsplash.com/photo-1631451095765-2c91616b9d05?w=800&q=80', caption: 'Our Gir herd' },
-  { src: 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=800&q=80', caption: 'Hand-milked at dawn' },
-  { src: 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=800&q=80', caption: 'Bilona churning' },
-  { src: 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=800&q=80', caption: 'Grazing grounds' },
-  { src: 'https://images.unsplash.com/photo-1516467508483-a7212febe31a?w=800&q=80', caption: 'Where the goodness begins' },
+  { src: '/images/gaushala/gaushala-01.webp', caption: 'Inside our gaushala' },
+  { src: '/images/gaushala/gaushala-02.webp', caption: 'A calf with its mother' },
+  { src: '/images/gaushala/gaushala-03.webp', caption: 'Feeding time' },
+  { src: '/images/gaushala/gaushala-04.webp', caption: 'Our Gir herd at rest' },
+  { src: '/images/gaushala/gaushala-05.webp', caption: 'Pure Gir lineage' },
 ]
 
 export default function FarmGallery() {
@@ -31,16 +29,17 @@ export default function FarmGallery() {
         {photos.map((photo) => (
           <figure
             key={photo.src}
-            className="relative snap-start flex-shrink-0 w-72 h-48 md:w-80 md:h-56 rounded-2xl overflow-hidden shadow-card bg-primary-500"
+            className="relative snap-start flex-shrink-0 w-[85vw] max-w-[420px] md:w-[420px] aspect-[3/2] rounded-2xl overflow-hidden shadow-card bg-primary-500"
           >
             <img
               src={photo.src}
               alt={photo.caption}
+              width={1200}
+              height={800}
               loading="lazy"
               className="w-full h-full object-cover"
-              onError={(e) => { e.currentTarget.style.display = 'none' }}
             />
-            <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-primary-900/85 to-transparent px-4 pt-8 pb-3 font-body text-xs text-cream">
+            <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-primary-900/85 to-transparent px-4 pt-8 pb-3 font-body text-xs md:text-sm text-cream">
               {photo.caption}
             </figcaption>
           </figure>
