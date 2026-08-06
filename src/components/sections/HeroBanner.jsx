@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from '../../lib/router'
 import useEmblaCarousel from 'embla-carousel-react'
 import { motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react'

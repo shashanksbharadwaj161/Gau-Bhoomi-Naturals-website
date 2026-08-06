@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { motion } from 'framer-motion'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from '../../lib/router'
 import { X, ShoppingBag, ArrowRight } from 'lucide-react'
 import { useCart } from '../../contexts/CartContext'
 import { formatPrice } from '../../services/woocommerce'

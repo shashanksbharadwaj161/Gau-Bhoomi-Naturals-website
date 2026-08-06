@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from '../lib/router'
 import { motion } from 'framer-motion'
 import ProductGrid from '../components/ui/ProductGrid'
 import { staggerOnScroll, staggerItem } from '../animations/motion'

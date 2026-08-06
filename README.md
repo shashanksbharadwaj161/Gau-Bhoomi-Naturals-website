@@ -15,13 +15,12 @@ Built as a React + Vite single-page app that sits in front of a WooCommerce/Word
 - **Three.js** — golden particle field in the hero (desktop only, lazy-loaded)
 - **Framer Motion** — page transitions and UI micro-interactions
 - **Embla Carousel** — product carousels, hero slider, testimonials
-- **WooCommerce REST API** — product data, with a built-in mock-data fallback so the site is never empty
+- **WooCommerce Store API** — public storefront product data, with a built-in mock-data fallback
 
 ## Getting started
 
 ```bash
 npm install
-cp .env.example .env   # fill in your WooCommerce keys (optional — mock data is used if absent)
 npm run dev
 ```
 
@@ -37,12 +36,9 @@ npm run dev
 | Variable | Purpose |
 | --- | --- |
 | `VITE_WC_URL` | WooCommerce site base URL |
-| `VITE_WC_KEY` | WooCommerce consumer key |
-| `VITE_WC_SECRET` | WooCommerce consumer secret |
 
-Keys are optional in development — when missing or unreachable, the app falls back to mock
-products so every section still renders. Never commit real keys; `.env` is gitignored and
-secrets are injected at build time via GitHub Actions.
+Published catalog data comes from WooCommerce's public Store API. Consumer keys and secrets
+must never be added to the Vite build because all Vite variables are visible to visitors.
 
 ## Deployment
 
@@ -52,12 +48,12 @@ passes WordPress routes (`wp-admin`, `wp-json`, `wp-content`, …) straight thro
 the React SPA for everything else. WordPress files on the server are preserved
 (`dangerous-clean-slate: false`).
 
-Required GitHub Actions secrets: `VITE_WC_URL`, `VITE_WC_KEY`, `VITE_WC_SECRET`,
+Required GitHub Actions secrets: `VITE_WC_URL`,
 `FTP_HOST`, `FTP_USERNAME`, `FTP_PASSWORD`, `FTP_SERVER_DIR`.
 
 ## Notes
 
 - The brand logo is a self-contained SVG at `public/images/logo.svg`. To use the real
   raster logo, drop it in and point `siteConfig.logoUrl` at it.
-- Cart and wishlist persist to `localStorage`. Checkout is a UI mockup — "Pay Now" hands off
-  to the WooCommerce checkout URL; no payment data is collected in the React app.
+- Cart and wishlist persist to `localStorage`. Checkout securely synchronizes the cart to
+  WooCommerce before handing the customer to the native payment flow.

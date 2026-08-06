@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useLocation } from './lib/router'
 import { AnimatePresence, motion, MotionConfig } from 'framer-motion'
 import { lazy, Suspense, useState, useEffect } from 'react'
 import { Toaster } from 'react-hot-toast'

@@ -10,7 +10,6 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (!id.includes('node_modules')) return
-          if (id.includes('react-router')) return 'vendor-react'
           if (id.includes('react-dom') || /node_modules\/react\//.test(id) || /node_modules\/scheduler\//.test(id)) return 'vendor-react'
           if (id.includes('framer-motion') || id.includes('motion-dom') || id.includes('motion-utils')) return 'vendor-motion'
           if (id.includes('gsap')) return 'vendor-gsap'

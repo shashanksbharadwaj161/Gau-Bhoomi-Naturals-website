@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation } from '../../lib/router'
 import { Home, ShoppingCart, ShoppingBag, User } from 'lucide-react'
 import { useCart } from '../../contexts/CartContext'
 

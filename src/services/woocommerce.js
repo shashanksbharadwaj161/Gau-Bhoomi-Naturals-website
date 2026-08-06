@@ -9,6 +9,7 @@ const WC_URL = import.meta.env.VITE_WC_URL || 'https://gaubhoominaturals.com'
 const api = axios.create({
   baseURL: `${WC_URL}/wp-json/wc/store/v1`,
   timeout: 15000,
+  withCredentials: true,
 })
 
 // ── Response mapping (Store API shape → the shape our components expect) ─────
@@ -210,6 +211,34 @@ export const getRelatedProducts = async (productId, categoryId, perPage = 8) => 
     console.warn('[WC] getRelatedProducts failed:', err?.response?.status || '', err.message)
     return MOCK_PRODUCTS.filter((p) => p.id !== productId).slice(0, perPage)
   }
+}
+
+const nonceFrom = (response) =>
+  response.headers?.nonce || response.headers?.['x-wc-store-api-nonce']
+
+// Replace the WooCommerce session cart with the client cart before redirecting
+// to native checkout. Every mutation uses WooCommerce's rotating nonce.
+export const syncCartToWooCommerce = async (items) => {
+  if (!Array.isArray(items) || items.length === 0) {
+    throw new Error('Your cart is empty')
+  }
+
+  let response = await api.get('/cart', { headers: { 'Cache-Control': 'no-store' } })
+  let nonce = nonceFrom(response)
+  if (!nonce) throw new Error('WooCommerce did not provide a cart security nonce')
+
+  response = await api.delete('/cart/items', { headers: { Nonce: nonce } })
+  nonce = nonceFrom(response) || nonce
+
+  for (const item of items) {
+    response = await api.post('/cart/add-item', {
+      id: Number(item.id),
+      quantity: Math.max(1, Number(item.quantity) || 1),
+    }, { headers: { Nonce: nonce } })
+    nonce = nonceFrom(response) || nonce
+  }
+
+  return response.data
 }
 
 // Inline GBN monogram fallback so a failed product image never shows a broken icon.

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link } from '../lib/router'
 import { motion } from 'framer-motion'
 import { Heart } from 'lucide-react'
 import ProductCard from '../components/ui/ProductCard'

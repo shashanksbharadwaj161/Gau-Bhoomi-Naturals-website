@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from '../lib/router'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Minus, Plus, Trash2, ShoppingBag, ArrowRight } from 'lucide-react'
 import toast from 'react-hot-toast'

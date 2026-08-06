@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation } from '../../lib/router'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function RouteProgress() {

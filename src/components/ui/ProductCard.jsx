@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from '../../lib/router'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Heart, ShoppingBag, Star, Eye } from 'lucide-react'
 import { useCart } from '../../contexts/CartContext'

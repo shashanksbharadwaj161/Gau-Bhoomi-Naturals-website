@@ -31,13 +31,11 @@ jobs:
         run: npm run build
         env:
           VITE_WC_URL:    ${{ secrets.VITE_WC_URL }}
-          VITE_WC_KEY:    ${{ secrets.VITE_WC_KEY }}
-          VITE_WC_SECRET: ${{ secrets.VITE_WC_SECRET }}
 
       - name: Copy .htaccess to dist
         run: cp public/.htaccess dist/.htaccess
 
-      - name: Deploy to Hostinger via FTP
+      - name: Deploy to Hostinger via FTPS
         id: deploy
         continue-on-error: true
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -47,9 +45,8 @@ jobs:
           password:    ${{ secrets.FTP_PASSWORD }}
           local-dir:   ./dist/
           server-dir:  ${{ secrets.FTP_SERVER_DIR }}
-          protocol:    ftp
+          protocol:    ftps
           port:        21
-          security:    loose
           dangerous-clean-slate: false
           exclude:     |
             **/.git*
@@ -59,7 +56,7 @@ jobs:
       # Hostinger FTP intermittently times out on the first connection
       # ("Timeout (control socket)"). Retry once within the same run so a
       # transient failure doesn't require a manual re-run.
-      - name: Deploy to Hostinger via FTP (retry)
+      - name: Deploy to Hostinger via FTPS (retry)
         if: steps.deploy.outcome == 'failure'
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -68,9 +65,8 @@ jobs:
           password:    ${{ secrets.FTP_PASSWORD }}
           local-dir:   ./dist/
           server-dir:  ${{ secrets.FTP_SERVER_DIR }}
-          protocol:    ftp
+          protocol:    ftps
           port:        21
-          security:    loose
           dangerous-clean-slate: false
           exclude:     |
             **/.git*

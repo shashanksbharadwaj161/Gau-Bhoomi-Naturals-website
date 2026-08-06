@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from '../../lib/router'
 import { Search, X } from 'lucide-react'
 import { useUI } from '../../contexts/UIContext'
 import { searchProducts, formatPrice } from '../../services/woocommerce'

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from '../lib/router'
 import { User, Package, LogOut, ArrowRight } from 'lucide-react'
 import { siteConfig } from '../config/siteConfig'
 

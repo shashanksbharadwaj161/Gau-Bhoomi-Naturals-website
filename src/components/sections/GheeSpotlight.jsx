@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Link } from 'react-router-dom'
+import { Link } from '../../lib/router'
 import { Check, ArrowRight } from 'lucide-react'
 import Parallax from '../ui/Parallax'
 import GoldRule from '../ui/GoldRule'

@@ -1,4 +1,4 @@
-import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useParams, useNavigate, Link } from '../lib/router'
 import ProductGrid from '../components/ui/ProductGrid'
 import { siteConfig } from '../config/siteConfig'
 

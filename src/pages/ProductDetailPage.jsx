@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link } from '../lib/router'
 import { Disclosure } from '@headlessui/react'
 import { motion } from 'framer-motion'
 import { Star, Minus, Plus, Truck, ShoppingBag, ChevronDown, Check, X } from 'lucide-react'
@@ -9,6 +9,7 @@ import { useCart } from '../contexts/CartContext'
 import { useWishlist } from '../contexts/WishlistContext'
 import { useUI } from '../contexts/UIContext'
 import { siteConfig } from '../config/siteConfig'
+import DOMPurify from 'dompurify'
 import MovingBorder from '../components/ui/MovingBorder'
 import { particleBurst } from '../animations/particleBurst'
 import TracingBeam from '../components/ui/TracingBeam'
@@ -275,7 +276,9 @@ export default function ProductDetailPage() {
           {/* Accordion — the tracing beam rails the product story as it is read */}
           <TracingBeam className="mt-8">
             <Accordion title="Description" defaultOpen>
-              <div dangerouslySetInnerHTML={{ __html: product.description || `<p>${siteConfig.description}</p>` }} />
+              <div dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(product.description || `<p>${siteConfig.description}</p>`),
+              }} />
             </Accordion>
             <Accordion title="Ingredients / Contents">
               100% natural ingredients. No preservatives, no artificial colours, no additives. Sourced directly from our gaushala and trusted organic farms.

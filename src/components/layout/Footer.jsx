@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from '../../lib/router'
 import { motion } from 'framer-motion'
 import { Phone, Mail, MessageCircle } from 'lucide-react'
 import { Instagram, Facebook, Youtube } from '../ui/SocialIcons'

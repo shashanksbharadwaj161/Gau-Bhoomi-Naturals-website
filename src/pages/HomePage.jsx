@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from '../lib/router'
 import HeroBanner from '../components/sections/HeroBanner'
 import TrustBadges from '../components/sections/TrustBadges'
 import GheeSpotlight from '../components/sections/GheeSpotlight'

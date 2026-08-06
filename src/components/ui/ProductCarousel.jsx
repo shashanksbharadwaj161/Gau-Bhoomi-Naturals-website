@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
-import { Link } from 'react-router-dom'
+import { Link } from '../../lib/router'
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react'
 import ProductCard from './ProductCard'
 import SkeletonCard from './SkeletonCard'

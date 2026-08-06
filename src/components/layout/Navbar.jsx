@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { NavLink, useLocation, useNavigate } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate } from '../../lib/router'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, Search, Heart, ShoppingBag, MessageCircle } from 'lucide-react'
 import { Instagram, Facebook, Youtube } from '../ui/SocialIcons'
