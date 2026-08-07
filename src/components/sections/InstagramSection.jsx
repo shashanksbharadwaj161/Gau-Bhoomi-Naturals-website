@@ -3,13 +3,16 @@ import { Instagram } from '../ui/SocialIcons'
 import { siteConfig } from '../../config/siteConfig'
 import { revealOnScroll, staggerOnScroll, staggerItem } from '../../animations/motion'
 
+// Manually mirrored from @gaubhoominaturals. To refresh: replace the six
+// files in public/images/instagram/ with the newest posts (800x800 webp,
+// square) and push. Order here is display order, top-left to bottom-right.
 const tiles = [
-  'https://images.unsplash.com/photo-1631451095765-2c91616b9d05?w=500&q=80',
-  'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=500&q=80',
-  'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=500&q=80',
-  'https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=500&q=80',
-  'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=500&q=80',
-  'https://images.unsplash.com/photo-1516467508483-a7212febe31a?w=500&q=80',
+  '/images/instagram/instagram-01.webp',
+  '/images/instagram/instagram-02.webp',
+  '/images/instagram/instagram-03.webp',
+  '/images/instagram/instagram-04.webp',
+  '/images/instagram/instagram-05.webp',
+  '/images/instagram/instagram-06.webp',
 ]
 
 export default function InstagramSection() {
@@ -38,7 +41,7 @@ export default function InstagramSection() {
               rel="noopener noreferrer"
               className="group relative aspect-square rounded-2xl overflow-hidden bg-primary-500"
             >
-              <img src={src} alt="Instagram post" className="w-full h-full object-cover" loading="lazy" onError={(e) => { e.currentTarget.style.display = 'none' }} />
+              <img src={src} alt={`@gaubhoominaturals post ${i + 1}`} width={800} height={800} loading="lazy" className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-primary-500/0 group-hover:bg-primary-500/70 transition-colors flex items-center justify-center">
                 <div className="opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center gap-1 text-gold-400">
                   <Instagram size={26} />
