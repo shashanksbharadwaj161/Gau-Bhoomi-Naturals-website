@@ -3,16 +3,18 @@ import { Instagram } from '../ui/SocialIcons'
 import { siteConfig } from '../../config/siteConfig'
 import { revealOnScroll, staggerOnScroll, staggerItem } from '../../animations/motion'
 
-// Manually mirrored from @gaubhoominaturals. To refresh: replace the six
-// files in public/images/instagram/ with the newest posts (800x800 webp,
-// square) and push. Order here is display order, top-left to bottom-right.
+// Manually mirrored from @gaubhoominaturals. To refresh: drop new 800x800
+// webp squares into public/images/instagram/ under a NEW filename (bump the
+// -vN suffix) and update the paths here. Overwriting the same filename
+// leaves browsers and Hostinger's edge serving the stale copy.
+// Order here is display order, top-left to bottom-right.
 const tiles = [
-  '/images/instagram/instagram-01.webp',
-  '/images/instagram/instagram-02.webp',
-  '/images/instagram/instagram-03.webp',
-  '/images/instagram/instagram-04.webp',
-  '/images/instagram/instagram-05.webp',
-  '/images/instagram/instagram-06.webp',
+  '/images/instagram/instagram-01-v2.webp',
+  '/images/instagram/instagram-02-v2.webp',
+  '/images/instagram/instagram-03-v2.webp',
+  '/images/instagram/instagram-04-v2.webp',
+  '/images/instagram/instagram-05-v2.webp',
+  '/images/instagram/instagram-06-v2.webp',
 ]
 
 export default function InstagramSection() {
