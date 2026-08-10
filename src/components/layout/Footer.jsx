@@ -100,11 +100,15 @@ export default function Footer() {
         <motion.div variants={staggerItem}>
           <h4 className="font-display text-gold-400 font-semibold text-lg mb-4">Get in Touch</h4>
           <ul className="space-y-3">
-            <li className="flex items-center gap-2.5 font-body text-cream/70 text-sm">
-              <Phone size={15} className="text-gold-400" /> {siteConfig.phone}
+            <li>
+              <a href={`tel:${siteConfig.phone.replace(/\s/g, '')}`} className="flex items-center gap-2.5 font-body text-cream/70 text-sm hover:text-gold-400 transition-colors">
+                <Phone size={15} className="text-gold-400" /> {siteConfig.phone}
+              </a>
             </li>
-            <li className="flex items-center gap-2.5 font-body text-cream/70 text-sm">
-              <Mail size={15} className="text-gold-400" /> {siteConfig.email}
+            <li>
+              <a href={`mailto:${siteConfig.email}`} className="flex items-center gap-2.5 font-body text-cream/70 text-sm hover:text-gold-400 transition-colors">
+                <Mail size={15} className="text-gold-400" /> {siteConfig.email}
+              </a>
             </li>
           </ul>
           <a href={`https://wa.me/${siteConfig.whatsapp}`} target="_blank" rel="noopener noreferrer"

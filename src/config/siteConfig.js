@@ -3,15 +3,15 @@ export const siteConfig = {
   tagline:     'Pure from the Gaushala, Delivered to your Doorstep',
   description: 'Premium A2 Gir Cow Ghee, cold pressed oils, organic rice, masalas, honey and dry fruits — straight from our gaushala to your home.',
 
-  phone:    '+91 98765 43210',
+  phone:    '+91 80950 64338',
   email:    'info@gaubhoominaturals.com',
-  whatsapp: '919876543210',
+  whatsapp: '918095064338',
   address:  'India',
 
   social: {
     instagram: 'https://instagram.com/gaubhoominaturals',
-    facebook:  'https://facebook.com/gaubhoominaturals',
-    youtube:   'https://youtube.com/@gaubhoominaturals',
+    facebook:  'https://www.facebook.com/profile.php?id=61592592838465',
+    youtube:   'https://www.youtube.com/@GauBhoomiNaturals',
   },
 
   wcUrl:       import.meta.env.VITE_WC_URL || 'https://gaubhoominaturals.com',
