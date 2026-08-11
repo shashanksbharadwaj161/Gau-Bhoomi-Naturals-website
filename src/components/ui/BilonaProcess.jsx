@@ -18,7 +18,7 @@ const STEPS = [
 // the artwork: the illustration circles are ~205px across on the 1024px source.
 const SIZE = 20
 
-export default function BilonaProcess({ poster = '/images/process/bilona-process.jpg' }) {
+export default function BilonaProcess({ poster = '/images/process/bilona-process-v2.jpg' }) {
   const [active, setActive] = useState(0)
   const [failed, setFailed] = useState(false)
   const still = prefersReducedMotion()
