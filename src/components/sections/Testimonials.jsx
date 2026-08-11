@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { Star } from 'lucide-react'
 import { siteConfig } from '../../config/siteConfig'
 import { revealOnScroll } from '../../animations/motion'
+import TextAnimate from '../ui/TextAnimate'
 
 // Infinite moving cards — adapted from the Aceternity UI concept, reusing the
 // marquee mechanism already written for TrustBadges: the list renders twice and
@@ -35,12 +36,12 @@ function Card({ t }) {
 export default function Testimonials() {
   return (
     <section className="bg-primary-500 py-16 md:py-20 overflow-hidden">
-      <motion.h2
+      <motion.div
         className="font-display text-display-md text-gold-400 font-bold text-center mb-10 px-4"
         {...revealOnScroll}
       >
-        What Our Customers Say
-      </motion.h2>
+        <TextAnimate>What Our Customers Say</TextAnimate>
+      </motion.div>
 
       <div className="marquee-mask">
         <div className="flex w-max animate-marquee-slow hover:[animation-play-state:paused] motion-reduce:animate-none">

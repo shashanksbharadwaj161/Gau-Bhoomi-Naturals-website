@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Minus, Plus, Trash2, ShoppingBag, ArrowRight } from 'lucide-react'
 import toast from 'react-hot-toast'
 import ProductCarousel from '../components/ui/ProductCarousel'
+import TextAnimate from '../components/ui/TextAnimate'
 import { useCart } from '../contexts/CartContext'
 import { getProducts } from '../services/woocommerce'
 import { siteConfig } from '../config/siteConfig'
@@ -56,7 +57,7 @@ export default function CartPage() {
         <nav className="font-body text-gray-400 text-xs mb-2">
           <Link to="/" className="hover:text-gold-600">Home</Link> / <span className="text-primary-500">Cart</span>
         </nav>
-        <h1 className="font-display text-display-md text-primary-500 font-bold mb-8">Your Cart</h1>
+        <TextAnimate as="h1" className="font-display text-display-md text-primary-500 font-bold mb-8">Your Cart</TextAnimate>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Items */}

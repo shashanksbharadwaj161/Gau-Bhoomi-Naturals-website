@@ -4,6 +4,8 @@ import { Check, ArrowRight } from 'lucide-react'
 import Parallax from '../ui/Parallax'
 import GoldRule from '../ui/GoldRule'
 import BilonaProcess from '../ui/BilonaProcess'
+import TextAnimate from '../ui/TextAnimate'
+import ScrollTextFill from '../ui/ScrollTextFill'
 
 const benefits = [
   'Hand-churned using the ancient wooden Bilona',
@@ -26,7 +28,7 @@ export default function GheeSpotlight() {
           initial={{ opacity: 0, x: 40 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
           {/* Scroll-linked drift replaces the old `animate-float` bob. A loop
               that ignores scroll reads as decoration; tying it to scroll reads
@@ -42,15 +44,14 @@ export default function GheeSpotlight() {
           initial={{ opacity: 0, x: -40 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
           <p className="font-body text-gold-400 text-[11px] tracking-[0.3em] uppercase font-semibold mb-3">Our Signature Product</p>
-          <h2 className="font-display text-display-lg text-white font-bold leading-tight">A2 Gir Cow Ghee — The Bilona Way</h2>
+          <TextAnimate className="font-display text-display-lg text-white font-bold leading-tight">A2 Gir Cow Ghee — The Bilona Way</TextAnimate>
           <GoldRule className="my-5" />
-          <p className="font-body text-cream/80 text-base leading-relaxed mb-6">
-            Liquid gold in every jar. Our flagship ghee is crafted with patience and tradition, simmered slowly to preserve
-            its golden grain, heavenly aroma and time-honoured purity.
-          </p>
+          <ScrollTextFill className="font-body text-cream text-base leading-relaxed mb-6">
+            Liquid gold in every jar. Crafted with patience and tradition to preserve its golden grain, heavenly aroma and time-honoured purity.
+          </ScrollTextFill>
           <ul className="space-y-3 mb-8">
             {benefits.map((b) => (
               <li key={b} className="flex items-start gap-3 font-body text-cream/90 text-sm">

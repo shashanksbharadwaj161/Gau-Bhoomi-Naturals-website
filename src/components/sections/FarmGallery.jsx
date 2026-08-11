@@ -1,4 +1,5 @@
 import Reveal from '../ui/Reveal'
+import TextAnimate from '../ui/TextAnimate'
 
 // Shot at our own gaushala. All six are pre-cropped to 3:2 at 1200x800 so the
 // strip keeps one card ratio at every breakpoint and nothing re-crops in CSS.
@@ -15,7 +16,7 @@ export default function FarmGallery() {
   return (
     <section className="relative bg-cream grain py-14 md:py-20 overflow-hidden">
       <Reveal className="relative z-10 text-center mb-10 px-4">
-        <h2 className="font-display text-display-md text-primary-500 font-bold">From Our Gaushala to Your Home</h2>
+        <TextAnimate className="font-display text-display-md text-primary-500 font-bold">From Our Gaushala to Your Home</TextAnimate>
         <p className="font-body text-gray-500 text-sm mt-2">A glimpse into where the goodness begins</p>
       </Reveal>
 

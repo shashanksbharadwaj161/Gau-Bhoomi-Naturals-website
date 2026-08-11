@@ -3,17 +3,18 @@ import { siteConfig } from '../../config/siteConfig'
 import { revealOnScroll, staggerOnScroll, staggerItem } from '../../animations/motion'
 import GoldRule from '../ui/GoldRule'
 import WobbleCard from '../ui/WobbleCard'
+import TextAnimate from '../ui/TextAnimate'
 
 export default function WhyChooseUs() {
   return (
     <section className="relative bg-cream grain py-16 md:py-24">
       <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8">
-        <motion.h2
+        <motion.div
           className="font-display text-display-md text-primary-500 font-bold text-center mb-12"
           {...revealOnScroll}
         >
-          Why Thousands Choose Gau Bhoomi?
-        </motion.h2>
+          <TextAnimate>Why Thousands Choose Gau Bhoomi?</TextAnimate>
+        </motion.div>
         <motion.div
           {...staggerOnScroll(0.08)}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"

@@ -48,6 +48,12 @@ passes WordPress routes (`wp-admin`, `wp-json`, `wp-content`, …) straight thro
 the React SPA for everything else. WordPress files on the server are preserved
 (`dangerous-clean-slate: false`).
 
+> **Do not connect this repository through Hostinger Git auto-deployment.** The React
+> storefront and WordPress/WooCommerce intentionally share `public_html`. Hostinger Git
+> mirrors the selected branch into that directory and can remove the WordPress PHP files,
+> which disconnects `/wp-json` and WooCommerce. Use the FTPS workflow above; it uploads only
+> `dist/` and does not clean server-only WordPress files.
+
 Required GitHub Actions secrets: `VITE_WC_URL`,
 `FTP_HOST`, `FTP_USERNAME`, `FTP_PASSWORD`, `FTP_SERVER_DIR`.
 

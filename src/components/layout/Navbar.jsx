@@ -9,6 +9,7 @@ import { useCart } from '../../contexts/CartContext'
 import { useWishlist } from '../../contexts/WishlistContext'
 import { siteConfig } from '../../config/siteConfig'
 import { scrollToTop, getLenis } from '../../hooks/useLenis'
+import DesktopDockNav from '../ui/DesktopDockNav'
 
 const navLinks = [
   { label: 'Home', to: '/' },
@@ -27,7 +28,7 @@ const mobileLinks = [...navLinks, { label: 'FAQs', to: '/faq' }]
 
 function LogoMark({ logoError, onError, className }) {
   if (logoError) {
-    return <span className="font-display text-gold-400 text-lg font-bold whitespace-nowrap">Gau Bhoomi Naturals</span>
+    return <img src="/images/logo.svg" alt={siteConfig.brandName} className={className} />
   }
   return (
     <img src={siteConfig.logoUrl} alt={siteConfig.brandName} className={className} crossOrigin="anonymous" onError={onError} />
@@ -88,13 +89,6 @@ export default function Navbar() {
     else navigate('/')
   }
 
-  const linkClass = ({ isActive }) =>
-    `relative font-body text-sm font-medium transition-colors after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:bg-gold-400 after:transition-all after:duration-300 ${
-      isActive
-        ? 'text-gold-400 font-semibold after:w-full'
-        : 'text-cream/90 hover:text-gold-400 after:w-0 hover:after:w-full'
-    }`
-
   const logoProps = { logoError, onError: () => setLogoError(true) }
 
   return (
@@ -147,13 +141,7 @@ export default function Navbar() {
         </button>
 
         {/* Desktop nav links */}
-        <div className="hidden lg:flex items-center gap-6">
-          {navLinks.map((l) => (
-            <NavLink key={l.to} to={l.to} end className={linkClass}>
-              {l.label}
-            </NavLink>
-          ))}
-        </div>
+        <DesktopDockNav links={navLinks} />
 
         {/* Right — icons */}
         <div className="flex items-center gap-1 sm:gap-2">

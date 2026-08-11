@@ -2,6 +2,7 @@ import { Link } from '../lib/router'
 import { ArrowRight } from 'lucide-react'
 import Reveal from '../components/ui/Reveal'
 import Parallax from '../components/ui/Parallax'
+import TextAnimate from '../components/ui/TextAnimate'
 
 const promises = [
   { emoji: '🌱', title: 'Rooted in Tradition', desc: 'Every product honours time-tested Indian methods passed down through generations.' },
@@ -15,7 +16,7 @@ export default function AboutPage() {
       {/* Hero */}
       <section className="bg-primary-500 py-16 md:py-24 text-center px-4">
         <p className="font-body text-gold-400 text-[11px] tracking-[0.3em] uppercase font-semibold mb-3">Gau Bhoomi Naturals</p>
-        <h1 className="font-display text-display-lg text-white font-bold">Our Story</h1>
+        <TextAnimate as="h1" className="font-display text-display-lg text-white font-bold">Our Story</TextAnimate>
         <p className="font-body text-cream/75 max-w-2xl mx-auto mt-4 leading-relaxed">
           Born from a simple belief — that pure, chemical-free food is a birthright, not a luxury. We bring the wisdom of
           the gaushala straight to your kitchen.
@@ -25,7 +26,7 @@ export default function AboutPage() {
       {/* Who we are */}
       <section className="max-w-6xl mx-auto px-4 md:px-8 py-16 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
         <Reveal variant="left">
-          <h2 className="font-display text-display-md text-primary-500 font-bold">Who We Are</h2>
+          <TextAnimate className="font-display text-display-md text-primary-500 font-bold">Who We Are</TextAnimate>
           <div className="w-16 h-0.5 bg-gold-500 my-4" />
           <p className="font-body text-gray-600 leading-relaxed">
             Gau Bhoomi Naturals began on a family gaushala with a handful of indigenous Gir cows and a promise to never
@@ -50,7 +51,7 @@ export default function AboutPage() {
         </Parallax>
         <div className="absolute inset-0 bg-bark/70" />
         <Reveal className="relative z-10 text-center px-6 max-w-2xl">
-          <h2 className="font-display text-display-md text-white font-bold">Our Gaushala</h2>
+          <TextAnimate className="font-display text-display-md text-white font-bold">Our Gaushala</TextAnimate>
           <p className="font-body text-cream/80 mt-3 leading-relaxed">
             Free-roaming, stress-free cows grazing on natural pastures. Healthy, happy animals are the foundation of
             everything we make.
@@ -60,7 +61,7 @@ export default function AboutPage() {
 
       {/* Our promise */}
       <section className="max-w-6xl mx-auto px-4 md:px-8 py-16">
-        <Reveal as="h2" className="font-display text-display-md text-primary-500 font-bold text-center mb-10">Our Promise</Reveal>
+        <Reveal className="text-center mb-10"><TextAnimate className="font-display text-display-md text-primary-500 font-bold">Our Promise</TextAnimate></Reveal>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {promises.map((p, index) => (
             <Reveal key={p.title} delay={index * 80} className="bg-white rounded-2xl p-6 shadow-card text-center">

@@ -4,6 +4,7 @@ import { Disclosure } from '@headlessui/react'
 import { motion } from 'framer-motion'
 import { Star, Minus, Plus, Truck, ShoppingBag, ChevronDown, Check, X } from 'lucide-react'
 import ProductCarousel from '../components/ui/ProductCarousel'
+import TextAnimate from '../components/ui/TextAnimate'
 import { getProduct, getRelatedProducts, formatPrice, buildAddToCartUrl, PRODUCT_IMAGE_FALLBACK } from '../services/woocommerce'
 import { useCart } from '../contexts/CartContext'
 import { useWishlist } from '../contexts/WishlistContext'
@@ -191,7 +192,7 @@ export default function ProductDetailPage() {
             </span>
           )}
 
-          <h1 className="font-display text-display-md text-primary-500 font-bold mt-2 leading-tight">{product.name}</h1>
+          <TextAnimate as="h1" className="font-display text-display-md text-primary-500 font-bold mt-2 leading-tight">{product.name}</TextAnimate>
 
           <div className="flex items-center gap-2 mt-3">
             <div className="flex">

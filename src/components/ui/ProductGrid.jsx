@@ -137,7 +137,7 @@ export default function ProductGrid({ slug = 'all', onCategoryChange, perPage = 
                     transition={{ duration: 0.25 }}
                     className="h-full"
                   >
-                    <Reveal delay={(index % 4) * 55} className="h-full">
+                    <Reveal delay={(index % 4) * 45} className="h-full">
                       <ProductCard product={product} />
                     </Reveal>
                   </motion.div>

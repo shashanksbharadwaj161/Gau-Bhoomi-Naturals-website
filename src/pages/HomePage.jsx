@@ -19,6 +19,7 @@ import { getLenis } from '../hooks/useLenis'
 import GoldRule from '../components/ui/GoldRule'
 import LampHeading from '../components/ui/LampHeading'
 import Reveal from '../components/ui/Reveal'
+import TextAnimate from '../components/ui/TextAnimate'
 
 const GoldDivider = () => (
   <div className="relative bg-cream overflow-hidden h-12">
@@ -100,9 +101,9 @@ export default function HomePage() {
       <section className="py-10 md:py-14 bg-cream overflow-hidden">
         <Reveal className="text-center mb-8 px-4">
           <LampHeading>
-            <h2 className="font-display text-3xl md:text-4xl text-primary-500 font-bold">
+            <TextAnimate className="font-display text-3xl md:text-4xl text-primary-500 font-bold">
               Shop by Category
-            </h2>
+            </TextAnimate>
           </LampHeading>
           <GoldRule from="center" className="mx-auto mt-3 mb-4" />
           <p className="font-body text-gray-500 text-sm md:text-base">

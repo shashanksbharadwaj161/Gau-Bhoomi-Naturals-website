@@ -1,134 +1,124 @@
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { siteConfig } from '../../config/siteConfig'
 import { getLenis } from '../../hooks/useLenis'
 import { prefersReducedMotion } from '../../hooks/useReducedMotion'
 
 const BRAND = 'GAU BHOOMI NATURALS'
-const TAGLINE = 'Pure from the Gaushala · Delivered to Your Doorstep'
-
-// Timings, in ms. Total ≈ 2.1s — the page is already rendered and fetching
-// underneath, so this is a curtain, not a loading gate.
-const LOGO_HOLD = 450
-const CHAR_STEP = 32
-const TAGLINE_HOLD = 420
-const EXIT = 550
+const CARD_IMAGES = [
+  '/images/gaushala/gaushala-01.webp',
+  '/images/gaushala/gaushala-02.webp',
+  '/images/gaushala/gaushala-03.webp',
+  '/images/gaushala/gaushala-05.webp',
+]
+const EXIT_AT = 980
+const COMPLETE_AT = 1420
 
 export default function Preloader({ onComplete }) {
-  const [phase, setPhase] = useState('logo')
-  const [charCount, setCharCount] = useState(0)
+  const [exiting, setExiting] = useState(false)
 
-  // Hold the page still behind the curtain. Same pattern as CartDrawer/SearchOverlay.
   useEffect(() => {
     const lenis = getLenis()
     lenis?.stop()
-    return () => lenis?.start()
-  }, [])
 
-  // Reduced motion: no curtain at all, straight to the site.
-  useEffect(() => {
-    if (!prefersReducedMotion()) return
-    try { sessionStorage.setItem('gbn_loaded', '1') } catch { /* ignore */ }
-    onComplete?.()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  useEffect(() => {
-    const t = setTimeout(() => setPhase('text'), LOGO_HOLD)
-    return () => clearTimeout(t)
-  }, [])
-
-  useEffect(() => {
-    if (phase !== 'text') return
-    let i = 0
-    const iv = setInterval(() => {
-      setCharCount(++i)
-      if (i >= BRAND.length) {
-        clearInterval(iv)
-        setTimeout(() => setPhase('exit'), TAGLINE_HOLD)
-      }
-    }, CHAR_STEP)
-    return () => clearInterval(iv)
-  }, [phase])
-
-  useEffect(() => {
-    if (phase !== 'exit') return
-    const t = setTimeout(() => {
+    if (prefersReducedMotion()) {
       try { sessionStorage.setItem('gbn_loaded', '1') } catch { /* ignore */ }
       onComplete?.()
-    }, EXIT)
-    return () => clearTimeout(t)
+      return () => lenis?.start()
+    }
+
+    const exitTimer = window.setTimeout(() => setExiting(true), EXIT_AT)
+    const completeTimer = window.setTimeout(() => {
+      try { sessionStorage.setItem('gbn_loaded', '1') } catch { /* ignore */ }
+      onComplete?.()
+    }, COMPLETE_AT)
+
+    return () => {
+      clearTimeout(exitTimer)
+      clearTimeout(completeTimer)
+      lenis?.start()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase])
+  }, [])
 
   return (
     <motion.div
-      className="fixed inset-0 flex flex-col items-center justify-center z-[9999] overflow-hidden"
-      style={{ backgroundColor: '#142A1D' }}
+      className="fixed inset-0 z-[9999] overflow-hidden bg-primary-500"
       initial={{ opacity: 1 }}
-      // Opacity + scale only — both GPU-composited. The previous clipPath
-      // circle() wipe is not composited on all browsers and janked on low-end
-      // mobile.
-      animate={phase === 'exit' ? { opacity: 0, scale: 1.04 } : { opacity: 1, scale: 1 }}
-      transition={{ duration: EXIT / 1000, ease: [0.22, 1, 0.36, 1] }}
+      animate={exiting ? { opacity: 0 } : { opacity: 1 }}
+      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      aria-label="Opening Gau Bhoomi Naturals"
+      role="status"
     >
-      {/* Golden glow behind logo */}
-      <div
-        className="absolute rounded-full"
-        style={{
-          width: 260,
-          height: 260,
-          background: 'radial-gradient(circle, rgba(201,168,76,0.14) 0%, transparent 70%)',
-          filter: 'blur(20px)',
-        }}
+      <motion.div
+        className="absolute inset-y-0 left-0 w-1/2 bg-primary-600"
+        animate={exiting ? { x: '-102%' } : { x: 0 }}
+        transition={{ duration: 0.46, ease: [0.76, 0, 0.24, 1] }}
+      />
+      <motion.div
+        className="absolute inset-y-0 right-0 w-1/2 bg-primary-600"
+        animate={exiting ? { x: '102%' } : { x: 0 }}
+        transition={{ duration: 0.46, ease: [0.76, 0, 0.24, 1] }}
       />
 
-      {/* Logo */}
-      <motion.div
-        className="relative z-10"
-        initial={{ opacity: 0, scale: 0.6 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ type: 'spring', stiffness: 140, damping: 15 }}
-      >
-        <img
-          src={siteConfig.logoUrl}
-          alt="Gau Bhoomi Naturals"
-          className="w-32 h-32 md:w-40 md:h-40 object-contain"
-          onError={(e) => { e.currentTarget.style.display = 'none' }}
-        />
-      </motion.div>
+      <div className="absolute inset-0 flex items-center justify-center px-5">
+        <div className="preloader-cards absolute inset-0 flex items-center justify-center gap-2 sm:gap-4 opacity-45">
+          {CARD_IMAGES.map((src, index) => (
+            <motion.div
+              key={src}
+              className="w-[22vw] max-w-[190px] min-w-[72px] aspect-[3/4] overflow-hidden rounded-2xl border border-gold-400/25 shadow-2xl"
+              initial={{ opacity: 0, y: 70, rotate: index % 2 ? 5 : -5 }}
+              animate={exiting
+                ? { opacity: 0, y: -36, rotate: 0 }
+                : { opacity: 1, y: index % 2 ? 18 : -18, rotate: index % 2 ? 3 : -3 }}
+              transition={{ duration: 0.46, delay: index * 0.06, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <img src={src} alt="" className="h-full w-full object-cover" />
+            </motion.div>
+          ))}
+        </div>
 
-      {/* Gold rule */}
-      <motion.div
-        className="relative z-10 bg-gold-500 rounded-full mt-6"
-        style={{ height: 1.5 }}
-        initial={{ width: 0, opacity: 0 }}
-        animate={{ width: phase !== 'logo' ? 80 : 0, opacity: phase !== 'logo' ? 1 : 0 }}
-        transition={{ duration: 0.35, ease: 'easeOut' }}
-      />
-
-      {/* Brand name typing */}
-      <div
-        className="relative z-10 mt-5 tracking-[0.3em] text-[13px] md:text-[14px] font-body font-semibold"
-        style={{ color: '#C9A84C', minHeight: '20px', letterSpacing: '0.3em' }}
-      >
-        {phase !== 'logo' ? BRAND.slice(0, charCount) : ''}
-      </div>
-
-      {/* Tagline */}
-      <AnimatePresence>
-        {charCount >= BRAND.length && (
+        <motion.div
+          className="relative z-10 flex flex-col items-center rounded-[2rem] border border-gold-400/20 bg-primary-800/90 px-8 py-7 shadow-[0_24px_90px_rgba(4,10,6,0.55)] backdrop-blur-md sm:px-12"
+          initial={{ opacity: 0, scale: 0.88, y: 14 }}
+          animate={exiting ? { opacity: 0, scale: 1.05 } : { opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <img
+            src={siteConfig.logoUrl}
+            alt="Gau Bhoomi Naturals"
+            className="h-24 w-24 object-contain sm:h-28 sm:w-28"
+            onError={(event) => { event.currentTarget.src = '/images/logo.svg' }}
+          />
+          <div className="mt-4 flex flex-wrap justify-center tracking-[0.22em] text-gold-400 sm:tracking-[0.3em]">
+            {Array.from(BRAND).map((char, index) => (
+              <motion.span
+                key={`${char}-${index}`}
+                className="inline-block whitespace-pre font-body text-[10px] font-bold sm:text-xs"
+                initial={{ opacity: 0, y: 11, filter: 'blur(4px)' }}
+                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                transition={{ duration: 0.3, delay: 0.12 + index * 0.018, ease: [0.22, 1, 0.36, 1] }}
+              >
+                {char === ' ' ? '\u00A0' : char}
+              </motion.span>
+            ))}
+          </div>
+          <motion.div
+            className="mt-4 h-px bg-gold-500"
+            initial={{ width: 0 }}
+            animate={{ width: 72 }}
+            transition={{ duration: 0.44, delay: 0.22, ease: [0.22, 1, 0.36, 1] }}
+          />
           <motion.p
-            className="relative z-10 text-center font-body italic mt-3 px-8"
-            style={{ color: 'rgba(201,168,76,0.65)', fontSize: '11px', letterSpacing: '0.12em', maxWidth: 320 }}
-            initial={{ opacity: 0, y: 8 }}
+            className="mt-3 text-center font-body text-[10px] tracking-[0.11em] text-cream/65 sm:text-[11px]"
+            initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
+            transition={{ duration: 0.32, delay: 0.38 }}
           >
-            {TAGLINE}
+            PURE FROM OUR GAUSHALA
           </motion.p>
-        )}
-      </AnimatePresence>
+        </motion.div>
+      </div>
     </motion.div>
   )
 }

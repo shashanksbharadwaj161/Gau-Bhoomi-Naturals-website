@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { Instagram } from '../ui/SocialIcons'
 import { siteConfig } from '../../config/siteConfig'
 import { revealOnScroll, staggerOnScroll, staggerItem } from '../../animations/motion'
+import TextAnimate from '../ui/TextAnimate'
 
 // Manually mirrored from @gaubhoominaturals. To refresh: drop new 800x800
 // webp squares into public/images/instagram/ under a NEW filename (bump the
@@ -22,7 +23,7 @@ export default function InstagramSection() {
     <section className="bg-cream py-14 md:py-20">
       <div className="max-w-6xl mx-auto px-4 md:px-8">
         <motion.div className="text-center mb-8" {...revealOnScroll}>
-          <h2 className="font-display text-display-md text-primary-500 font-bold">Follow Our Journey</h2>
+          <TextAnimate className="font-display text-display-md text-primary-500 font-bold">Follow Our Journey</TextAnimate>
           <a
             href={siteConfig.social.instagram}
             target="_blank"

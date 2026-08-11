@@ -1,6 +1,7 @@
 import { useParams, useNavigate, Link } from '../lib/router'
 import ProductGrid from '../components/ui/ProductGrid'
 import { siteConfig } from '../config/siteConfig'
+import TextAnimate from '../components/ui/TextAnimate'
 
 const DESCRIPTIONS = {
   ghee:        'Golden A2 Gir cow ghee, hand-churned the ancient Bilona way.',
@@ -34,9 +35,9 @@ export default function CategoryPage() {
           <Link to="/shop" className="hover:text-gold-400">Shop</Link> /{' '}
           <span className="text-gold-400">{name}</span>
         </nav>
-        <h1 className="font-display text-4xl md:text-5xl text-white font-bold">
+        <TextAnimate as="h1" className="font-display text-4xl md:text-5xl text-white font-bold">
           {cat?.emoji} {name}
-        </h1>
+        </TextAnimate>
         <p className="font-body text-cream/70 text-sm mt-3 max-w-xl mx-auto">{description}</p>
       </div>
 

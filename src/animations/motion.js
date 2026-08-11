@@ -11,19 +11,19 @@
 export const EASE = [0.22, 1, 0.36, 1]
 
 export const DURATION = {
-  fast: 0.3,
-  base: 0.55,
-  slow: 0.7,
+  fast: 0.22,
+  base: 0.42,
+  slow: 0.55,
 }
 
 // How far elements travel on entry. Small on purpose: large offsets read as
 // clumsy and cost more paint area.
-const RISE = 28
+const RISE = 18
 
 // Enter when scrolled into view. `once` so sections don't re-animate on the way
 // back up, and a negative margin so the reveal starts slightly before the
 // element is fully on screen.
-export const viewport = { once: true, margin: '-80px' }
+export const viewport = { once: true, margin: '-42px' }
 
 // Single element rising into view.
 export const reveal = {

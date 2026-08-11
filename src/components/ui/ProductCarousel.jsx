@@ -8,6 +8,7 @@ import SkeletonCard from './SkeletonCard'
 import GoldRule from './GoldRule'
 import { prefersReducedMotion } from '../../hooks/useReducedMotion'
 import Reveal from './Reveal'
+import TextAnimate from './TextAnimate'
 
 // Side-scroll falloff. Slides recede only inside the outer band of the viewport,
 // so the middle of the rail is always untouched — and only on a side that has
@@ -114,7 +115,7 @@ export default function ProductCarousel({
       {/* Header */}
       <Reveal className="flex items-end justify-between mb-8 px-4 md:px-8 max-w-7xl mx-auto">
         <div>
-          <h2 className="font-display text-display-md text-primary-500 font-bold">{title}</h2>
+          <TextAnimate className="font-display text-display-md text-primary-500 font-bold">{title}</TextAnimate>
           <GoldRule className="mt-2" />
           {subtitle && <p className="font-body text-gray-500 text-sm mt-2">{subtitle}</p>}
         </div>
@@ -129,7 +130,7 @@ export default function ProductCarousel({
       </Reveal>
 
       {/* Carousel */}
-      <Reveal variant="clip" className="relative max-w-7xl mx-auto">
+      <Reveal className="relative max-w-7xl mx-auto">
         <div
           className="overflow-hidden px-4 md:px-8"
           ref={emblaRef}
@@ -146,10 +147,10 @@ export default function ProductCarousel({
                   <motion.div
                     key={product.id}
                     className="flex-shrink-0 min-w-[78%] sm:min-w-[340px] md:min-w-[280px] max-w-[320px]"
-                    initial={{ opacity: 0, y: 18 }}
+                    initial={{ opacity: 0, y: 16, scale: 0.975 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: '-30px' }}
-                    transition={{ duration: 0.5, delay: Math.min(index, 3) * 0.055, ease: [0.16, 1, 0.3, 1] }}
+                    viewport={{ once: true, margin: '-18px' }}
+                    transition={{ duration: 0.38, delay: Math.min(index, 5) * 0.045, ease: [0.16, 1, 0.3, 1] }}
                   >
                     <ProductCard product={product} />
                   </motion.div>

@@ -5,6 +5,7 @@ import ProductCard from '../components/ui/ProductCard'
 import { useWishlist } from '../contexts/WishlistContext'
 import { useCart } from '../contexts/CartContext'
 import { revealOnScroll, staggerOnScroll, staggerItem } from '../animations/motion'
+import TextAnimate from '../components/ui/TextAnimate'
 
 export default function WishlistPage() {
   const { items } = useWishlist()
@@ -35,7 +36,7 @@ export default function WishlistPage() {
             <nav className="font-body text-gray-400 text-xs mb-1">
               <Link to="/" className="hover:text-gold-600">Home</Link> / <span className="text-primary-500">Wishlist</span>
             </nav>
-            <h1 className="font-display text-display-md text-primary-500 font-bold">My Wishlist ({items.length})</h1>
+            <TextAnimate as="h1" className="font-display text-display-md text-primary-500 font-bold">My Wishlist ({items.length})</TextAnimate>
           </motion.div>
           <motion.button variants={staggerItem} type="button" onClick={addAll} className="bg-primary-500 hover:bg-primary-600 text-white font-body font-semibold px-6 py-3 rounded-full">
             Add All to Cart

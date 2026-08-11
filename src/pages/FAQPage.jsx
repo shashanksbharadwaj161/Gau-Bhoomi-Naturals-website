@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { Disclosure } from '@headlessui/react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronDown, Search } from 'lucide-react'
+import TextAnimate from '../components/ui/TextAnimate'
 
 const FAQS = [
   { category: 'Orders', q: 'How do I place an order?', a: 'Browse our shop, add items to your cart, and proceed to checkout. You can pay securely via card, UPI, net banking or wallet.' },
@@ -63,7 +64,7 @@ export default function FAQPage() {
   return (
     <div className="bg-cream min-h-screen">
       <div className="bg-primary-500 py-12 md:py-16 text-center px-4">
-        <h1 className="font-display text-display-lg text-white font-bold">Frequently Asked Questions</h1>
+        <TextAnimate as="h1" className="font-display text-display-lg text-white font-bold">Frequently Asked Questions</TextAnimate>
         <p className="font-body text-cream/70 mt-2">Everything you need to know about Gau Bhoomi Naturals</p>
         <div className="relative max-w-md mx-auto mt-6">
           <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />

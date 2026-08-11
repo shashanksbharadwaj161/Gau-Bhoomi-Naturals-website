@@ -20,6 +20,7 @@ import ScrollProgress from './components/ui/ScrollProgress'
 import ScrollToTop from './components/ui/ScrollToTop'
 import SearchOverlay from './components/ui/SearchOverlay'
 import CartDrawer from './components/ui/CartDrawer'
+import CustomCursor from './components/ui/CustomCursor'
 
 // Lazy-loaded pages (code splitting)
 const HomePage          = lazy(() => import('./pages/HomePage'))
@@ -71,7 +72,7 @@ function WhatsAppFAB() {
       className="fixed bottom-24 right-4 md:bottom-8 md:right-8 z-40"
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
-      transition={{ delay: 2.5, type: 'spring', stiffness: 200 }}
+      transition={{ delay: 0.8, type: 'spring', stiffness: 260, damping: 20 }}
     >
       <div className="relative">
         <div className="absolute inset-0 rounded-full bg-[#25D366] animate-pulse-ring" />
@@ -135,6 +136,7 @@ function AppInner() {
       <CartDrawer />
       <ScrollToTop />
       <WhatsAppFAB />
+      <CustomCursor />
 
       <Toaster
         position="bottom-center"
