@@ -25,13 +25,13 @@ export default function TextAnimate({
         className="inline"
         initial="hidden"
         whileInView="show"
-        viewport={{ once, margin: '-36px' }}
+        viewport={{ once, margin: '0px 0px -12% 0px', amount: 0.18 }}
         variants={{
           hidden: {},
           show: {
             transition: {
-              delayChildren: delay,
-              staggerChildren: Math.max(0.012, Math.min(0.026, 0.52 / Math.max(chars.length, 1))),
+              delayChildren: delay + 0.04,
+              staggerChildren: Math.max(0.016, Math.min(0.034, 0.72 / Math.max(chars.length, 1))),
             },
           },
         }}
@@ -52,7 +52,7 @@ export default function TextAnimate({
                 y: 0,
                 filter: 'blur(0px)',
                 rotateX: 0,
-                transition: { duration: 0.38, ease },
+                transition: { duration: 0.56, ease },
               },
             }}
           >

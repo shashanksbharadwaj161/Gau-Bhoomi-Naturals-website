@@ -149,8 +149,8 @@ export default function ProductCarousel({
                     className="flex-shrink-0 min-w-[78%] sm:min-w-[340px] md:min-w-[280px] max-w-[320px]"
                     initial={{ opacity: 0, y: 16, scale: 0.975 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: '-18px' }}
-                    transition={{ duration: 0.38, delay: Math.min(index, 5) * 0.045, ease: [0.16, 1, 0.3, 1] }}
+                    viewport={{ once: true, margin: '0px 0px -10% 0px', amount: 0.18 }}
+                    transition={{ duration: 0.64, delay: Math.min(index, 5) * 0.09, ease: [0.16, 1, 0.3, 1] }}
                   >
                     <ProductCard product={product} />
                   </motion.div>

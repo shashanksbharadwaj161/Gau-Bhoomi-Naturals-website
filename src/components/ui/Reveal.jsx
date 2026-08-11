@@ -16,8 +16,8 @@ function getObserver() {
       observer.unobserve(entry.target)
     })
   }, {
-    rootMargin: '0px 0px -5% 0px',
-    threshold: 0.06,
+    rootMargin: '0px 0px -12% 0px',
+    threshold: 0.14,
   })
 
   return observer
@@ -65,7 +65,7 @@ export default function Reveal({
       ref={ref}
       {...props}
       className={`scroll-reveal scroll-reveal--${variant} ${className}`}
-      style={{ '--reveal-delay': `${Math.min(delay, 200)}ms`, ...style }}
+      style={{ '--reveal-delay': `${Math.min(delay, 360)}ms`, ...style }}
     >
       {children}
     </Tag>

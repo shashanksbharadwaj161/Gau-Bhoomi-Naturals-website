@@ -28,7 +28,7 @@ export default function GheeSpotlight() {
           initial={{ opacity: 0, x: 40 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.74, ease: [0.22, 1, 0.36, 1] }}
         >
           {/* Scroll-linked drift replaces the old `animate-float` bob. A loop
               that ignores scroll reads as decoration; tying it to scroll reads
@@ -44,7 +44,7 @@ export default function GheeSpotlight() {
           initial={{ opacity: 0, x: -40 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.74, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
         >
           <p className="font-body text-gold-400 text-[11px] tracking-[0.3em] uppercase font-semibold mb-3">Our Signature Product</p>
           <TextAnimate className="font-display text-display-lg text-white font-bold leading-tight">A2 Gir Cow Ghee — The Bilona Way</TextAnimate>
