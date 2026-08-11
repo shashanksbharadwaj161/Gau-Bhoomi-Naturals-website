@@ -18,6 +18,7 @@ import { siteConfig } from '../config/siteConfig'
 import { getLenis } from '../hooks/useLenis'
 import GoldRule from '../components/ui/GoldRule'
 import LampHeading from '../components/ui/LampHeading'
+import Reveal from '../components/ui/Reveal'
 
 const GoldDivider = () => (
   <div className="relative bg-cream overflow-hidden h-12">
@@ -97,7 +98,7 @@ export default function HomePage() {
 
       {/* Shop by Category */}
       <section className="py-10 md:py-14 bg-cream overflow-hidden">
-        <div className="text-center mb-8 px-4">
+        <Reveal className="text-center mb-8 px-4">
           <LampHeading>
             <h2 className="font-display text-3xl md:text-4xl text-primary-500 font-bold">
               Shop by Category
@@ -107,11 +108,13 @@ export default function HomePage() {
           <p className="font-body text-gray-500 text-sm md:text-base">
             Tap a category to explore pure, traceable organic goodness.
           </p>
-        </div>
-        <CategoryPills
-          activeSlug={activeSlug}
-          onCategoryChange={handleCategoryChange}
-        />
+        </Reveal>
+        <Reveal variant="clip" delay={90}>
+          <CategoryPills
+            activeSlug={activeSlug}
+            onCategoryChange={handleCategoryChange}
+          />
+        </Reveal>
       </section>
 
       <div ref={exploreRef}>

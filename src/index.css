@@ -86,6 +86,46 @@ html.lenis-loading { overflow: hidden; }
   animation: fadeUp 0.7s ease-out forwards;
 }
 
+/* Shared IntersectionObserver reveals. Elements are visible until JavaScript
+   marks them ready, so a failed bundle never withholds content. Each material
+   has a distinct job: rise for hierarchy, clip for media/rails, and side drift
+   for paired editorial layouts. */
+.scroll-reveal {
+  --reveal-delay: 0ms;
+}
+.scroll-reveal.is-reveal-ready {
+  opacity: 0.01;
+  transition:
+    opacity 700ms cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay),
+    transform 700ms cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay),
+    filter 700ms cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay),
+    clip-path 800ms cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay);
+  will-change: opacity, transform, filter, clip-path;
+}
+.scroll-reveal--rise.is-reveal-ready {
+  transform: translate3d(0, 28px, 0);
+  filter: blur(7px);
+}
+.scroll-reveal--left.is-reveal-ready {
+  transform: translate3d(-28px, 0, 0);
+  filter: blur(5px);
+}
+.scroll-reveal--right.is-reveal-ready {
+  transform: translate3d(28px, 0, 0);
+  filter: blur(5px);
+}
+.scroll-reveal--clip.is-reveal-ready {
+  transform: scale(0.985);
+  clip-path: inset(8% 0 8% 0 round 16px);
+}
+.scroll-reveal.is-revealed {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  filter: blur(0);
+  clip-path: inset(0 0 0 0 round 0);
+  will-change: auto;
+}
+
 /* Stagger delays for children */
 .stagger-1 { animation-delay: 0.1s; }
 .stagger-2 { animation-delay: 0.2s; }
@@ -316,6 +356,13 @@ html.lenis-loading { overflow: hidden; }
   }
   /* Spinners convey loading status rather than decoration — keep them turning. */
   .animate-spin { animation-duration: 1s !important; }
+  .scroll-reveal,
+  .scroll-reveal.is-reveal-ready {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    clip-path: none !important;
+  }
 }
 
 /* ── Mobile-specific ──────────────────────────────── */
@@ -325,4 +372,8 @@ html.lenis-loading { overflow: hidden; }
 
   /* Touch feedback */
   button:active, a:active { opacity: 0.8; }
+
+  .scroll-reveal--rise.is-reveal-ready { transform: translate3d(0, 16px, 0); }
+  .scroll-reveal--left.is-reveal-ready { transform: translate3d(-14px, 0, 0); }
+  .scroll-reveal--right.is-reveal-ready { transform: translate3d(14px, 0, 0); }
 }

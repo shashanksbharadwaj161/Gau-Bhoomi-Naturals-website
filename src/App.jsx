@@ -16,6 +16,7 @@ import Footer from './components/layout/Footer'
 import MobileBottomNav from './components/layout/MobileBottomNav'
 import Preloader from './components/ui/Preloader'
 import RouteProgress from './components/ui/RouteProgress'
+import ScrollProgress from './components/ui/ScrollProgress'
 import ScrollToTop from './components/ui/ScrollToTop'
 import SearchOverlay from './components/ui/SearchOverlay'
 import CartDrawer from './components/ui/CartDrawer'
@@ -101,6 +102,7 @@ function AppInner() {
   return (
     <>
       <RouteProgress />
+      <ScrollProgress />
       <AnnouncementBar />
       <Navbar />
 

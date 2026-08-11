@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
 import { Link } from '../../lib/router'
+import { motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react'
 import ProductCard from './ProductCard'
 import SkeletonCard from './SkeletonCard'
 import GoldRule from './GoldRule'
 import { prefersReducedMotion } from '../../hooks/useReducedMotion'
+import Reveal from './Reveal'
 
 // Side-scroll falloff. Slides recede only inside the outer band of the viewport,
 // so the middle of the rail is always untouched — and only on a side that has
@@ -110,7 +112,7 @@ export default function ProductCarousel({
   return (
     <section className={`py-12 md:py-16 ${bgClass}`}>
       {/* Header */}
-      <div className="flex items-end justify-between mb-8 px-4 md:px-8 max-w-7xl mx-auto">
+      <Reveal className="flex items-end justify-between mb-8 px-4 md:px-8 max-w-7xl mx-auto">
         <div>
           <h2 className="font-display text-display-md text-primary-500 font-bold">{title}</h2>
           <GoldRule className="mt-2" />
@@ -124,10 +126,10 @@ export default function ProductCarousel({
             View All <ArrowRight size={16} />
           </Link>
         )}
-      </div>
+      </Reveal>
 
       {/* Carousel */}
-      <div className="relative max-w-7xl mx-auto">
+      <Reveal variant="clip" className="relative max-w-7xl mx-auto">
         <div
           className="overflow-hidden px-4 md:px-8"
           ref={emblaRef}
@@ -140,13 +142,17 @@ export default function ProductCarousel({
                     <SkeletonCard />
                   </div>
                 ))
-              : products.map((product) => (
-                  <div
+              : products.map((product, index) => (
+                  <motion.div
                     key={product.id}
                     className="flex-shrink-0 min-w-[78%] sm:min-w-[340px] md:min-w-[280px] max-w-[320px]"
+                    initial={{ opacity: 0, y: 18 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '-30px' }}
+                    transition={{ duration: 0.5, delay: Math.min(index, 3) * 0.055, ease: [0.16, 1, 0.3, 1] }}
                   >
                     <ProductCard product={product} />
-                  </div>
+                  </motion.div>
                 ))}
           </div>
         </div>
@@ -170,7 +176,7 @@ export default function ProductCarousel({
         >
           <ChevronRight size={22} />
         </button>
-      </div>
+      </Reveal>
 
       {/* Mobile View All */}
       {viewAllLink && (

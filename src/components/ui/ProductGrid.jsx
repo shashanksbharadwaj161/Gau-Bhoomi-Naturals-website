@@ -7,6 +7,7 @@ import SkeletonCard from './SkeletonCard'
 import CategoryPills from './CategoryPills'
 import { useUI } from '../../contexts/UIContext'
 import { getProductsByCategory } from '../../services/woocommerce'
+import Reveal from './Reveal'
 
 const SORTS = [
   { key: 'popularity', label: 'Popularity' },
@@ -126,7 +127,7 @@ export default function ProductGrid({ slug = 'all', onCategoryChange, perPage = 
                     opposite directions read as a broken grid, not as depth —
                     measured 28px apart mid-scroll while the cards were all
                     exactly the same height. A grid has to look like a grid. */}
-                {shown.map((product) => (
+                {shown.map((product, index) => (
                   <motion.div
                     key={product.id}
                     layout
@@ -136,7 +137,9 @@ export default function ProductGrid({ slug = 'all', onCategoryChange, perPage = 
                     transition={{ duration: 0.25 }}
                     className="h-full"
                   >
-                    <ProductCard product={product} />
+                    <Reveal delay={(index % 4) * 55} className="h-full">
+                      <ProductCard product={product} />
+                    </Reveal>
                   </motion.div>
                 ))}
               </AnimatePresence>

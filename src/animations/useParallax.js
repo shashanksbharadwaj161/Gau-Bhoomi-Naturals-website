@@ -1,5 +1,4 @@
-import { useScroll, useTransform } from 'framer-motion'
-import { prefersReducedMotion } from '../hooks/useReducedMotion'
+import { useReducedMotion, useScroll, useSpring, useTransform } from 'framer-motion'
 
 // Scroll-linked parallax. One hook for every parallax surface on the site so the
 // depth effect is consistent rather than re-derived per section.
@@ -19,7 +18,9 @@ import { prefersReducedMotion } from '../hooks/useReducedMotion'
 // spread evenly instead of finishing early.
 export function useParallax(ref, distance = 20, offset = ['start end', 'end start']) {
   const { scrollYProgress } = useScroll({ target: ref, offset })
-  const y = useTransform(scrollYProgress, [0, 1], [distance, -distance])
+  const rawY = useTransform(scrollYProgress, [0, 1], [distance, -distance])
+  const y = useSpring(rawY, { stiffness: 110, damping: 28, mass: 0.35 })
+  const reducedMotion = useReducedMotion()
 
-  return prefersReducedMotion() ? 0 : y
+  return reducedMotion ? 0 : y
 }

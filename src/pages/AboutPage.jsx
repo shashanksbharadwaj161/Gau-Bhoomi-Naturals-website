@@ -1,6 +1,7 @@
 import { Link } from '../lib/router'
-import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
+import Reveal from '../components/ui/Reveal'
+import Parallax from '../components/ui/Parallax'
 
 const promises = [
   { emoji: '🌱', title: 'Rooted in Tradition', desc: 'Every product honours time-tested Indian methods passed down through generations.' },
@@ -23,7 +24,7 @@ export default function AboutPage() {
 
       {/* Who we are */}
       <section className="max-w-6xl mx-auto px-4 md:px-8 py-16 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-        <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
+        <Reveal variant="left">
           <h2 className="font-display text-display-md text-primary-500 font-bold">Who We Are</h2>
           <div className="w-16 h-0.5 bg-gold-500 my-4" />
           <p className="font-body text-gray-600 leading-relaxed">
@@ -34,36 +35,39 @@ export default function AboutPage() {
           <p className="font-body text-gray-600 leading-relaxed mt-4">
             No preservatives. No shortcuts. Just real food you can trust to feed your family.
           </p>
-        </motion.div>
-        <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
-          className="rounded-2xl overflow-hidden shadow-card">
-          <img src="https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=900&q=80" alt="Our gaushala" className="w-full h-72 md:h-96 object-cover" />
-        </motion.div>
+        </Reveal>
+        <Reveal variant="right" className="rounded-2xl overflow-hidden shadow-card">
+          <Parallax distance={12} className="h-72 md:h-96 scale-[1.08]">
+            <img src="https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=900&q=80" alt="Our gaushala" className="w-full h-full object-cover" />
+          </Parallax>
+        </Reveal>
       </section>
 
       {/* Our gaushala — full width */}
-      <section className="relative h-80 md:h-96 flex items-center justify-center">
-        <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=1600&q=80" alt="Farm" className="absolute inset-0 w-full h-full object-cover" />
+      <section className="relative h-80 md:h-96 flex items-center justify-center overflow-hidden">
+        <Parallax distance={16} className="absolute -inset-y-5 inset-x-0">
+          <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=1600&q=80" alt="Farm" className="w-full h-full object-cover" />
+        </Parallax>
         <div className="absolute inset-0 bg-bark/70" />
-        <div className="relative z-10 text-center px-6 max-w-2xl">
+        <Reveal className="relative z-10 text-center px-6 max-w-2xl">
           <h2 className="font-display text-display-md text-white font-bold">Our Gaushala</h2>
           <p className="font-body text-cream/80 mt-3 leading-relaxed">
             Free-roaming, stress-free cows grazing on natural pastures. Healthy, happy animals are the foundation of
             everything we make.
           </p>
-        </div>
+        </Reveal>
       </section>
 
       {/* Our promise */}
       <section className="max-w-6xl mx-auto px-4 md:px-8 py-16">
-        <h2 className="font-display text-display-md text-primary-500 font-bold text-center mb-10">Our Promise</h2>
+        <Reveal as="h2" className="font-display text-display-md text-primary-500 font-bold text-center mb-10">Our Promise</Reveal>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {promises.map((p) => (
-            <div key={p.title} className="bg-white rounded-2xl p-6 shadow-card text-center">
+          {promises.map((p, index) => (
+            <Reveal key={p.title} delay={index * 80} className="bg-white rounded-2xl p-6 shadow-card text-center">
               <div className="text-4xl">{p.emoji}</div>
               <h3 className="font-display text-primary-500 font-bold text-lg mt-3">{p.title}</h3>
               <p className="font-body text-gray-500 text-sm leading-relaxed mt-2">{p.desc}</p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </section>

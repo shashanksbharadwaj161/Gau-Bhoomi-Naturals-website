@@ -1,3 +1,5 @@
+import Reveal from '../ui/Reveal'
+
 // Shot at our own gaushala. All six are pre-cropped to 3:2 at 1200x800 so the
 // strip keeps one card ratio at every breakpoint and nothing re-crops in CSS.
 const photos = [
@@ -12,10 +14,10 @@ const photos = [
 export default function FarmGallery() {
   return (
     <section className="relative bg-cream grain py-14 md:py-20 overflow-hidden">
-      <div className="relative z-10 text-center mb-10 px-4">
+      <Reveal className="relative z-10 text-center mb-10 px-4">
         <h2 className="font-display text-display-md text-primary-500 font-bold">From Our Gaushala to Your Home</h2>
         <p className="font-body text-gray-500 text-sm mt-2">A glimpse into where the goodness begins</p>
-      </div>
+      </Reveal>
 
       {/*
         The list is rendered twice and the track travels -50%, so the second copy
@@ -25,7 +27,7 @@ export default function FarmGallery() {
         reduced-motion rule in index.css shortens animations rather than removing
         them, which would snap this track to -50% and strand it there.
       */}
-      <div className="relative z-10 marquee-mask overflow-hidden">
+      <Reveal variant="clip" className="relative z-10 marquee-mask overflow-hidden">
         <div className="farm-marquee flex gap-4 md:gap-6 w-max animate-marquee-slow motion-reduce:animate-none hover:[animation-play-state:paused]">
           {[...photos, ...photos].map((photo, i) => (
             <figure
@@ -47,7 +49,7 @@ export default function FarmGallery() {
             </figure>
           ))}
         </div>
-      </div>
+      </Reveal>
     </section>
   )
 }
