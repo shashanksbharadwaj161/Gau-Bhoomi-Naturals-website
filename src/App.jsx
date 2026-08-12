@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, useLocation } from './lib/router'
 import { AnimatePresence, motion, MotionConfig } from 'framer-motion'
-import { lazy, Suspense, useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Toaster } from 'react-hot-toast'
 
 import { CartProvider } from './contexts/CartContext'
@@ -22,19 +22,22 @@ import SearchOverlay from './components/ui/SearchOverlay'
 import CartDrawer from './components/ui/CartDrawer'
 import CustomCursor from './components/ui/CustomCursor'
 
-// Lazy-loaded pages (code splitting)
-const HomePage          = lazy(() => import('./pages/HomePage'))
-const ShopPage          = lazy(() => import('./pages/ShopPage'))
-const CategoryPage      = lazy(() => import('./pages/CategoryPage'))
-const ProductDetailPage = lazy(() => import('./pages/ProductDetailPage'))
-const CartPage          = lazy(() => import('./pages/CartPage'))
-const CheckoutPage      = lazy(() => import('./pages/CheckoutPage'))
-const WishlistPage      = lazy(() => import('./pages/WishlistPage'))
-const AccountPage       = lazy(() => import('./pages/AccountPage'))
-const AboutPage         = lazy(() => import('./pages/AboutPage'))
-const ContactPage       = lazy(() => import('./pages/ContactPage'))
-const FAQPage           = lazy(() => import('./pages/FAQPage'))
-const NotFoundPage      = lazy(() => import('./pages/NotFoundPage'))
+// Keep route components in the main application bundle. Visitors often leave
+// the storefront open while a new version deploys; lazy route chunks from the
+// previous version can then disappear and leave navigation on a blank page
+// until a reload. Eager route imports make every internal link deterministic.
+import HomePage from './pages/HomePage'
+import ShopPage from './pages/ShopPage'
+import CategoryPage from './pages/CategoryPage'
+import ProductDetailPage from './pages/ProductDetailPage'
+import CartPage from './pages/CartPage'
+import CheckoutPage from './pages/CheckoutPage'
+import WishlistPage from './pages/WishlistPage'
+import AccountPage from './pages/AccountPage'
+import AboutPage from './pages/AboutPage'
+import ContactPage from './pages/ContactPage'
+import FAQPage from './pages/FAQPage'
+import NotFoundPage from './pages/NotFoundPage'
 
 const pageVariants = {
   initial: { opacity: 0, y: 16 },
@@ -55,14 +58,6 @@ function PageWrapper({ children }) {
     >
       {children}
     </motion.div>
-  )
-}
-
-function PageLoading() {
-  return (
-    <div className="min-h-[60vh] bg-cream flex items-center justify-center">
-      <div className="w-12 h-12 border-2 border-gold-200 border-t-gold-500 rounded-full animate-spin" />
-    </div>
   )
 }
 
@@ -108,24 +103,22 @@ function AppInner() {
       <Navbar />
 
       <main>
-        <Suspense fallback={<PageLoading />}>
-          <AnimatePresence mode="wait" initial={false}>
-            <Routes location={location} key={location.pathname}>
-              <Route path="/"               element={<PageWrapper><HomePage /></PageWrapper>} />
-              <Route path="/shop"           element={<PageWrapper><ShopPage /></PageWrapper>} />
-              <Route path="/shop/:category" element={<PageWrapper><CategoryPage /></PageWrapper>} />
-              <Route path="/product/:slug"  element={<PageWrapper><ProductDetailPage /></PageWrapper>} />
-              <Route path="/cart"           element={<PageWrapper><CartPage /></PageWrapper>} />
-              <Route path="/checkout"       element={<PageWrapper><CheckoutPage /></PageWrapper>} />
-              <Route path="/wishlist"       element={<PageWrapper><WishlistPage /></PageWrapper>} />
-              <Route path="/account"        element={<PageWrapper><AccountPage /></PageWrapper>} />
-              <Route path="/about"          element={<PageWrapper><AboutPage /></PageWrapper>} />
-              <Route path="/contact"        element={<PageWrapper><ContactPage /></PageWrapper>} />
-              <Route path="/faq"            element={<PageWrapper><FAQPage /></PageWrapper>} />
-              <Route path="*"               element={<PageWrapper><NotFoundPage /></PageWrapper>} />
-            </Routes>
-          </AnimatePresence>
-        </Suspense>
+        <AnimatePresence mode="wait" initial={false}>
+          <Routes location={location} key={location.pathname}>
+            <Route path="/"               element={<PageWrapper><HomePage /></PageWrapper>} />
+            <Route path="/shop"           element={<PageWrapper><ShopPage /></PageWrapper>} />
+            <Route path="/shop/:category" element={<PageWrapper><CategoryPage /></PageWrapper>} />
+            <Route path="/product/:slug"  element={<PageWrapper><ProductDetailPage /></PageWrapper>} />
+            <Route path="/cart"           element={<PageWrapper><CartPage /></PageWrapper>} />
+            <Route path="/checkout"       element={<PageWrapper><CheckoutPage /></PageWrapper>} />
+            <Route path="/wishlist"       element={<PageWrapper><WishlistPage /></PageWrapper>} />
+            <Route path="/account"        element={<PageWrapper><AccountPage /></PageWrapper>} />
+            <Route path="/about"          element={<PageWrapper><AboutPage /></PageWrapper>} />
+            <Route path="/contact"        element={<PageWrapper><ContactPage /></PageWrapper>} />
+            <Route path="/faq"            element={<PageWrapper><FAQPage /></PageWrapper>} />
+            <Route path="*"               element={<PageWrapper><NotFoundPage /></PageWrapper>} />
+          </Routes>
+        </AnimatePresence>
       </main>
 
       <Footer />

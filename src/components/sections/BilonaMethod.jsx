@@ -11,6 +11,7 @@ export default function BilonaMethod() {
     const container = containerRef.current
     const track     = trackRef.current
     if (!container || !track) return
+    if (container.offsetParent === null) return // Hidden on desktop homepage.
     if (window.innerWidth < 768) return  // Mobile: vertical stack
 
     const totalScroll = track.scrollWidth - window.innerWidth

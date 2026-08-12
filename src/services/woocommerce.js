@@ -139,6 +139,28 @@ export const getProducts = async (params = {}) => {
   }
 }
 
+// Fetch a curated WooCommerce collection and restore the requested frontend
+// order because the Store API returns `include` results in catalog order.
+export const getProductsByIds = async (ids) => {
+  const orderedIds = (Array.isArray(ids) ? ids : [])
+    .map(Number)
+    .filter((id) => Number.isInteger(id) && id > 0)
+  if (orderedIds.length === 0) return []
+
+  try {
+    const res = await api.get('/products', {
+      params: { include: orderedIds.join(','), per_page: orderedIds.length },
+    })
+    const byId = new Map(mapList(res.data).map((product) => [product.id, product]))
+    return orderedIds.map((id) => byId.get(id)).filter(Boolean)
+  } catch (err) {
+    console.warn('[WC] getProductsByIds failed:', err?.response?.status || '', err.message)
+    return orderedIds
+      .map((id) => MOCK_PRODUCTS.find((product) => product.id === id))
+      .filter(Boolean)
+  }
+}
+
 export const getCategories = async () => {
   try {
     const res = await api.get('/products/categories', { params: { per_page: 100 } })

@@ -13,7 +13,7 @@ import Newsletter from '../components/sections/Newsletter'
 import ProductCarousel from '../components/ui/ProductCarousel'
 import CategoryPills from '../components/ui/CategoryPills'
 import CategoryBoxes from '../components/sections/CategoryBoxes'
-import { getProductsByCategory } from '../services/woocommerce'
+import { getProductsByCategory, getProductsByIds } from '../services/woocommerce'
 import { siteConfig } from '../config/siteConfig'
 import { getLenis } from '../hooks/useLenis'
 import GoldRule from '../components/ui/GoldRule'
@@ -34,6 +34,11 @@ const GoldDivider = () => (
   </div>
 )
 
+// Exact WooCommerce product order requested for the homepage Bestsellers rail.
+// The first nine are the named products; Cashew W320 completes the requested
+// ten-product collection after Almond.
+const BESTSELLER_PRODUCT_IDS = [143, 148, 638, 150, 782, 647, 144, 825, 814, 818]
+
 export default function HomePage() {
   const navigate = useNavigate()
   const [activeSlug, setActiveSlug] = useState('all')
@@ -51,15 +56,14 @@ export default function HomePage() {
   useEffect(() => {
     let active = true
     ;(async () => {
-      const [ghee, rice, hny, oils] = await Promise.all([
+      const [bestsellers, ghee, rice, hny] = await Promise.all([
+        getProductsByIds(BESTSELLER_PRODUCT_IDS),
         getProductsByCategory('ghee', 12),
         getProductsByCategory('masalas', 12),
         getProductsByCategory('honey', 12),
-        getProductsByCategory('oils', 12),
       ])
       if (!active) return
-      // Best Sellers ordering: Ghee first, then Oils — do not reorder.
-      setExplore([...ghee, ...oils]); setExploreLoading(false)
+      setExplore(bestsellers); setExploreLoading(false)
       setGheeOils(ghee); setLoadingGhee(false)
       setRiceMasalas(rice); setLoadingRice(false)
       setHoney(hny); setLoadingHoney(false)
@@ -140,7 +144,9 @@ export default function HomePage() {
       />
 
       <GheeSpotlight />
-      <BilonaMethod />
+      <div className="md:hidden">
+        <BilonaMethod />
+      </div>
 
       <ProductCarousel
         title="Rice, Grains & Masalas"
