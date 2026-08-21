@@ -106,6 +106,7 @@ export const MOCK_PRODUCTS = Array.from({ length: 24 }, (_, i) => ({
 // e.g. "oils" → "cold-pressed-oils"), so filtering still works.
 const CATEGORY_KEYWORDS = {
   ghee:        ['ghee'],
+  milk:        ['milk'],
   oils:        ['oil'],
   rice:        ['rice', 'grain'],
   masalas:     ['masala', 'spice'],

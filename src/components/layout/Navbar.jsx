@@ -15,6 +15,7 @@ const navLinks = [
   { label: 'Home', to: '/' },
   { label: 'Shop', to: '/shop' },
   { label: 'Ghee', to: '/shop/ghee' },
+  { label: 'Milk', to: '/shop/milk' },
   { label: 'Oils', to: '/shop/oils' },
   { label: 'Rice & Grains', to: '/shop/rice' },
   { label: 'Masalas', to: '/shop/masalas' },

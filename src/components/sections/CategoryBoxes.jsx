@@ -8,7 +8,7 @@ export default function CategoryBoxes() {
   return (
     <section className="bg-white pb-12 md:pb-16">
       <motion.div
-        className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6"
+        className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6"
         {...staggerOnScroll(0.1)}
       >
         {siteConfig.categoryBoxes.map((box) => (

@@ -18,6 +18,15 @@ export const GheeIcon = ({ size = 26, color = 'currentColor' }) => (
   </svg>
 )
 
+export const MilkIcon = ({ size = 26, color = 'currentColor' }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M9 3h6l1 4v13a1 1 0 01-1 1H9a1 1 0 01-1-1V7l1-4z"/>
+    <path d="M9 7h6"/>
+    <path d="M8 11h8"/>
+    <path d="M10 3V1.75h4V3"/>
+  </svg>
+)
+
 export const OilsIcon = ({ size = 26, color = 'currentColor' }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
     <path d="M12 3c0 0-5 5.5-5 10a5 5 0 0010 0C17 8.5 12 3 12 3z"/>

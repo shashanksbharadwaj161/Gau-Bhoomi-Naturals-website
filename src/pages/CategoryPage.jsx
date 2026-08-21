@@ -5,6 +5,7 @@ import TextAnimate from '../components/ui/TextAnimate'
 
 const DESCRIPTIONS = {
   ghee:        'Golden A2 Gir cow ghee, hand-churned the ancient Bilona way.',
+  milk:        'Fresh Desi Gir cow milk delivered daily in convenient 30-day plans.',
   oils:        'Cold pressed oils that retain every drop of natural goodness.',
   rice:        'Aromatic, wholesome rice & grains grown without chemicals.',
   masalas:     'Freshly ground masalas bursting with authentic Indian flavour.',

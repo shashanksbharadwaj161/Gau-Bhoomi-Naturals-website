@@ -114,6 +114,7 @@ export const siteConfig = {
   categories: [
     { name: 'All',             slug: 'all',        emoji: '🌿', icon: 'LayoutGrid'   },
     { name: 'Ghee',            slug: 'ghee',       emoji: '🫙', icon: 'Cylinder'     },
+    { name: 'Milk',            slug: 'milk',       emoji: '🥛', icon: 'Milk'         },
     { name: 'Cold Pressed Oils', slug: 'oils',     emoji: '🫒', icon: 'Droplets'     },
     { name: 'Rice & Grains',   slug: 'rice',       emoji: '🌾', icon: 'Wheat'        },
     { name: 'Masalas',         slug: 'masalas',    emoji: '🌶️', icon: 'Flame'        },
@@ -132,6 +133,12 @@ export const siteConfig = {
       slug: 'ghee',
       blurb: 'Hand-churned the ancient Bilona way, from our own Gir cows.',
       image: '/images/categories/ghee-v2.jpg',
+    },
+    {
+      name: 'Milk',
+      slug: 'milk',
+      blurb: 'Fresh Desi Gir cow milk delivered daily in convenient 30-day plans.',
+      image: '/images/milk/desi-gir-cow-milk-500ml-subscription.jpg',
     },
     {
       name: 'Cold Pressed Oils',

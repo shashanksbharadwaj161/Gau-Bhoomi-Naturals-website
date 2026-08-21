@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { siteConfig } from '../../config/siteConfig'
 import { EASE } from '../../animations/motion'
 import {
-  AllIcon, GheeIcon, OilsIcon, RiceIcon,
+  AllIcon, GheeIcon, MilkIcon, OilsIcon, RiceIcon,
   MasalaIcon, HoneyIcon, DryFruitsIcon,
   SeedsIcon, OtherIcon
 } from './CategoryIcons'
@@ -11,6 +11,7 @@ import {
 const iconMap = {
   all:         AllIcon,
   ghee:        GheeIcon,
+  milk:        MilkIcon,
   oils:        OilsIcon,
   rice:        RiceIcon,
   masalas:     MasalaIcon,

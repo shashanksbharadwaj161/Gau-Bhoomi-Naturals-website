@@ -16,6 +16,7 @@ const quickLinks = [
 
 const footerCategories = [
   { name: 'Ghee', slug: 'ghee' },
+  { name: 'Milk', slug: 'milk' },
   { name: 'Cold Pressed Oils', slug: 'oils' },
   { name: 'Rice & Grains', slug: 'rice' },
   { name: 'Masalas', slug: 'masalas' },
