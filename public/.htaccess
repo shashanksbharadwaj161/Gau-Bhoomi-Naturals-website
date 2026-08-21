@@ -62,7 +62,14 @@ RewriteRule ^ /index.html [QSA,L]
   Header always set Referrer-Policy strict-origin-when-cross-origin
   Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
   Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
-  Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https:; media-src 'self'; connect-src 'self' https://gaubhoominaturals.com; upgrade-insecure-requests"
+
+  # WordPress injects nonce/config data and editor templates as inline scripts,
+  # while several first-party admin editors still compile templates at runtime.
+  # Keep that compatibility exception limited to authenticated admin/login URLs;
+  # the public React storefront retains the stricter no-inline-script policy.
+  SetEnvIf Request_URI "^/wp-admin(?:/|$)|^/wp-login\.php$" GBN_WORDPRESS_ADMIN=1
+  Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https: blob:; media-src 'self' blob:; connect-src 'self' https://gaubhoominaturals.com; worker-src 'self' blob:; upgrade-insecure-requests" env=GBN_WORDPRESS_ADMIN
+  Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https:; media-src 'self'; connect-src 'self' https://gaubhoominaturals.com; upgrade-insecure-requests" env=!GBN_WORDPRESS_ADMIN
 </IfModule>
 
 <IfModule mod_deflate.c>
